@@ -1,0 +1,622 @@
+.navbar-info {
+  width: 50%;
+  height: 100vh;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  right: 0;
+  transition: 0.3s;
+}
+.navbar-links-group ul {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.dropdown-toggle {
+  background-color: transparent;
+  color: #000;
+  border: 0;
+  font-size: 20px;
+  padding: 0;
+}
+
+.dropdown-toggle:hover {
+  color: #7bb700;
+  transition: all 0.2s;
+}
+
+.nav-link {
+  color: #000;
+  list-style-type: none;
+  font-size: 20px;
+}
+
+.nav-link a :hover {
+  color: #7bb700;
+  transition: all 0.2s;
+}
+
+.nav-link-anchor {
+  color: #000;
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
+}
+
+.nav-link-anchor:hover {
+  color: #7bb700;
+  transition: all 0.2s;
+}
+
+.nav-link a {
+  text-decoration: none;
+  color: #000;
+}
+
+.dropdown-item:nth-child(1) {
+  margin-top: 30px;
+}
+
+.dropdown-item {
+  list-style: circle;
+}
+
+.dropdown-item::marker {
+  color: #7bb700;
+}
+
+.menu-btn {
+  background-color: #000;
+  border: 0;
+  color: #7bb700;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.logo-link {
+  color: #000;
+  text-decoration: none;
+}
+
+/* product card  */
+
+.product-card {
+  width: 100%;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+}
+
+.product-card-left {
+  padding: 20px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.product-card-right {
+  padding: 20px;
+  width: 50%;
+}
+
+.product-card-img {
+  border-radius: 20px;
+  border: 1px solid #dedede;
+  width: 422px;
+  height: 182px;
+}
+
+.product-card-title {
+  font-size: 20px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.product-card-title:hover {
+  color: #7bb700;
+  transition: all 0.3s;
+}
+
+.product-card-para {
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.product-card-para:hover {
+  color: #7bb700;
+  transition: all 0.3s;
+}
+
+.product-card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background-color: #7bb700;
+  border: 0;
+  outline: 0;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.product-card-anchor {
+  text-decoration: none;
+}
+
+.notFound {
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  padding: 40px 0;
+}
+
+.logoutButton {
+  background-color: transparent;
+  border: 0;
+  color: #000;
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  color: #7bb700;
+  transition: all 0.2s;
+}
+
+.home{
+  flex: 4;
+}
+
+.homeWidgets{
+  display: flex;
+  margin: 20px;
+}
+
+.container{
+  display: flex;
+  margin-top: 10px;
+}
+
+
+.link{
+  text-decoration: none;
+  color: inherit;
+}
+
+.newProduct {
+  flex: 4;
+}
+
+.addProductForm {
+  margin-top: 10px;
+}
+
+.addProductItem {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.addProductItem > label {
+  color: gray;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.addProductItem > input {
+  padding: 10px;
+}
+
+.addProductItem > select {
+  padding: 10px;
+}
+
+.addProductButton {
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.product {
+  flex: 4;
+  padding: 20px;
+}
+
+.productTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.productAddButton {
+  width: 80px;
+  border: none;
+  padding: 5px;
+  background-color: teal;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.productTop {
+  display: flex;
+}
+
+.productTopLeft,
+.productTopRight {
+  flex: 1;
+}
+
+.productTopRight {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.productInfoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.productInfoTop {
+  display: flex;
+  align-items: center;
+}
+
+.productName {
+  font-weight: 600;
+}
+
+.productInfoBottom {
+  margin-top: 10px;
+}
+
+.productInfoItem {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.productInfoValue {
+  font-weight: 300;
+}
+
+.productBottom {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.productForm {
+  display: flex;
+  justify-content: space-around;
+  gap: 60px;
+}
+
+.productFormLeft {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.productFormLeft > label {
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.productFormLeft > input {
+  margin-bottom: 10px;
+  border: none;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.productFormLeft >select{
+  margin-bottom: 10px;
+}
+
+.productUploadImg{
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.productFormRight{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40%;
+}
+
+.productUpload{
+  display: flex;
+  align-items: center;
+}
+
+.productUpload img{
+  width: 100%;
+  height: 100%;
+}
+
+.productButton{
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: darkblue;
+  color:white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+label{
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.productFormLeft-input{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.productFormLeft-input input,
+.productFormLeft-input textarea{
+  border-radius: 10px;
+  border: 1px solid #d6d6d6;
+  padding: 12px;
+  outline: 0;
+}
+
+.productList{
+  flex: 4;
+}
+
+.productListItem{
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.productListImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 0%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.productListEdit{
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: #3bb077;
+  color: white;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.productListDelete{
+  color: red;
+  cursor: pointer;
+}
+
+.user {
+  flex: 4;
+  padding: 20px;
+}
+
+.userTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userAddButton {
+  width: 80px;
+  border: none;
+  padding: 5px;
+  background-color: teal;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+}
+
+.userContainer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.userShow {
+  flex: 1;
+  padding: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.userUpdate {
+  flex: 2;
+  padding: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  margin-left: 20px;
+}
+
+.userShowTop {
+  display: flex;
+  align-items: center;
+}
+
+.userShowImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userShowTopTitle {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.userShowUsername {
+  font-weight: 600;
+}
+
+.userShowUserTitle {
+  font-weight: 300;
+}
+
+.userShowBottom {
+  margin-top: 20px;
+}
+
+.userShowTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(175, 170, 170);
+}
+
+.userShowInfo {
+  display: flex;
+  align-items: center;
+  margin: 20px 0px;
+  color: #444;
+}
+
+.userShowIcon {
+  font-size: 16px !important;
+}
+
+.userShowInfoTitle {
+  margin-left: 10px;
+}
+
+.userUpdateTitle {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.userUpdateForm {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.userUpdateItem {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.userUpdateItem > label {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.userUpdateInput {
+  border: none;
+  width: 250px;
+  height: 30px;
+  border-bottom: 1px solid gray;
+}
+
+.userUpdateRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.userUpdateUpload {
+  display: flex;
+  align-items: center;
+}
+
+.userUpdateImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.userUpdateIcon {
+  cursor: pointer;
+}
+
+.userUpdateButton {
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+}
+
+.userList {
+  flex: 4;
+}
+
+.userListUser {
+  display: flex;
+  align-items: center;
+}
+
+.userListImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.userListEdit{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.userListDelete{
+    color: red;
+    cursor: pointer;
+}
