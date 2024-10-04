@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../components/topbar/Topbar";
 import Sidebar from "../components/sidebar/Sidebar";
+import TextEditor from "../components/TextEditor";
 
 export default function NewProduct() {
   const [inputs, setInputs] = useState({});
@@ -27,8 +28,8 @@ export default function NewProduct() {
     });
   };
 
+  const [selectedUnit, setSelectedUnit] = useState("");
   const [categories, setCategories] = useState([]);
-  console.log(categories)
 
   // Handle category checkbox change
   const handleCategoryChange = (e) => {
@@ -40,8 +41,8 @@ export default function NewProduct() {
     }
   };
 
-  const handlePoints = (e) => {
-    setPoints(e.target.value.split(","));
+  const handleUnitChange = (e) => {
+    setSelectedUnit(e.target.value);
   };
 
   const handleClick = async (e) => {
@@ -108,7 +109,7 @@ export default function NewProduct() {
             </div>
 
             <div className="addProductItem">
-              <label>title</label>
+              <label>Title</label>
               <input
                 name="title"
                 type="text"
@@ -119,62 +120,67 @@ export default function NewProduct() {
 
             <div className="addProductItem">
               <label>Description</label>
+              <TextEditor />
+
+            </div>
+
+            <div className="addProductItem">
+              <label>Part Number</label>
               <input
-                name="desc"
+                name="partNumber"
                 type="text"
-                placeholder="Product Description"
+                placeholder="Part Number"
                 onChange={handleChange}
               />
             </div>
 
             <div className="addProductItem">
-              <label>Points</label>
+              <label>Type</label>
               <input
+                name="type"
                 type="text"
-                placeholder="Product Points"
-                onChange={handlePoints}
+                placeholder="Type"
+                onChange={handleChange}
               />
             </div>
 
-            {/* <div className="addProductItem">
-              <label>Category</label>
-              <input type="text" placeholder="category1,category2" onChange={handleCategory} />
-            </div> */}
-
             <div className="addProductItem">
               <label>Categories</label>
-              <div>
-                {/* List of category checkboxes */}
-                <label>
+              <div className="checkbox-container">
+                <label className="checkbox-label">
                   <input
                     type="checkbox"
+                    className="checkbox-input"
                     value="category1"
                     onChange={handleCategoryChange}
                   />
                   Category 1
                 </label>
 
-                <label>
+                <label className="checkbox-label">
                   <input
                     type="checkbox"
+                    className="checkbox-input"
                     value="category2"
                     onChange={handleCategoryChange}
                   />
                   Category 2
                 </label>
 
-                <label>
+                <label className="checkbox-label">
                   <input
                     type="checkbox"
+                    className="checkbox-input"
                     value="category3"
                     onChange={handleCategoryChange}
                   />
                   Category 3
                 </label>
 
-                <label>
+                <label className="checkbox-label">
                   <input
                     type="checkbox"
+                    className="checkbox-input"
                     value="category4"
                     onChange={handleCategoryChange}
                   />
@@ -183,19 +189,58 @@ export default function NewProduct() {
               </div>
 
               {/* Display selected categories */}
-              <div>
-                Selected Categories: {categories.join(", ")}
+              <div className="selected">
+                Selected Categories:
+                {categories.map((e) => (
+                  <p className="category-seleted">{e || "None"}</p>
+                ))}
               </div>
             </div>
 
+
             <div className="addProductItem">
-              <label>Stock</label>
-              <input
-                name="inStock"
-                type="number"
-                placeholder="Stock in Numbers"
-                onChange={handleChange}
-              />
+              <label>Unit</label>
+              <div>
+                <label className="checkbox-label">
+                  <input
+                    type="radio"
+                    name="unit"
+                    value="unit1"
+                    onChange={handleUnitChange}
+                  />
+                  Unit 1
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="radio"
+                    name="unit"
+                    value="unit2"
+                    onChange={handleUnitChange}
+                  />
+                  Unit 2
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="radio"
+                    name="unit"
+                    value="unit3"
+                    onChange={handleUnitChange}
+                  />
+                  Unit 3
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="radio"
+                    name="unit"
+                    value="unit4"
+                    onChange={handleUnitChange}
+                  />
+                  Unit 4
+                </label>
+              </div>
             </div>
 
             <button onClick={handleClick} className="addProductButton">

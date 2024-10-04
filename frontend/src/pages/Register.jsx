@@ -77,7 +77,6 @@ const Register = () => {
 
       const persistedRoot = JSON.parse(localStorage.getItem("persist:root"));
       const user = persistedRoot && JSON.parse(persistedRoot.currentUser);
-      console.log(user)
 
       if (user) {
         navigate("/dashboard/login");

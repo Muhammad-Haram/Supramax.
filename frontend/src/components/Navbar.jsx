@@ -2,7 +2,7 @@ import { Search } from 'lucide-react';
 import React, { useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { AlignJustify, LogOut } from 'lucide-react';
+import { AlignJustify} from 'lucide-react';
 import { X } from 'lucide-react';
 import '../style.css'
 import { Link, useNavigate } from "react-router-dom";
@@ -26,12 +26,6 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-`;
-
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  ${mobile({ display: "none" })}
 `;
 
 const SearchContainer = styled.div`
@@ -86,7 +80,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/register");
+    navigate("/dashboard/register");
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -115,12 +109,7 @@ const Navbar = () => {
             </SearchContainer>
           </Center>
           <Right>
-            <MenuItem><Link className="nav-link-anchor" to="/register">Register</Link></MenuItem>
-            <MenuItem><Link className="nav-link-anchor" to="/login">Login</Link></MenuItem>
-            {/* <MenuItem><Link className="nav-link-anchor" to="/login">Logout</Link></MenuItem> */}
-
             {user && (<MenuItem><button className="logoutButton" onClick={handleLogout}>Logout</button></MenuItem>)}
-
             <MenuItem><button className="menu-btn" onClick={() => setToggleMenu(true)}>
               <AlignJustify />
             </button></MenuItem>

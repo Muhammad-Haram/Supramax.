@@ -98,14 +98,3 @@ export const deleteUsers = async (id, dispatch) => {
     dispatch(deleteUserFailure());
   }
 };
-
-export const updateUsers = async (id, user, dispatch) => {
-  dispatch(updateUserStart());
-  try {
-    const response = await userRequest.put(`/users/${id}`, user);
-    dispatch(updateUserSuccess({ id, user }));
-  } catch (error) {
-    console.log(error);
-    dispatch(updateUserFailure());
-  }
-};
