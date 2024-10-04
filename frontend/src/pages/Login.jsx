@@ -77,9 +77,9 @@ const Login = () => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate("/");  // Redirect to home page when login is successful
+      navigate("/");
     }
-  }, [currentUser, navigate]); // Observe currentUser and navigate
+  }, [currentUser, navigate]);
 
   return (
     <Container>

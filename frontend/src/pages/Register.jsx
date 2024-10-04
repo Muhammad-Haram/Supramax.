@@ -80,7 +80,7 @@ const Register = () => {
       console.log(user)
 
       if (user) {
-        navigate("/login");
+        navigate("/dashboard/login");
       }
     } catch (error) { 
       console.log(error, "register error");
