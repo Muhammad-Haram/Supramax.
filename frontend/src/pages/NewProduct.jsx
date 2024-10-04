@@ -21,15 +21,20 @@ export default function NewProduct() {
   const [points, setPoints] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [selectedUnit, setSelectedUnit] = useState("");
+  const [categories, setCategories] = useState([]);
 
+  // Handle input change
   const handleChange = (e) => {
     setInputs((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
 
-  const [selectedUnit, setSelectedUnit] = useState("");
-  const [categories, setCategories] = useState([]);
+  // Handle TextEditor content change
+  const handleEditorChange = (content) => {
+    setInputs((prev) => ({ ...prev, desc: content }));
+  };
 
   // Handle category checkbox change
   const handleCategoryChange = (e) => {
@@ -50,7 +55,6 @@ export default function NewProduct() {
     const filetitle = inputs.title || "default"; // Agar title nahi hai to default naam rakh lo
     const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
     const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
-    console.log(fileName);
     const storage = getStorage(app);
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -76,19 +80,21 @@ export default function NewProduct() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
           const product = {
             ...inputs,
             img: downloadURL,
             categories: categories,
-            points: points,
+            unit: selectedUnit,
           };
           addProducts(product, dispatch);
+          console.log(product, dispatch)
           navigate("/dashboard/products");
         });
       }
     );
   };
+
+  console.log(inputs);
 
   return (
     <>
@@ -120,8 +126,7 @@ export default function NewProduct() {
 
             <div className="addProductItem">
               <label>Description</label>
-              <TextEditor />
-
+              <TextEditor onContentChange={handleEditorChange} />
             </div>
 
             <div className="addProductItem">
@@ -188,15 +193,13 @@ export default function NewProduct() {
                 </label>
               </div>
 
-              {/* Display selected categories */}
               <div className="selected">
                 Selected Categories:
-                {categories.map((e) => (
-                  <p className="category-seleted">{e || "None"}</p>
+                {categories.map((e, key) => (
+                  <p key={key} className="category-seleted">{e || "None"}</p>
                 ))}
               </div>
             </div>
-
 
             <div className="addProductItem">
               <label>Unit</label>
@@ -249,6 +252,7 @@ export default function NewProduct() {
           </form>
         </div>
       </div>
+
     </>
   );
 }

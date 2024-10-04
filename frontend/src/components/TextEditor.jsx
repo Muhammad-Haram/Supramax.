@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import CSS for Quill editor
 
-const TextEditor = () => {
+const TextEditor = ({ onContentChange }) => {
     const [editorContent, setEditorContent] = useState('');
 
     const handleChange = (content) => {
         setEditorContent(content);
+        onContentChange(content); 
     };
 
     return (
@@ -18,9 +19,6 @@ const TextEditor = () => {
                 formats={TextEditor.formats}
                 placeholder="Start writing..."
             />
-            {console.log(editorContent)}
-
-            <div className='editor-content' dangerouslySetInnerHTML={{ __html: editorContent || "No Content" }} />
         </div>
     );
 };

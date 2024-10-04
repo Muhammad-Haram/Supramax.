@@ -6,6 +6,8 @@ import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
+import DOMPurify from 'dompurify';
+
 
 const Container = styled.div``;
 
@@ -26,6 +28,7 @@ padding: 30px 0px;
 
 const Image = styled.img`
   object-fit: cover;
+  width: 40%;
   ${mobile({ height: "40vh" })}
 `;
 
@@ -159,44 +162,8 @@ const Product = () => {
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>
-            {product.desc}
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }} />
           </Desc>
-
-          <ul>
-            {product.points.map((e, index) => (
-              <li key={index}>{e}</li>
-            ))}
-          </ul>
-
-
-
-          {/* <Price>$ 20</Price> */}
-          {/* <FilterContainer>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
-              </FilterSize>
-            </Filter>
-          </FilterContainer> */}
-          {/* <AddContainer>
-            <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
-            </AmountContainer>
-            <Button>ADD TO CART</Button>
-          </AddContainer> */}
         </InfoContainer>
       </Wrapper>
       <Newsletter />
