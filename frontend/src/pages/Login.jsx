@@ -77,7 +77,7 @@ const Login = () => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate("/");
+      navigate("/dashboard");
     }
   }, [currentUser, navigate]);
 

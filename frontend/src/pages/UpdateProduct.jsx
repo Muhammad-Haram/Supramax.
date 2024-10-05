@@ -60,7 +60,7 @@ export default function UpdateProduct() {
         };
 
         if (file) {
-            const filetitle = inputs.title || "default"; // Agar title nahi hai to default naam rakh lo
+            const filetitle = inputs.title || "default";
             const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
             const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`
             console.log(fileName)
@@ -79,16 +79,16 @@ export default function UpdateProduct() {
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        productUpdate.img = downloadURL; // Add image URL to product update
+                        productUpdate.img = downloadURL;
                         updateProducts(productId, productUpdate, dispatch);
                         // console.log(productId, productUpdate, dispatch)
-                        navigate("/dashboard/products");
+                        navigate("/dashboard");
                     });
                 }
             );
         } else {
             updateProducts(productId, productUpdate, dispatch);
-            navigate("/dashboard/products");
+            navigate("/dashboard");
         }
     };
 
