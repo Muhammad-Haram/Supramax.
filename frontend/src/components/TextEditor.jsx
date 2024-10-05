@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import CSS for Quill editor
+import 'react-quill/dist/quill.snow.css';
 
-const TextEditor = ({ onContentChange }) => {
-    const [editorContent, setEditorContent] = useState('');
+const TextEditor = ({ onContentChange, initialContent }) => {
+    const [editorContent, setEditorContent] = useState(initialContent);
 
     const handleChange = (content) => {
         setEditorContent(content);
-        onContentChange(content); 
+        onContentChange(content); // Call function to update parent state
     };
+
+    // Sync initialContent prop to the editor content when it changes
+    useEffect(() => {
+        setEditorContent(initialContent);
+    }, [initialContent]);
 
     return (
         <div className='text-editor'>
@@ -28,11 +33,11 @@ TextEditor.modules = {
     toolbar: [
         [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        [{ 'color': [] }, { 'background': [] }],          // color and background
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
         [{ 'align': [] }],
         ['link'],
-        ['clean'],                                        // remove formatting button
+        ['clean'],
     ],
 };
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
-// import "./newProduct.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   getStorage,
   ref,
@@ -52,7 +53,7 @@ export default function NewProduct() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const filetitle = inputs.title || "default"; // Agar title nahi hai to default naam rakh lo
+    const filetitle = inputs.title || "default"; // Default name if title is not provided
     const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
     const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
     const storage = getStorage(app);
@@ -77,6 +78,7 @@ export default function NewProduct() {
       },
       (error) => {
         console.log(error);
+        toast.error("Error uploading file.");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -86,9 +88,14 @@ export default function NewProduct() {
             categories: categories,
             unit: selectedUnit,
           };
-          addProducts(product, dispatch);
-          console.log(product, dispatch)
-          navigate("/dashboard/products");
+          addProducts(product, dispatch)
+            .then(() => {
+              toast.success("Product created successfully!");
+              navigate("/dashboard/products");
+            })
+            .catch((err) => {
+              toast.error("Error creating product: " + err.message);
+            });
         });
       }
     );
@@ -252,7 +259,7 @@ export default function NewProduct() {
           </form>
         </div>
       </div>
-
+      <ToastContainer />
     </>
   );
 }

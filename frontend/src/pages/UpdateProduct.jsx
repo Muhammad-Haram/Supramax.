@@ -9,6 +9,7 @@ import { updateProducts } from "../redux/apiCallsForDashBoard";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../components/topbar/Topbar";
 import Sidebar from "../components/sidebar/Sidebar";
+import TextEditor from "../components/TextEditor";
 
 export default function UpdateProduct() {
     const location = useLocation();
@@ -20,7 +21,6 @@ export default function UpdateProduct() {
         desc: productData.desc,
         inStock: productData.inStock,
         categories: productData.categories.join(","),
-        points: productData.points.join(","),
     });
     const [file, setFile] = useState("");
     const dispatch = useDispatch();
@@ -40,10 +40,10 @@ export default function UpdateProduct() {
         }));
     };
 
-    const handlePoints = (e) => {
+    const handleEditorChange = (content) => {
         setInputs((prev) => ({
             ...prev,
-            points: e.target.value,
+            desc: content,
         }));
     };
 
@@ -53,7 +53,6 @@ export default function UpdateProduct() {
         const productUpdate = {
             ...inputs,
             categories: inputs.categories.split(","),
-            points: inputs.points.split(","),
             _id: productData._id,
             createdAt: productData.createdAt,
             updatedAt: new Date().toISOString(),
@@ -82,12 +81,12 @@ export default function UpdateProduct() {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         productUpdate.img = downloadURL; // Add image URL to product update
                         updateProducts(productId, productUpdate, dispatch);
+                        // console.log(productId, productUpdate, dispatch)
                         navigate("/dashboard/products");
                     });
                 }
             );
         } else {
-            // If no new file, just update without changing the image
             updateProducts(productId, productUpdate, dispatch);
             navigate("/dashboard/products");
         }
@@ -119,10 +118,6 @@ export default function UpdateProduct() {
                                     <span className="productInfoKey">id:</span>
                                     <span className="productInfoValue">{productData._id}</span>
                                 </div>
-                                <div className="productInfoItem">
-                                    <span className="productInfoKey">in stock:</span>
-                                    <span className="productInfoValue">{productData.inStock}</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -136,12 +131,10 @@ export default function UpdateProduct() {
 
                                 <div className="productFormLeft-input">
                                     <label>Product Description</label>
-                                    <textarea name="desc" value={inputs.desc} onChange={handleChange}></textarea>
-                                </div>
-
-                                <div className="productFormLeft-input">
-                                    <label>Product Points</label>
-                                    <input type="text" value={inputs.points} onChange={handlePoints} />
+                                    <TextEditor
+                                        onContentChange={handleEditorChange}
+                                        initialContent={inputs.desc}
+                                    />
                                 </div>
 
                                 <div className="productFormLeft-input">
@@ -149,10 +142,6 @@ export default function UpdateProduct() {
                                     <input type="text" value={inputs.categories} onChange={handleCategory} />
                                 </div>
 
-                                <div className="productFormLeft-input">
-                                    <label>In Stock</label>
-                                    <input name="inStock" type="number" value={inputs.inStock} onChange={handleChange} />
-                                </div>
                             </div>
                             <div className="productFormRight">
                                 <div className="productUpload">

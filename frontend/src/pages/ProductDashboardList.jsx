@@ -64,21 +64,15 @@ export default function ProductDashboardList() {
   return (
 
     <>
-      <Topbar />
-      <div className="container">
-
-        <Sidebar />
-
-        <div className="productList">
-          <DataGrid
-            rows={products}
-            disableSelectionOnClick
-            columns={columns}
-            getRowId={(row) => row._id}
-            pageSize={8}
-            checkboxSelection
-          />
-        </div>
+      <div className="productList">
+        <DataGrid
+          rows={products}
+          disableSelectionOnClick
+          columns={columns}
+          getRowId={(row) => row._id}
+          pageSize={8}
+          checkboxSelection
+        />
       </div>
     </>
   );

@@ -23,13 +23,6 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
-            <Link to="/dashboard/products" className="link">
-              <li className="sidebarListItem">
-                <StoreIcon className="sidebarIcon" />
-                Products
-              </li>
-            </Link>
-
             <Link to="/dashboard/newproduct" className="link">
               <li className="sidebarListItem">
                 <AddBusinessIcon className="sidebarIcon" />

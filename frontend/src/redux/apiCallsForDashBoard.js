@@ -21,9 +21,9 @@ import {
   getUserFailure,
   getUserStart,
   getUserSuccess,
-  updateUserFailure,
-  updateUserStart,
-  updateUserSuccess,
+  // updateUserFailure,
+  // updateUserStart,
+  // updateUserSuccess,
 } from "./userSlice.js";
 
 export const login = async (dispatch, auth) => {

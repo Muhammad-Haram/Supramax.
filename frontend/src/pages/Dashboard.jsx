@@ -4,6 +4,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import Topbar from "../components/topbar/Topbar";
 import { useNavigate } from "react-router-dom";
 import ProductList from "./ProductList";
+import ProductDashboardList from "./ProductDashboardList";
 
 
 export default function Home() {
@@ -32,7 +33,7 @@ export default function Home() {
         <Sidebar />
 
         <div className="home">
-          {/* <ProductList/> */}
+          <ProductDashboardList />
         </div>
       </div>
     </>
