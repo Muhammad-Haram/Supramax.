@@ -17,9 +17,7 @@ import TextEditor from "../components/TextEditor";
 
 export default function NewProduct() {
   const [inputs, setInputs] = useState({});
-  const [file, setFile] = useState("");
-  const [category, setCategory] = useState([]);
-  const [points, setPoints] = useState([]);
+  const [files, setFiles] = useState([]); // Changed to array
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedUnit, setSelectedUnit] = useState("");
@@ -53,52 +51,67 @@ export default function NewProduct() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const filetitle = inputs.title || "default"; // Default name if title is not provided
-    const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-    const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
-        }
-      },
-      (error) => {
-        console.log(error);
-        toast.error("Error uploading file.");
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const product = {
-            ...inputs,
-            img: downloadURL,
-            categories: categories,
-            unit: selectedUnit,
-          };
-          addProducts(product, dispatch)
-            .then(() => {
-              toast.success("Product created successfully!");
-              navigate("/dashboard/products");
-            })
-            .catch((err) => {
-              toast.error("Error creating product: " + err.message);
+    // Ensure you are creating an array to store download URLs
+    const downloadURLs = [];
+
+    // Use Promise.all to wait for all uploads to finish
+    await Promise.all(files.map(async (file) => {
+      const filetitle = inputs.title || "default";
+      const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      const fileName = `${sanitizedTitle}_${new Date().getTime()}_${file.name}`;
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      return new Promise((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+              default:
+            }
+          },
+          (error) => {
+            console.log(error);
+            toast.error("Error uploading file.");
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              downloadURLs.push(downloadURL);
+              resolve();
             });
-        });
-      }
-    );
+          }
+        );
+      });
+    }));
+
+    // After all files are uploaded, create the product
+    const product = {
+      ...inputs,
+      img: downloadURLs, // Store all download URLs in the product object
+      categories: categories,
+      unit: selectedUnit,
+    };
+
+    addProducts(product, dispatch)
+      .then(() => {
+        toast.success("Product created successfully!");
+        navigate("/dashboard/products");
+      })
+      .catch((err) => {
+        toast.error("Error creating product: " + err.message);
+      });
   };
 
   console.log(inputs);
@@ -113,11 +126,12 @@ export default function NewProduct() {
           <h1 className="addProductTitle">New Product</h1>
           <form className="addProductForm">
             <div className="addProductItem">
-              <label>Image</label>
+              <label>Images</label>
               <input
                 type="file"
                 id="file"
-                onChange={(e) => setFile(e.target.files[0])}
+                multiple
+                onChange={(e) => setFiles(Array.from(e.target.files))}
               />
             </div>
 
@@ -159,44 +173,158 @@ export default function NewProduct() {
             <div className="addProductItem">
               <label>Categories</label>
               <div className="checkbox-container">
+
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
                     className="checkbox-input"
-                    value="category1"
+                    value="solution"
                     onChange={handleCategoryChange}
                   />
-                  Category 1
+                  Solution
                 </label>
 
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
                     className="checkbox-input"
-                    value="category2"
+                    value="copper-data-cable"
                     onChange={handleCategoryChange}
                   />
-                  Category 2
+                  Copper Data Cable
                 </label>
 
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
                     className="checkbox-input"
-                    value="category3"
+                    value="copper-multipair-cables"
                     onChange={handleCategoryChange}
                   />
-                  Category 3
+                  Copper Multipair Cables
                 </label>
 
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
                     className="checkbox-input"
-                    value="category4"
+                    value="copper-coaxial-&-special-cables"
                     onChange={handleCategoryChange}
                   />
-                  Category 4
+                  Copper Coaxial & Special Cables
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="copper-voice-termination-solution"
+                    onChange={handleCategoryChange}
+                  />
+                  Copper Voice Termination Solution
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="copper-patch-cord"
+                    onChange={handleCategoryChange}
+                  />
+                  Copper Patch Cord
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="copper-patch-panel"
+                    onChange={handleCategoryChange}
+                  />
+                  Copper Patch Panel
+                </label>
+
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="information-outlet-&-connector"
+                    onChange={handleCategoryChange}
+                  />
+                  Copper Information Outlet (IO) & Connector (Male Plug)
+                </label>
+
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="face-plate-&-floor-socket"
+                    onChange={handleCategoryChange}
+                  />
+                  Face Plate & Floor Socket
+                </label>
+
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="fiber-accessories"
+                    onChange={handleCategoryChange}
+                  />
+                  Fiber Accessories
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="fiber-cable"
+                    onChange={handleCategoryChange}
+                  />
+                  Fiber Cable
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="fiber-patch-cord"
+                    onChange={handleCategoryChange}
+                  />
+                  Fiber Patch Cord
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="cabinets"
+                    onChange={handleCategoryChange}
+                  />
+                  Cabinets
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="cabinets-tray"
+                    onChange={handleCategoryChange}
+                  />
+                  Cabinets Tray  / Accessories
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="checkbox-input"
+                    value="PDU"
+                    onChange={handleCategoryChange}
+                  />
+                  PDU (Power Distribution Unit)
                 </label>
               </div>
 

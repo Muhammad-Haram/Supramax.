@@ -9,17 +9,19 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
+
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <Link to="/" className="link">
+            <Link to="/dashboard" className="link">
               <li className="sidebarListItem active">
-                <LineStyle className="sidebarIcon" />
+                <StoreIcon className="sidebarIcon" />
                 Home
               </li>
             </Link>
           </ul>
         </div>
+
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
@@ -31,7 +33,18 @@ export default function Sidebar() {
             </Link>
 
           </ul>
+
+          <ul className="sidebarList">
+            <Link to="/" className="link">
+              <li className="sidebarListItem active">
+                <LineStyle className="sidebarIcon" />
+                Back to the Website
+              </li>
+            </Link>
+          </ul>
+
         </div>
+
         <div className="sidebarMenu">
           <ul className="sidebarList">
           </ul>

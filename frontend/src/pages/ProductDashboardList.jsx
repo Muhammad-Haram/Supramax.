@@ -4,14 +4,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProducts, getProducts } from "../redux/apiCallsForDashBoard";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import Topbar from '../components/topbar/Topbar';
-import Sidebar from '../components/sidebar/Sidebar';
 
 export default function ProductDashboardList() {
   const dispatch = useDispatch()
-  const products = useSelector((store) => store.product.products)
+  const products = useSelector((store) => store.product.products);
 
   const handleDelete = (id) => {
+    console.log(id)
     deleteProducts(id, dispatch);
     getProducts(dispatch);
   };
@@ -35,7 +34,7 @@ export default function ProductDashboardList() {
         );
       },
     },
-    { field: "inStock", headerName: "Stock", width: 100 },
+    { field: "partNumber", headerName: "Part Number", width: 100 },
     {
       field: "categories",
       headerName: "Category",

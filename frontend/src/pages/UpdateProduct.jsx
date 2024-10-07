@@ -11,6 +11,9 @@ import Topbar from "../components/topbar/Topbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
 
+const allCategories = ["category1", "category2", "category3", "category4"]; // Sab categories define karen
+const allUnits = ["unit1", "unit2", "unit3", "unit4"]; // Sab units define karen
+
 export default function UpdateProduct() {
     const location = useLocation();
     const productId = location.pathname.split("/")[3];
@@ -20,8 +23,10 @@ export default function UpdateProduct() {
         title: productData.title,
         desc: productData.desc,
         inStock: productData.inStock,
-        categories: productData.categories.join(","),
     });
+
+    const [selectedCategories, setSelectedCategories] = useState(productData.categories || []);
+    const [selectedUnit, setSelectedUnit] = useState(productData.unit || ""); // Unit ka state
     const [file, setFile] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,11 +38,19 @@ export default function UpdateProduct() {
         }));
     };
 
-    const handleCategory = (e) => {
-        setInputs((prev) => ({
-            ...prev,
-            categories: e.target.value,
-        }));
+    const handleCategoryChange = (e) => {
+        const value = e.target.value;
+        setSelectedCategories((prev) => {
+            if (prev.includes(value)) {
+                return prev.filter((cat) => cat !== value); // Agar category pehle se selected hai, to remove karen
+            } else {
+                return [...prev, value]; // Nayi category add karen
+            }
+        });
+    };
+
+    const handleUnitChange = (e) => {
+        setSelectedUnit(e.target.value); // Selected unit ko update karen
     };
 
     const handleEditorChange = (content) => {
@@ -52,7 +65,8 @@ export default function UpdateProduct() {
 
         const productUpdate = {
             ...inputs,
-            categories: inputs.categories.split(","),
+            categories: selectedCategories,
+            unit: selectedUnit, // Yahan selected unit ko include karen
             _id: productData._id,
             createdAt: productData.createdAt,
             updatedAt: new Date().toISOString(),
@@ -62,8 +76,7 @@ export default function UpdateProduct() {
         if (file) {
             const filetitle = inputs.title || "default";
             const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-            const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`
-            console.log(fileName)
+            const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
             const storage = getStorage(app);
             const storageRef = ref(storage, fileName);
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -81,7 +94,6 @@ export default function UpdateProduct() {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         productUpdate.img = downloadURL;
                         updateProducts(productId, productUpdate, dispatch);
-                        // console.log(productId, productUpdate, dispatch)
                         navigate("/dashboard");
                     });
                 }
@@ -93,13 +105,10 @@ export default function UpdateProduct() {
     };
 
     return (
-
         <>
             <Topbar />
             <div className="container">
-
                 <Sidebar />
-
                 <div className="product">
                     <div className="productTitleContainer">
                         <h1 className="productTitle">Product</h1>
@@ -138,8 +147,60 @@ export default function UpdateProduct() {
                                 </div>
 
                                 <div className="productFormLeft-input">
+                                    <label>Part Number</label>
+                                    <input name="title" type="text" value={inputs.partNumber} onChange={handleChange} />
+                                </div>
+
+                                <div className="productFormLeft-input">
+                                    <label>Type</label>
+                                    <input name="title" type="text" value={inputs.type} onChange={handleChange} />
+                                </div>
+
+                                <div className="addProductItem">
                                     <label>Categories</label>
-                                    <input type="text" value={inputs.categories} onChange={handleCategory} />
+                                    <div className="checkbox-container">
+                                        {allCategories.map((category) => (
+                                            <label key={category} className="checkbox-label">
+                                                <input
+                                                    type="checkbox"
+                                                    className="checkbox-input"
+                                                    value={category}
+                                                    checked={selectedCategories.includes(category)}
+                                                    onChange={handleCategoryChange}
+                                                />
+                                                {category}
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <div className="selected">
+                                        Selected Categories:
+                                        {selectedCategories.length > 0 ? (
+                                            selectedCategories.map((e, key) => (
+                                                <p key={key} className="category-seleted">{e}</p>
+                                            ))
+                                        ) : (
+                                            <p className="category-seleted">None</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Radio buttons for units */}
+                                <div className="addProductItem">
+                                    <label>Unit</label>
+                                    <div>
+                                        {allUnits.map((unit) => (
+                                            <label key={unit} className="checkbox-label">
+                                                <input
+                                                    type="radio"
+                                                    name="unit"
+                                                    value={unit}
+                                                    checked={selectedUnit === unit}
+                                                    onChange={handleUnitChange}
+                                                />
+                                                {unit}
+                                            </label>
+                                        ))}
+                                    </div>
                                 </div>
 
                             </div>
