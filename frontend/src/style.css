@@ -638,6 +638,7 @@ label {
   align-items: center;
   justify-content: start;
   gap: 10px;
+  margin-bottom: 5px;
 }
 
 .category-seleted {

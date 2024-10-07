@@ -47,15 +47,6 @@ const Desc = styled.p`
   margin: 20px 0px;
 `;
 
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
-
-
 const Product = () => {
 
   const location = useLocation();
@@ -90,15 +81,9 @@ const Product = () => {
       <Navbar />
       {/* <Announcement /> */}
       <Wrapper>
-
-        <Slider {...settings}>
-          {product.img.map((image, index) => (
-            <ImgContainer key={index}>
-              <Image src={image} alt={`Slide ${index}`} />
-            </ImgContainer>
-          ))}
-        </Slider>
-
+        <ImgContainer>
+          <Image src={product.img} />
+        </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>

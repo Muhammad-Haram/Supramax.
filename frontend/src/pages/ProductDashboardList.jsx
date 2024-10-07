@@ -24,7 +24,7 @@ export default function ProductDashboardList() {
     {
       field: "product",
       headerName: "Product",
-      width: 450,
+      width: 400,
       renderCell: (params) => {
         return (
           <div className="productListItem">
@@ -34,12 +34,19 @@ export default function ProductDashboardList() {
         );
       },
     },
-    { field: "partNumber", headerName: "Part Number", width: 100 },
+    { field: "partNumber", headerName: "Part Number", width: 150 },
     {
-      field: "categories",
-      headerName: "Category",
-      width: 300,
+      field: "type",
+      headerName: "Type",
+      width: 100,
     },
+
+    {
+      field: "unit",
+      headerName: "Unit",
+      width: 100,
+    },
+
     {
       field: "action",
       headerName: "Action",
