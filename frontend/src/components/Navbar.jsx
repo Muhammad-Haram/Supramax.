@@ -2,7 +2,7 @@ import { Search } from 'lucide-react';
 import React, { useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { AlignJustify} from 'lucide-react';
+import { AlignJustify } from 'lucide-react';
 import { X } from 'lucide-react';
 import '../style.css'
 import { Link, useNavigate } from "react-router-dom";
@@ -22,37 +22,7 @@ const Wrapper = styled.div`
   ${mobile({ padding: "10px 0px" })}
 `;
 
-const Left = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-`;
 
-const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`;
-
-const Input = styled.input`
-  border: none;
-  width: 100%;
-outline: none;
-  ${mobile({ width: "50px" })}
-`;
-
-const Center = styled.div`
-  flex: 1;
-  text-align: center;
-`;
-
-const Logo = styled.h1`
-  font-weight: bold;
-  ${mobile({ fontSize: "24px" })}
-`;
 const Right = styled.div`
   flex: 1;
   display: flex;
@@ -97,25 +67,29 @@ const Navbar = () => {
 
   return (
     <>
-      <Container>
-        <Wrapper>
-          <Left>
-            <Logo><Link className="logo-link" to="/">SUPRAMAX.</Link></Logo>
-          </Left>
-          <Center>
-            <SearchContainer>
-              <Search style={{ color: "gray", fontSize: 16 }} />
-              <Input placeholder="Search" />
-            </SearchContainer>
-          </Center>
-          <Right>
-            {user && (<MenuItem><button className="logoutButton" onClick={handleLogout}>Logout</button></MenuItem>)}
-            <MenuItem><button className="menu-btn" onClick={() => setToggleMenu(true)}>
-              <AlignJustify />
-            </button></MenuItem>
-          </Right>
-        </Wrapper>
-      </Container>
+
+      <div className='navbar'>
+        <div className='navbar-logo'>
+          <img className="logo" src="/img/logo.png" alt="logo" />
+        </div>
+
+        <div className='navbar-details'>
+          <div className='navbar-links'>
+            <Link className="navbar-single-link">All Products<img src="/img/Border.png" alt="" /></Link>
+            <Link className="navbar-single-link">Solutions<img src="/img/Border.png" alt="" /></Link>
+            <Link className="navbar-single-link" to="/support">Support</Link>
+            <Link className="navbar-single-link">About Us</Link>
+            <Link className="navbar-single-link">Contact Us</Link>
+          </div>
+          <div className='navbar-search'>
+            <input className='search-input' type="search" placeholder='Keyword, Part Number or Cross-Reference' />
+            <button className='search-img'>
+              <img src="/img/search.png" alt="" />
+            </button>
+          </div>
+        </div>
+
+      </div>
 
       {
         toggleMenu && (

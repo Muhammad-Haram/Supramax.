@@ -1,3 +1,15 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: white;
+}
+
+/* dashboard css */
+
 .navbar-info {
   width: 50%;
   height: 100vh;
@@ -632,7 +644,6 @@ label {
   color: black;
   width: 100%;
   height: 30px;
-  /* background-color: #3bb077; */
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -662,4 +673,75 @@ label {
   border: 1px solid #d3d3d3;
   padding: 15px;
   font-size: 14px;
+}
+
+/* website frontend css  */
+
+.navbar {
+  width: 100%;
+  padding: 30px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo img {
+  width: 200px;
+  height: 45px;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar-details {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.navbar-single-link {
+  color: #898989;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.navbar-search{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #efefef;
+  border: 1px solid #8C8C8C;
+}
+
+.search-input{
+  border-right: 1px solid #8C8C8C;
+  border: 0;
+  background-color: #efefef;
+  padding: 10px 10px;
+  width: 350px;
+  outline: none;
+}
+
+.search-img{
+  padding: 10px 15px;
+  border: none;
+  border-left: 1px solid #8C8C8C;
+  cursor: pointer;
+  outline: none;
+}
+
+/* hero section  */
+
+.hero{
+  background-image: url("");
+  width: 100%;
+  height: 100vh;
 }
