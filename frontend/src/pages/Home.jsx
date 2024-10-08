@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import Products from "../components/Products";
 import Hero from "../components/Hero";
 import Solution from "../components/Solution";
+import ConnectTheWorld from "../components/ConnectTheWorld";
+import AboutUs from "../components/AboutUs";
 
 const Home = () => {
   return (
@@ -14,6 +16,8 @@ const Home = () => {
       <Hero />
       <Categories />
       <Solution/>
+      <ConnectTheWorld/>
+      <AboutUs/>
       <Footer/>
     </div>
   );

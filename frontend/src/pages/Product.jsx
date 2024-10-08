@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
 import DOMPurify from 'dompurify';
-import Slider from "react-slick";
 
 
 const Container = styled.div``;
