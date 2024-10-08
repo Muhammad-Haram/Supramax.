@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Products from "../components/Products";
-import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
@@ -23,7 +22,6 @@ const ProductList = () => {
       <Navbar />
       <Title>{category.toUpperCase()}</Title>
       <Products category={category} />
-      <Newsletter />
       <Footer />
     </Container>
   );
