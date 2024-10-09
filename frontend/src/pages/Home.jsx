@@ -7,6 +7,7 @@ import Hero from "../components/Hero";
 import Solution from "../components/Solution";
 import ConnectTheWorld from "../components/ConnectTheWorld";
 import AboutUs from "../components/AboutUs";
+import Blogs from "../components/Blogs";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <Solution/>
       <ConnectTheWorld/>
       <AboutUs/>
+      <Blogs/>
       <Footer/>
     </div>
   );

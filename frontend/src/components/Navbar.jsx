@@ -70,7 +70,9 @@ const Navbar = () => {
 
       <div className='navbar'>
         <div className='navbar-logo'>
-          <img className="logo" src="/img/logo.png" alt="logo" />
+          <Link to="/">
+            <img className="logo" src="/img/logo.png" alt="logo" />
+          </Link>
         </div>
 
         <div className='navbar-details'>
