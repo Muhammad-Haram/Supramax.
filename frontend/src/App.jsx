@@ -25,6 +25,10 @@ const appRouter = createBrowserRouter([
     element: <Register />,
   },
   {
+    path: "/products",
+    element: <ProductList />,
+  },
+  {
     path: "/products/:category",
     element: <ProductList />,
   },

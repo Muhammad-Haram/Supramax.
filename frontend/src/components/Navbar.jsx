@@ -75,8 +75,8 @@ const Navbar = () => {
 
         <div className='navbar-details'>
           <div className='navbar-links'>
-            <Link className="navbar-single-link">All Products<img src="/img/Border.png" alt="" /></Link>
-            <Link className="navbar-single-link">Solutions<img src="/img/Border.png" alt="" /></Link>
+            <Link className="navbar-single-link" to="/products">All Products<img src="/img/Border.png" alt="" /></Link>
+            <Link className="navbar-single-link" to="/products/solutions">Solutions<img src="/img/Border.png" alt="" /></Link>
             <Link className="navbar-single-link" to="/support">Support</Link>
             <Link className="navbar-single-link">About Us</Link>
             <Link className="navbar-single-link">Contact Us</Link>

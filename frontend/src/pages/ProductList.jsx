@@ -1,29 +1,26 @@
-import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Products from "../components/Products";
 import Footer from "../components/Footer";
-import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
-
-
-const Container = styled.div``;
-
-const Title = styled.h1`
-  margin: 20px;
-`;
 
 const ProductList = () => {
 
   const location = useLocation();
-  const category = location.pathname.split("/")[3];
+  const category = location.pathname.split("/")[2];
 
   return (
-    <Container>
+    <div>
       <Navbar />
-      <Title>{category.toUpperCase()}</Title>
+      <div className="category-heading-div">
+        <h1 className="category-heading-h1">{
+
+          category ? category.toUpperCase() : "All-Products"
+
+        }</h1>
+      </div>
       <Products category={category} />
       <Footer />
-    </Container>
+    </div>
   );
 };
 
