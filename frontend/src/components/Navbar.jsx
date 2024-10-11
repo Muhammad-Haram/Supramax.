@@ -3,17 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Navbar = () => {
   const user = useSelector((state) => state.auth.currentUser);
-  console.log(user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/dashboard/register");
+    try {
+      dispatch(logout());
+      navigate("/");
+      toast.success('Logout Successful')
+    } catch (error) {
+     toast.error('Logout Failed') 
+    }
   };
 
   const [isProductsOpen, setProductsOpen] = useState(false);
@@ -41,7 +47,7 @@ const Navbar = () => {
         <div className='navbar-links'>
           <div className="navbar-single-link" onClick={toggleProductsDropdown}>
             All Products <img src="/img/Border.png" alt="" />
-            {isProductsOpen && (  
+            {isProductsOpen && (
               <div className="dropdown">
                 <Link to="/products/product1">Product 1</Link>
                 <Link to="/products/product2">Product 2</Link>
@@ -64,6 +70,9 @@ const Navbar = () => {
           <Link className="navbar-single-link" to="/support">Support</Link>
           <Link className="navbar-single-link">About Us</Link>
           <Link className="navbar-single-link">Contact Us</Link>
+
+          {user && <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>}
+
         </div>
 
         <div className='navbar-search'>

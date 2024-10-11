@@ -1,4 +1,6 @@
 import { publicRequest } from "../requestMethod.js";
+import toast, { Toaster } from 'react-hot-toast';
+
 import {
   loginFailure,
   loginStart,
@@ -13,8 +15,10 @@ export const login = async (dispatch, auth) => {
   try {
     const res = await publicRequest.post("/auth/login", auth);
     dispatch(loginSuccess(res.data));
+    await toast.success('Login Successful')
   } catch (error) {
     dispatch(loginFailure());
+    await toast.error('Login Failed')
   }
 };
 

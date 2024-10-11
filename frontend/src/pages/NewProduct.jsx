@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
   getStorage,
   ref,
@@ -66,7 +64,6 @@ export default function NewProduct() {
 
     // Validate inputs
     if (!inputs.title || !inputs.partNumber || !selectedUnit || categories.length === 0) {
-      toast.error("Please fill in all required fields.");
       return;
     }
 
@@ -85,7 +82,6 @@ export default function NewProduct() {
       },
       (error) => {
         console.log(error);
-        toast.error("Error uploading file.");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -97,11 +93,9 @@ export default function NewProduct() {
           };
           addProducts(product, dispatch)
             .then(() => {
-              toast.success("Product created successfully!");
               navigate("/dashboard");
             })
             .catch((err) => {
-              toast.error("Error creating product: " + err.message);
             });
         });
       }
@@ -214,7 +208,6 @@ export default function NewProduct() {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/apiCalls.js";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Container = styled.div`
   width: 100vw;
@@ -72,7 +73,8 @@ const Login = () => {
 
   const loginHandler = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+      login(dispatch, { username, password });
+      toast.success('Login Successful')
   };
 
   useEffect(() => {
