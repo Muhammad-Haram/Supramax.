@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className='navbar-links'>
           <div className="navbar-single-link" onClick={toggleProductsDropdown}>
             All Products <img src="/img/Border.png" alt="" />
-            {isProductsOpen && (
+            {isProductsOpen && (  
               <div className="dropdown">
                 <Link to="/products/product1">Product 1</Link>
                 <Link to="/products/product2">Product 2</Link>

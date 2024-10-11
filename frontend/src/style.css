@@ -1555,7 +1555,6 @@ footer {
     margin-bottom: 30px;
     font-size: 18px;
     text-align: center;
-
   }
 
   .social-icons {
@@ -1576,10 +1575,9 @@ footer {
 
   .footer-links {
     align-items: center;
-}
-
-  .footer-anchor{
-    text-align: center;
   }
 
+  .footer-anchor {
+    text-align: center;
+  }
 }
