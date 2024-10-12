@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 // import { userRequest } from "../requestMethod";
 import Sidebar from "../components/sidebar/Sidebar";
 import Topbar from "../components/topbar/Topbar";
@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 
 
 export default function Home() {
-  const [userStats, setUserStats] = useState([]);
   const navigate = useNavigate();
 
   const admin = JSON.parse(
@@ -17,9 +16,7 @@ export default function Home() {
   ).currentUser?.isAdmin;
 
   useEffect(() => {
-    if (admin) {
-      navigate("/dashboard");
-    } else {
+    if (!admin) {
       navigate("/");
       toast.error("You are not an admin");
     }

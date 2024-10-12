@@ -62,51 +62,78 @@ const Button = styled.button`
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state for admin check
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { isFetching, error, currentUser } = useSelector((store) => store.auth);
+  const { isFetching, currentUser } = useSelector((store) => store.auth);
 
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true); // Start loading when login is attempted
       const response = await login(dispatch, { username, password });
-
+      
       if (response && response.error) {
         toast.error(response.error);
       } else {
         toast.success('Login Successful');
       }
     } catch (error) {
-      console.error("Login error:", error);
       toast.error("An error occurred during login. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading after login attempt
     }
   };
 
+  const checkAdminStatus = () => {
+    try {
+      const storedData = JSON.parse(localStorage.getItem("persist:root"));
+      const authData = storedData ? JSON.parse(storedData.auth) : null;
+      return authData?.currentUser?.isAdmin;
+    } catch (err) {
+      console.error("Error reading admin data from localStorage:", err);
+      return undefined;
+    }
+  };
+
+  const admin = checkAdminStatus();
 
   useEffect(() => {
-    if (currentUser) {
-      navigate("/dashboard");
+    if (currentUser && admin === undefined) {
+      setLoading(true);
     }
-  }, [currentUser, navigate]);
+
+    if (admin !== undefined) {
+      setLoading(false); // Stop loading when admin status is resolved
+
+      if (admin === true) {
+        navigate("/dashboard"); 
+      } else if (admin === false) {
+        navigate("/"); // Non-admin user navigated to home
+      }
+    }
+  }, [currentUser, navigate, admin]);
 
   return (
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
-        <Form>
+        <Form onSubmit={loginHandler}>
           <Input
             placeholder="username"
             type="text"
             onChange={(e) => setUsername(e.target.value)}
+            value={username}
           />
           <Input
             placeholder="password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
-          <Button onClick={loginHandler} disabled={isFetching}>
-            LOGIN
+          <Button type="submit" disabled={isFetching || loading}>
+            {loading ? "Loading..." : "LOGIN"}
           </Button>
         </Form>
       </Wrapper>
