@@ -186,6 +186,8 @@ export default function UpdateProduct() {
                                     <div className="checkbox-container">
                                         {allCategories.map((category) => (
                                             <label key={category} className="checkbox-label">
+                                                {console.log(category)}
+                                                {console.log(selectedCategories)}
                                                 <input
                                                     type="checkbox"
                                                     className="checkbox-input"
@@ -222,7 +224,6 @@ export default function UpdateProduct() {
                                                     onChange={handleUnitChange}
                                                 />
                                                 {unit}
-                                                {console.log("bdshbd", selectedUnit, unit)}
                                             </label>
                                         ))}
                                     </div>

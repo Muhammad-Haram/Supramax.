@@ -15,7 +15,7 @@ const Navbar = () => {
   const handleLogout = () => {
     try {
       dispatch(logout());
-      navigate("/");
+      navigate("/dashboard/login");
       toast.success('Logout Successful')
     } catch (error) {
      toast.error('Logout Failed') 

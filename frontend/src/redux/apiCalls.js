@@ -15,10 +15,10 @@ export const login = async (dispatch, auth) => {
   try {
     const res = await publicRequest.post("/auth/login", auth);
     dispatch(loginSuccess(res.data));
-    await toast.success('Login Successful')
+    toast.success('Login Successful');
   } catch (error) {
     dispatch(loginFailure());
-    await toast.error('Login Failed')
+    toast.error('Login Failed');
   }
 };
 
@@ -27,7 +27,9 @@ export const register = async (dispatch, user) => {
   try {
     const res = await publicRequest.post("/auth/register", user);
     dispatch(registerSuccess(res.data));
+    toast.success('Registration Successful');
   } catch (error) {
     dispatch(registerFailure());
+    toast.error('Registration Failed');
   }
 };

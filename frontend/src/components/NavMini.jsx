@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { X } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const NavMini = () => {
     const user = useSelector((state) => state.auth.currentUser);
@@ -18,11 +19,15 @@ const NavMini = () => {
         setToggle(!toggle)
         console.log(toggle)
     }
-
     const handleLogout = () => {
-        dispatch(logout());
-        navigate("/dashboard/register");
-    };
+        try {
+          dispatch(logout());
+          navigate("/dashboard/login");
+          toast.success('Logout Successful')
+        } catch (error) {
+         toast.error('Logout Failed') 
+        }
+      };
 
     const [isProductsOpen, setProductsOpen] = useState(false);
     const [isSolutionsOpen, setSolutionsOpen] = useState(false);
@@ -100,6 +105,8 @@ const NavMini = () => {
                             <Link className="navbar-single-link" to="/support">Support</Link>
                             <Link className="navbar-single-link">About Us</Link>
                             <Link className="navbar-single-link">Contact Us</Link>
+                            {user && <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>}
+
                         </div>
                     </div>
 

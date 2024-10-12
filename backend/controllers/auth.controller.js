@@ -2,7 +2,7 @@ import { User } from "../models/user.model.js";
 import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 
-// signup
+// Sign up
 export const signUp = async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -17,23 +17,25 @@ export const signUp = async (req, res) => {
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
   } catch (error) {
-    console.error('Signup error:', error);
+    console.error("Signup error:", error);
     res.status(500).json({
-      message: 'Internal Server Error during signup',
-      error: error.message
+      message: "Internal Server Error during signup",
+      error: error.message,
     });
   }
 };
 
-// login
+// Log in
 export const logIn = async (req, res) => {
   try {
     // Find user by username
-    let user = await User.findOne({ username: req.body.username });
-    
+    const user = await User.findOne({ username: req.body.username });
+
     // If user is not found, return with an error
     if (!user) {
-      return res.status(401).json("Wrong username");
+      return res
+        .status(401)
+        .json({ message: "Incorrect username or password" });
     }
 
     // Decrypt the stored password
@@ -46,7 +48,9 @@ export const logIn = async (req, res) => {
 
     // If password does not match, return with an error
     if (originalPassword !== req.body.password) {
-      return res.status(401).json("Wrong password");
+      return res
+        .status(401)
+        .json({ message: "Incorrect username or password" });
     }
 
     // Token data
@@ -67,10 +71,10 @@ export const logIn = async (req, res) => {
     res.status(200).json({ ...others, accessToken });
   } catch (error) {
     // Log the error and return a 500 response
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     res.status(500).json({
-      message: "Something went wrong during login",
-      error: error.message
+      message: "Internal Server Error during login",
+      error: error.message,
     });
   }
 };
