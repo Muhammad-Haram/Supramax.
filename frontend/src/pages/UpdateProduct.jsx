@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Topbar from "../components/topbar/Topbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
+import toast from 'react-hot-toast';
 
 const allCategories = [
     "Solution",
@@ -86,6 +87,18 @@ export default function UpdateProduct() {
     const handleClick = async (e) => {
         e.preventDefault();
 
+        // Client-side validation
+        let validationErrors = [];
+        if (!inputs.title) validationErrors.push("Title is required");
+        if (!inputs.partNumber) validationErrors.push("Part Number is required");
+        if (!selectedCategories.length) validationErrors.push("At least one category must be selected");
+        if (!selectedUnit) validationErrors.push("Unit is required");
+
+        if (validationErrors.length > 0) {
+            toast.error(validationErrors.join(", "));
+            return;
+        }
+
         const productUpdate = {
             ...inputs,
             categories: selectedCategories,
@@ -96,38 +109,45 @@ export default function UpdateProduct() {
             __v: productData.__v,
         };
 
-        if (file) {
-            const filetitle = inputs.title || "default";
-            const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-            const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
-            const storage = getStorage(app);
-            const storageRef = ref(storage, fileName);
-            const uploadTask = uploadBytesResumable(storageRef, file);
+        try {
+            if (file) {
+                const filetitle = inputs.title || "default";
+                const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+                const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
+                const storage = getStorage(app);
+                const storageRef = ref(storage, fileName);
+                const uploadTask = uploadBytesResumable(storageRef, file);
 
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log("Upload is " + progress + "% done");
-                },
-                (error) => {
-                    console.log(error);
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        productUpdate.img = downloadURL;
-                        updateProducts(productId, productUpdate, dispatch);
-                        navigate("/dashboard");
-                    });
-                }
-            );
-        } else {
-            updateProducts(productId, productUpdate, dispatch);
-            navigate("/dashboard");
+                const toastId = toast.loading("Uploading image...");
+
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        toast.loading(`Upload is ${progress}% done`, { id: toastId });
+                    },
+                    (error) => {
+                        toast.dismiss(toastId);
+                        toast.error("Failed to upload image.");
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                            productUpdate.img = downloadURL;
+                            updateProducts(productId, productUpdate, dispatch);
+                            toast.success("Product updated successfully!");
+                            navigate("/dashboard");
+                        });
+                    }
+                );
+            } else {
+                await updateProducts(productId, productUpdate, dispatch);
+                toast.success("Product updated successfully!");
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            toast.error("Failed to update product. Please try again.");
         }
     };
-
-    console.log(selectedCategories, selectedUnit);
 
     return (
         <>
@@ -186,8 +206,6 @@ export default function UpdateProduct() {
                                     <div className="checkbox-container">
                                         {allCategories.map((category) => (
                                             <label key={category} className="checkbox-label">
-                                                {console.log(category)}
-                                                {console.log(selectedCategories)}
                                                 <input
                                                     type="checkbox"
                                                     className="checkbox-input"

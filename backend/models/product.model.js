@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema(
     type: { type: String, required: true },
     unit: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true }  
 );
 
 export const Product = mongoose.model("Product", productSchema);

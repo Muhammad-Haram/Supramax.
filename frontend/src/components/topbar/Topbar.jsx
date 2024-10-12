@@ -4,13 +4,20 @@ import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/authSlice';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
+
 
 export default function Topbar() {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/dashboard/login");
+    toast.success('Login Successful')
   };
 
   const username = useSelector((state) => state.auth.currentUser?.username);

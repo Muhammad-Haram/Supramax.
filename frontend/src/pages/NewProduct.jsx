@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Topbar from "../components/topbar/Topbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
+import toast, { Toaster } from 'react-hot-toast';
 
 const categoriesList = [
   "Solution",
@@ -62,11 +63,20 @@ export default function NewProduct() {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    // Validate inputs
-    if (!inputs.title || !inputs.partNumber || !selectedUnit || categories.length === 0) {
+    let validationErrors = [];
+    if (!inputs.title) validationErrors.push("Title is required");
+    if (!inputs.partNumber) validationErrors.push("Part Number is required");
+    if (!inputs.desc) validationErrors.push("Description is required");
+    if (!selectedUnit) validationErrors.push("Unit is required");
+    if (categories.length === 0) validationErrors.push("At least one category must be selected");
+    if (!file) validationErrors.push("Image is required");
+
+    if (validationErrors.length > 0) {
+      toast.error(validationErrors.join(", "));
       return;
     }
 
+    // Proceed with file upload if validation passes
     const filetitle = inputs.title || "default";
     const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
     const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
@@ -74,14 +84,17 @@ export default function NewProduct() {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
+    const toastId = toast.loading("Uploading...");
+
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        toast.loading(`Upload is ${progress}% done`, { id: toastId });
       },
       (error) => {
-        console.log(error);
+        toast.dismiss(toastId);
+        toast.error("Image upload failed");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -93,14 +106,19 @@ export default function NewProduct() {
           };
           addProducts(product, dispatch)
             .then(() => {
+              toast.dismiss(toastId);
+              toast.success("Product added successfully");
               navigate("/dashboard");
             })
             .catch((err) => {
+              toast.dismiss(toastId);
+              toast.error("Failed to add product");
             });
         });
       }
     );
   };
+
 
   return (
     <>
