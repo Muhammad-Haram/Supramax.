@@ -5,6 +5,7 @@ import Topbar from "../components/topbar/Topbar";
 import { useNavigate } from "react-router-dom";
 import ProductList from "./ProductList";
 import ProductDashboardList from "./ProductDashboardList";
+import toast from "react-hot-toast";
 
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       navigate("/dashboard");
     } else {
       navigate("/");
+      toast.error("You are not an admin");
     }
   }, [admin])
 

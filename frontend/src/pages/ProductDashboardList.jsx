@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteProducts, getProducts } from "../redux/apiCallsForDashBoard";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 
 export default function ProductDashboardList() {
@@ -17,10 +18,9 @@ export default function ProductDashboardList() {
   ).currentUser?.isAdmin;
 
   useEffect(() => {
-    if (admin) {
-      navigate("/dashboard");
-    } else {
+    if (!admin) {
       navigate("/");
+      toast.error("You are not an admin");
     }
   }, [admin])
 

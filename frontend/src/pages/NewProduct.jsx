@@ -45,10 +45,9 @@ export default function NewProduct() {
   ).currentUser?.isAdmin;
 
   useEffect(() => {
-    if (admin) {
-      navigate("/dashboard");
-    } else {
+    if (!admin) {
       navigate("/");
+      toast.error("You are not an admin");
     }
   }, [admin])
 

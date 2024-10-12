@@ -45,14 +45,14 @@ export default function UpdateProduct() {
         JSON.parse(localStorage.getItem("persist:root")).auth
     ).currentUser?.isAdmin;
 
+    console.log(admin)
+
     useEffect(() => {
-        if (admin) {
-            navigate("/dashboard");
-        } else {
-            navigate("/");
-            toast.error("You are not an admin");
+        if (!admin) {
+          navigate("/");
+          toast.error("You are not an admin");
         }
-    }, [admin])
+      }, [admin])
 
     const [inputs, setInputs] = useState({
         title: "",

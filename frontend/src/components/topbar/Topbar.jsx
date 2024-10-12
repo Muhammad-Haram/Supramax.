@@ -16,8 +16,8 @@ export default function Topbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/dashboard/login");
-    toast.success('Login Successful')
+    navigate("/login");
+    toast.success('Logout Successful')
   };
 
   const username = useSelector((state) => state.auth.currentUser?.username);

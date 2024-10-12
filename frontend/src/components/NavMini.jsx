@@ -22,7 +22,7 @@ const NavMini = () => {
     const handleLogout = () => {
         try {
           dispatch(logout());
-          navigate("/dashboard/login");
+          navigate("/login");
           toast.success('Logout Successful')
         } catch (error) {
          toast.error('Logout Failed') 

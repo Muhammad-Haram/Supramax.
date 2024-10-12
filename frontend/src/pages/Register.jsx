@@ -85,7 +85,7 @@ const Register = () => {
           const user = JSON.parse(persistedRoot).currentUser;
 
           if (user) {
-            navigate("/dashboard/login");
+            navigate("/login");
           }
         } else {
           console.error("No persisted root found in local storage.");
