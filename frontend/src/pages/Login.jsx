@@ -45,10 +45,6 @@ const Input = styled.input`
   padding: 10px;
 `;
 
-const Error = styled.span`
-  color: red;
-`;
-
 const Button = styled.button`
   width: 40%;
   border: none;
@@ -112,7 +108,6 @@ const Login = () => {
           <Button onClick={loginHandler} disabled={isFetching}>
             LOGIN
           </Button>
-          {error && <Error>Something went wrong...</Error>}
         </Form>
       </Wrapper>
     </Container>
