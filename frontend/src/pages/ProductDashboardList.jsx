@@ -4,10 +4,25 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProducts, getProducts } from "../redux/apiCallsForDashBoard";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ProductDashboardList() {
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   const products = useSelector((store) => store.product.products);
+
+  const admin = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root")).auth
+  ).currentUser?.isAdmin;
+
+  useEffect(() => {
+    if (admin) {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
+  }, [admin])
 
   const handleDelete = (id) => {
     console.log(id)

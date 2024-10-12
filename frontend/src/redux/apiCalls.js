@@ -1,5 +1,5 @@
 import { publicRequest } from "../requestMethod.js";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 import {
   loginFailure,
@@ -15,10 +15,11 @@ export const login = async (dispatch, auth) => {
   try {
     const res = await publicRequest.post("/auth/login", auth);
     dispatch(loginSuccess(res.data));
-    toast.success('Login Successful');
+    return res.data;
   } catch (error) {
     dispatch(loginFailure());
-    toast.error('Login Failed');
+    console.error("Login API Error:", error.response);
+    return { error: error.response?.data?.message || "Login failed." };
   }
 };
 
@@ -27,9 +28,9 @@ export const register = async (dispatch, user) => {
   try {
     const res = await publicRequest.post("/auth/register", user);
     dispatch(registerSuccess(res.data));
-    toast.success('Registration Successful');
+    return res.data;
   } catch (error) {
     dispatch(registerFailure());
-    toast.error('Registration Failed');
+    return { error: error.response.data.message };
   }
 };

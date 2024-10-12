@@ -4,6 +4,7 @@ import { register } from "../redux/apiCalls";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast'; // Importing toast for notifications
 
 const Container = styled.div`
   width: 100vw;
@@ -12,14 +13,12 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("/img/slider2.jpg")
-      center;
+    url("/img/slider2.jpg") center;
   background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
-      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 `;
 
 const Wrapper = styled.div`
@@ -42,7 +41,7 @@ const Form = styled.form`
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin:5px;
+  margin: 5px;
   padding: 10px;
 `;
 
@@ -53,13 +52,14 @@ const Button = styled.button`
   background-color: #7bb700;
   color: white;
   cursor: pointer;
-  margin:5px;
+  margin: 5px;
   margin-top: 15px;
 `;
 
 const Register = () => {
-
   const [inputs, setInputs] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setInputs((prev) => {
@@ -67,34 +67,48 @@ const Register = () => {
     });
   }
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
 
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      register(dispatch, inputs);
+      const response = await register(dispatch, inputs);
 
-      const persistedRoot = JSON.parse(localStorage.getItem("persist:root"));
-      const user = persistedRoot && JSON.parse(persistedRoot.currentUser);
+      if (response && response.error) {
+        toast.error(response.error);
+      } else {
+        toast.success("Registration successful! You can now log in.");
 
-      if (user) {
-        navigate("/dashboard/login");
+        // Check if persistedRoot exists
+        const persistedRoot = localStorage.getItem("persist:root");
+        if (persistedRoot) {
+          const user = JSON.parse(persistedRoot).currentUser;
+
+          if (user) {
+            navigate("/dashboard/login");
+          }
+        } else {
+          console.error("No persisted root found in local storage.");
+        }
       }
-    } catch (error) { 
-      console.log(error, "register error");
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Registration failed. Please try again.");
     }
-  }
+  };
+
+
+
 
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
+        <Form onSubmit={handleClick}>
           <Input name="username" type="text" placeholder="username" onChange={handleChange} />
           <Input name="email" type="email" placeholder="email" onChange={handleChange} />
           <Input name="password" type="password" placeholder="password" onChange={handleChange} />
-          <Button onClick={handleClick}>CREATE</Button>
+          <Button type="submit">CREATE</Button>
         </Form>
       </Wrapper>
     </Container>

@@ -12,6 +12,8 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
 import toast from 'react-hot-toast';
 
+
+
 const allCategories = [
     "Solution",
     "Copper Data Cable",
@@ -38,6 +40,19 @@ export default function UpdateProduct() {
     const productData = useSelector((store) =>
         store.product.products.find((product) => product._id === productId)
     );
+
+    const admin = JSON.parse(
+        JSON.parse(localStorage.getItem("persist:root")).auth
+    ).currentUser?.isAdmin;
+
+    useEffect(() => {
+        if (admin) {
+            navigate("/dashboard");
+        } else {
+            navigate("/");
+            toast.error("You are not an admin");
+        }
+    }, [admin])
 
     const [inputs, setInputs] = useState({
         title: "",

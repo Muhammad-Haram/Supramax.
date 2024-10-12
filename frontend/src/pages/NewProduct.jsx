@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getStorage,
   ref,
@@ -39,6 +39,18 @@ export default function NewProduct() {
   const navigate = useNavigate();
   const [selectedUnit, setSelectedUnit] = useState("");
   const [categories, setCategories] = useState([]);
+
+  const admin = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root")).auth
+  ).currentUser?.isAdmin;
+
+  useEffect(() => {
+    if (admin) {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
+  }, [admin])
 
   const handleChange = (e) => {
     const { name, value } = e.target;

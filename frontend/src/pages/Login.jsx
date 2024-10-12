@@ -71,11 +71,22 @@ const Login = () => {
 
   const { isFetching, error, currentUser } = useSelector((store) => store.auth);
 
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
-      login(dispatch, { username, password });
-      toast.success('Login Successful')
+    try {
+      const response = await login(dispatch, { username, password });
+
+      if (response && response.error) {
+        toast.error(response.error);
+      } else {
+        toast.success('Login Successful');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred during login. Please try again.");
+    }
   };
+
 
   useEffect(() => {
     if (currentUser) {
