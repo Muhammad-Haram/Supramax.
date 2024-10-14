@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Product from "./Product";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { publicRequest } from "../requestMethod";
 
 
 const Container = styled.div`
@@ -18,13 +19,13 @@ const Products = ({ category }) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get(
-          category ? `http://localhost:8000/api/products?category=${category}` : `http://localhost:8000/api/products`, {
+        const res = await publicRequest.get(category ? `/products?category=${category}`: `/products`, {
           headers: {
             "Content-Type": "application/json",
           },
           withCredentials: true,
         });
+
         setProduct(res.data);
         console.log("use effect main hon")
       } catch (error) {

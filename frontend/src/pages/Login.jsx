@@ -62,7 +62,6 @@ const Button = styled.button`
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state for admin check
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,7 +70,6 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true); // Start loading when login is attempted
       const response = await login(dispatch, { username, password });
       
       if (response && response.error) {
@@ -82,14 +80,18 @@ const Login = () => {
       }
     } catch (error) {
       toast.error("An error occurred during login. Please try again.");
-    } finally {
-      setLoading(false); // Stop loading after login attempt
     }
   };
 
+  useEffect(()=>{
+    if(currentUser){
+      navigate("/");
+    }
+  },[currentUser])
+
   return (
     <Container>
-      <Wrapper> 
+      <Wrapper>
         <Title>SIGN IN</Title>
         <Form onSubmit={loginHandler}>
           <Input
@@ -104,8 +106,8 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-          <Button type="submit" disabled={isFetching || loading}>
-            {loading ? "Loading..." : "LOGIN"}
+          <Button type="submit" disabled={isFetching}>
+            {isFetching ? "Loading..." : "LOGIN"}
           </Button>
         </Form>
       </Wrapper>
