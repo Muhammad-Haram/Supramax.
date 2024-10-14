@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
 import DOMPurify from 'dompurify';
-
+import NavMini from "../components/NavMini";
 
 const Container = styled.div``;
 
@@ -77,6 +77,7 @@ const Product = () => {
   return (
     <Container>
       <Navbar />
+      <NavMini/>
       {/* <Announcement /> */}
       <Wrapper>
         <ImgContainer>

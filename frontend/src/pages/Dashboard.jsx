@@ -18,7 +18,6 @@ export default function Home() {
   useEffect(() => {
     if (!admin) {
       navigate("/");
-      toast.error("You are not an admin");
     }
   }, [admin])
 

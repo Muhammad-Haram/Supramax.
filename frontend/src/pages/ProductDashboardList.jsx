@@ -20,7 +20,6 @@ export default function ProductDashboardList() {
   useEffect(() => {
     if (!admin) {
       navigate("/");
-      toast.error("You are not an admin");
     }
   }, [admin])
 

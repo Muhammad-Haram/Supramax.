@@ -18,18 +18,18 @@ const allCategories = [
     "Solution",
     "Copper Data Cable",
     "Copper Multipair Cables",
-    "Copper Coaxial & Special Cables",
+    "Copper Coaxial Special Cables",
     "Copper Voice Termination Solution",
     "Copper Patch Cord",
     "Copper Patch Panel",
-    "Copper Information Outlet (IO) & Connector (Male Plug)",
-    "Face Plate & Floor Socket",
+    "Copper Information Outlet Connector",
+    "Face Plate Floor Socket",
     "Fiber Accessories",
     "Fiber Cable",
     "Fiber Patch Cord",
     "Cabinets",
-    "Cabinets Tray  / Accessories",
-    "PDU (Power Distribution Unit)",
+    "Cabinets Tray Accessories",
+    "Power Distribution Unit",
 ];
 
 const allUnits = ["Reel", "Box", "Mtr.", "Pcs", "Per Meter"];
@@ -49,10 +49,9 @@ export default function UpdateProduct() {
 
     useEffect(() => {
         if (!admin) {
-          navigate("/");
-          toast.error("You are not an admin");
+            navigate("/");
         }
-      }, [admin])
+    }, [admin])
 
     const [inputs, setInputs] = useState({
         title: "",
@@ -224,8 +223,8 @@ export default function UpdateProduct() {
                                                 <input
                                                     type="checkbox"
                                                     className="checkbox-input"
-                                                    value={category}
-                                                    checked={selectedCategories.includes(category)}
+                                                    value={category.toLowerCase().replace(/ /g, '-')}
+                                                    checked={selectedCategories.includes(category.toLowerCase().replace(/ /g, '-'))}
                                                     onChange={handleCategoryChange}
                                                 />
                                                 {category}
@@ -236,7 +235,7 @@ export default function UpdateProduct() {
                                         Selected Categories:
                                         {selectedCategories.length > 0 ? (
                                             selectedCategories.map((e, key) => (
-                                                <p key={key} className="category-seleted">{e}</p>
+                                                <p key={key} className="category-seleted">{e.toLowerCase().replace(/ /g, '-')}</p>
                                             ))
                                         ) : (
                                             <p className="category-seleted">None</p>
@@ -253,7 +252,7 @@ export default function UpdateProduct() {
                                                     type="radio"
                                                     name="unit"
                                                     value={unit}
-                                                    checked={selectedUnit === unit.toLowerCase()}
+                                                    checked={selectedUnit.toLowerCase() === unit.toLowerCase()}
                                                     onChange={handleUnitChange}
                                                 />
                                                 {unit}

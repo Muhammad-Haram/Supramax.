@@ -14,23 +14,25 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
 import toast, { Toaster } from 'react-hot-toast';
 
+
 const categoriesList = [
   "Solution",
   "Copper Data Cable",
   "Copper Multipair Cables",
-  "Copper Coaxial & Special Cables",
+  "Copper Coaxial Special Cables",
   "Copper Voice Termination Solution",
   "Copper Patch Cord",
   "Copper Patch Panel",
-  "Copper Information Outlet (IO) & Connector (Male Plug)",
-  "Face Plate & Floor Socket",
+  "Copper Information Outlet Connector",
+  "Face Plate Floor Socket",
   "Fiber Accessories",
   "Fiber Cable",
   "Fiber Patch Cord",
   "Cabinets",
-  "Cabinets Tray  / Accessories",
-  "PDU (Power Distribution Unit)",
+  "Cabinets Tray Accessories",
+  "Power Distribution Unit",
 ];
+
 
 export default function NewProduct() {
   const [inputs, setInputs] = useState({});
@@ -47,7 +49,6 @@ export default function NewProduct() {
   useEffect(() => {
     if (!admin) {
       navigate("/");
-      toast.error("You are not an admin");
     }
   }, [admin])
 
@@ -193,10 +194,10 @@ export default function NewProduct() {
                     <input
                       type="checkbox"
                       className="checkbox-input"
-                      value={category}
+                      value={category.toLowerCase().replace(/ /g, '-')}
                       onChange={handleCategoryChange}
                     />
-                    {category.replace(/-/g, " ").toUpperCase()}
+                    {category}
                   </label>
                 ))}
               </div>
@@ -205,7 +206,7 @@ export default function NewProduct() {
                 Selected Categories:
                 {categories.length > 0 ? (
                   categories.map((e, key) => (
-                    <p key={key} className="category-seleted">{e.replace(/-/g, " ")}</p>
+                    <p key={key} className="category-seleted">{e.toLowerCase().replace(/ /g, '-')}</p>
                   ))
                 ) : (
                   <p className="category-seleted">None</p>

@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Products from "../components/Products";
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
+import NavMini from "../components/NavMini";
 
 const ProductList = () => {
 
@@ -11,6 +12,7 @@ const ProductList = () => {
   return (
     <div>
       <Navbar />
+      <NavMini/>
       <div className="category-heading-div">
         <h1 className="category-heading-h1">{
 

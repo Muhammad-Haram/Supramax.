@@ -78,6 +78,7 @@ const Login = () => {
         toast.error(response.error);
       } else {
         toast.success('Login Successful');
+        navigate("/");
       }
     } catch (error) {
       toast.error("An error occurred during login. Please try again.");
@@ -86,38 +87,9 @@ const Login = () => {
     }
   };
 
-  const checkAdminStatus = () => {
-    try {
-      const storedData = JSON.parse(localStorage.getItem("persist:root"));
-      const authData = storedData ? JSON.parse(storedData.auth) : null;
-      return authData?.currentUser?.isAdmin;
-    } catch (err) {
-      console.error("Error reading admin data from localStorage:", err);
-      return undefined;
-    }
-  };
-
-  const admin = checkAdminStatus();
-
-  useEffect(() => {
-    if (currentUser && admin === undefined) {
-      setLoading(true);
-    }
-
-    if (admin !== undefined) {
-      setLoading(false); // Stop loading when admin status is resolved
-
-      if (admin === true) {
-        navigate("/dashboard"); 
-      } else if (admin === false) {
-        navigate("/"); // Non-admin user navigated to home
-      }
-    }
-  }, [currentUser, navigate, admin]);
-
   return (
     <Container>
-      <Wrapper>
+      <Wrapper> 
         <Title>SIGN IN</Title>
         <Form onSubmit={loginHandler}>
           <Input

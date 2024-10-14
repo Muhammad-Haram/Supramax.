@@ -21,26 +21,35 @@ const NavMini = () => {
     }
     const handleLogout = () => {
         try {
-          dispatch(logout());
-          navigate("/login");
-          toast.success('Logout Successful')
+            dispatch(logout());
+            navigate("/login");
+            toast.success('Logout Successful')
         } catch (error) {
-         toast.error('Logout Failed') 
+            toast.error('Logout Failed')
         }
-      };
+    };
 
     const [isProductsOpen, setProductsOpen] = useState(false);
     const [isSolutionsOpen, setSolutionsOpen] = useState(false);
+    const [forAdminOpen, setForAdmin] = useState(false);
 
     const toggleProductsDropdown = () => {
         setProductsOpen(prev => !prev);
-        setSolutionsOpen(false); // Close Solutions dropdown if Products is opened
-    };
-
-    const toggleSolutionsDropdown = () => {
+        setSolutionsOpen(false);
+        setForAdmin(false);
+      };
+    
+      const toggleSolutionsDropdown = () => {
         setSolutionsOpen(prev => !prev);
-        setProductsOpen(false); // Close Products dropdown if Solutions is opened
-    };
+        setProductsOpen(false);
+        setForAdmin(false);
+      };
+    
+      const toggleForAdmin = () => {
+        setForAdmin(prev => !prev);
+        setSolutionsOpen(false);
+        setProductsOpen(false)
+      };
 
     return (
         <>
@@ -84,15 +93,26 @@ const NavMini = () => {
                                 <p className='navbar-button'>All Products <img src="/img/Border.png" alt="" /></p>
                                 {isProductsOpen && (
                                     <div className="dropdown">
-                                        <Link to="/products/product1">Product 1</Link>
-                                        <Link to="/products/product2">Product 2</Link>
-                                        <Link to="/products/product3">Product 3</Link>
+                                        <Link to="/products/copper-data-cable">Copper Data Cable</Link>
+                                        <Link to="/products/copper-multipair-cables">Copper Multipair Cables</Link>
+                                        <Link to="/products/copper-coaxial-special-cables">Copper Coaxial Special Cables</Link>
+                                        <Link to="/products/copper-voice-termination-solution">Copper Voice Termination Solution</Link>
+                                        <Link to="/products/copper-patch-cord">Copper Patch Cord</Link>
+                                        <Link to="/products/copper-patch-panel">Copper Patch Panel</Link>
+                                        <Link to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
+                                        <Link to="/products/face-plate-floor-socket">Face Plate Floor Socket</Link>
+                                        <Link to="/products/fiber-accessories">Fiber Accessories</Link>
+                                        <Link to="/products/fiber-cable">Fiber Cable</Link>
+                                        <Link to="/products/fiber-patch-cord">Fiber Patch Cord</Link>
+                                        <Link to="/products/cabinets">cabinets</Link>
+                                        <Link to="/products/cabinets-tray-accessories">Cabinets Tray Accessories</Link>
+                                        <Link to="/products/power-distribution-unit">Power Distribution Unit</Link>
                                     </div>
                                 )}
                             </div>
 
                             <div className="navbar-single-link" onClick={toggleSolutionsDropdown}>
-                            <p className='navbar-button'>Solutions <img src="/img/Border.png" alt="" /></p>
+                                <p className='navbar-button'>Solutions <img src="/img/Border.png" alt="" /></p>
                                 {isSolutionsOpen && (
                                     <div className="dropdown">
                                         <Link to="/products/solutions/solution1">Solution 1</Link>
@@ -105,7 +125,16 @@ const NavMini = () => {
                             <Link className="navbar-single-link" to="/support">Support</Link>
                             <Link className="navbar-single-link">About Us</Link>
                             <Link className="navbar-single-link">Contact Us</Link>
-                            {user && <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>}
+
+                            {user && <div className="navbar-single-link" onClick={toggleForAdmin}>
+                            <p className='navbar-button'>For Admin <img src="/img/Border.png" alt="" /></p>
+                                {forAdminOpen && (
+                                    <div className="dropdown">
+                                        <Link to="/dashboard">Dashboard</Link>
+                                        <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>
+                                    </div>
+                                )}
+                            </div>}
 
                         </div>
                     </div>
