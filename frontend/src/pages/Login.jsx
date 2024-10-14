@@ -65,9 +65,10 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser } = useSelector((store) => store.auth);
+  const { isFetching, currentUser } = useSelector((store) => store.auth);
 
   const loginHandler = async (e) => {
+    e.preventDefault();
     try {
       const response = await login(dispatch, { username, password });
 
@@ -85,7 +86,6 @@ const Login = () => {
   useEffect(() => {
     if (currentUser) {
       navigate("/");
-      // dsdsd
     }
   }, [currentUser])
 
@@ -107,7 +107,7 @@ const Login = () => {
             value={password}
           />
           <Button type="submit">
-            LOGIN
+            Login
           </Button>
         </Form>
       </Wrapper>
