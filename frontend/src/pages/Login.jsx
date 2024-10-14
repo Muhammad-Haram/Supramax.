@@ -85,7 +85,11 @@ const Login = () => {
       } else {
         toast.success('Login Successful');
         navigate("/");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
+
     } catch (error) {
       toast.error("An error occurred during login. Please try again.");
     }

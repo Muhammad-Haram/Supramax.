@@ -14,6 +14,7 @@ export default function Home() {
     JSON.parse(localStorage.getItem("persist:root")).auth
   ).currentUser?.isAdmin;
 
+
   useEffect(() => {
     if (!admin) {
       navigate("/");

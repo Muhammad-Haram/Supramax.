@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Categories from "../components/Categories";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -11,6 +11,7 @@ import Blogs from "../components/Blogs";
 import NavMini from "../components/NavMini";
 
 const Home = () => {
+
   return (
     <div>
       {/* <Announcement /> */}
