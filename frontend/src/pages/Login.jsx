@@ -68,7 +68,6 @@ const Login = () => {
   const { isFetching, currentUser } = useSelector((store) => store.auth);
 
   const loginHandler = async (e) => {
-    e.preventDefault();
     try {
       const response = await login(dispatch, { username, password });
 
