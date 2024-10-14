@@ -68,8 +68,17 @@ const Login = () => {
   const { isFetching, currentUser } = useSelector((store) => store.auth);
 
   const loginHandler = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Attempting to log in with:", { username, password });
+
+    if (!username || !password) {
+      toast.error("Username and password are required");
+      return;
+    }
+
     try {
       const response = await login(dispatch, { username, password });
+      console.log("Login response:", response);
 
       if (response && response.error) {
         toast.error(response.error);
@@ -81,6 +90,7 @@ const Login = () => {
       toast.error("An error occurred during login. Please try again.");
     }
   };
+
 
   useEffect(() => {
     if (currentUser) {
