@@ -86,6 +86,7 @@ const Login = () => {
   useEffect(()=>{
     if(currentUser){
       navigate("/");
+      // dsdsd
     }
   },[currentUser])
 
