@@ -65,12 +65,12 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isFetching, currentUser } = useSelector((store) => store.auth);
+  const { currentUser } = useSelector((store) => store.auth);
 
   const loginHandler = async (e) => {
     try {
       const response = await login(dispatch, { username, password });
-      
+
       if (response && response.error) {
         toast.error(response.error);
       } else {
@@ -82,12 +82,12 @@ const Login = () => {
     }
   };
 
-  useEffect(()=>{
-    if(currentUser){
+  useEffect(() => {
+    if (currentUser) {
       navigate("/");
       // dsdsd
     }
-  },[currentUser])
+  }, [currentUser])
 
   return (
     <Container>
@@ -106,8 +106,8 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-          <Button type="submit" disabled={isFetching}>
-            {isFetching ? "Loading..." : "LOGIN"}
+          <Button type="submit">
+            LOGIN
           </Button>
         </Form>
       </Wrapper>
