@@ -1161,9 +1161,79 @@ footer {
   font-size: 35px;
 }
 
+/* login/signup */
+
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #f0f0f0;
+  padding: 100px 40px;
+  border-radius: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.form-cont-img {
+  margin-bottom: 30px;
+}
+
+.wrapper-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.wrapper-heading {
+  color: #1e1e1e;
+  font-size: 60px;
+  margin-bottom: 30px;
+}
+
+.wrapper-input {
+  padding: 10px 10px;
+  width: 350px;
+  margin-bottom: 20px;
+  outline: none;
+  border-radius: 30px;
+  background-color: #fff;
+  border: 1px solid #000;
+}
+
+.wrapper-form input {
+  background-color: #fff;
+}
+
+.wrapper-button {
+  width: 350px;
+  padding: 10px;
+  border-radius: 30px;
+  outline: 0;
+  border: 0;
+  background-color: #1e1e1e;
+  color: #fff;
+  cursor: pointer;
+  border: 2px solid #1e1e1e;
+  transition: all 0.3s;
+}
+
+.wrapper-button:hover {
+  border: 2px solid #fff;
+}
+
 @media screen and (min-width: 480px) and (max-width: 768px) {
-  
-  body{
+  body {
     overflow-x: hidden;
   }
 
@@ -1467,8 +1537,7 @@ footer {
 }
 
 @media (max-width: 479px) {
-
-  body{
+  body {
     overflow-x: hidden;
   }
 
@@ -1797,5 +1866,34 @@ footer {
 
   .footer-anchor {
     text-align: center;
+  }
+
+  /* login/signup */
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    padding: 50px 30px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  }
+
+  .form-cont-img {
+    margin-bottom: 30px;
+  }
+
+  .wrapper-input {
+    padding: 7px 10px;
+    width: 230px;
+    border-radius: 20px;
+  }
+
+  .wrapper-button {
+    width: 230px;
+    padding: 7px 10px;
+    border-radius: 20px;  
   }
 }

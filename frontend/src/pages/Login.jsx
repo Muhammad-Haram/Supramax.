@@ -6,58 +6,6 @@ import { login } from "../redux/apiCalls.js";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("/img/slider.jpg") center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-`;
-
-const Wrapper = styled.div`
-  width: 25%;
-  padding: 20px;
-  background-color: white;
-  ${mobile({ width: "75%" })};
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 300;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-`;
-
-const Button = styled.button`
-  width: 40%;
-  border: none;
-  padding: 15px 20px;
-  background-color: #7bb700;
-  color: white;
-  cursor: pointer;
-  margin-bottom: 10px;
-  &:disabled {
-    color: green;
-    cursor: not-allowed;
-  }
-`;
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -103,28 +51,32 @@ const Login = () => {
   }, [currentUser])
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>SIGN IN</Title>
-        <Form onSubmit={loginHandler}>
-          <Input
+
+    <div className="form-container">
+      <div className="wrapper">
+        <img className="form-cont-img" src="/img/logo.png" alt="" />
+        <form className="wrapper-form" onSubmit={loginHandler}>
+          <input
+            className="wrapper-input"
             placeholder="username"
             type="text"
             onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
-          <Input
+          <input
+            className="wrapper-input"
             placeholder="password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-          <Button type="submit">
+          <button className="wrapper-button" type="submit">
             Login
-          </Button>
-        </Form>
-      </Wrapper>
-    </Container>
+          </button>
+        </form>
+      </div>
+    </div>
+
   );
 };
 

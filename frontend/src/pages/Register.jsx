@@ -101,17 +101,17 @@ const Register = () => {
 
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
-        <Form onSubmit={handleClick}>
-          <Input name="username" type="text" placeholder="username" onChange={handleChange} />
-          <Input name="email" type="email" placeholder="email" onChange={handleChange} />
-          <Input name="password" type="password" placeholder="password" onChange={handleChange} />
-          <Button type="submit">CREATE</Button>
-        </Form>
-      </Wrapper>
-    </Container>
+    <div className="form-container">
+      <div className="wrapper">
+        <img className="form-cont-img" src="/img/logo.png" alt="" />
+        <form className="wrapper-form" onSubmit={handleClick}>
+          <input className="wrapper-input" name="username" type="text" placeholder="username" onChange={handleChange} />
+          <input className="wrapper-input" name="email" type="email" placeholder="email" onChange={handleChange} />
+          <input className="wrapper-input" name="password" type="password" placeholder="password" onChange={handleChange} />
+          <button className="wrapper-button" type="submit">Create Account</button>
+        </form>
+      </div>
+    </div>
   );
 };
 
