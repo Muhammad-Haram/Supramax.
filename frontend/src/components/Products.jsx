@@ -4,14 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { publicRequest } from "../requestMethod";
 
-
-const Container = styled.div`
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-`;
-    
 const Products = ({ category }) => {
 
   const [product, setProduct] = useState([]);
@@ -19,7 +11,7 @@ const Products = ({ category }) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await publicRequest.get(category ? `/products?category=${category}`: `/products`, {
+        const res = await publicRequest.get(category ? `/products?category=${category}` : `/products`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -38,13 +30,16 @@ const Products = ({ category }) => {
   }, [category]);
 
   return (
-    product ? <Container>
+    product ? <div className="All-products">
+
       {product.map((item, index) => (
 
-        <Product key={index} item={item} />
+        <>
+          <Product key={index} item={item} />
+        </>
 
       ))}
-    </Container> : (<div className="notFound"><h1>Not Found</h1></div>)
+    </div> : (<div className="notFound"><h1>Not Found</h1></div>)
   );
 };
 

@@ -3,6 +3,9 @@ import Products from "../components/Products";
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 import NavMini from "../components/NavMini";
+import ConnectTheWorld from "../components/ConnectTheWorld";
+import AboutUs from "../components/AboutUs";
+import Blogs from "../components/Blogs";
 
 const ProductList = () => {
 
@@ -21,6 +24,9 @@ const ProductList = () => {
         }</h1>
       </div>
       <Products category={category} />
+      <ConnectTheWorld/>
+      <AboutUs/>
+      <Blogs/>
       <Footer />
     </div>
   );

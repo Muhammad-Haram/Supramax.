@@ -1,49 +1,13 @@
-import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
 import DOMPurify from 'dompurify';
 import NavMini from "../components/NavMini";
-
-const Container = styled.div``;
-
-const Wrapper = styled.div`
-  padding: 50px;
-  display: flex;
-  ${mobile({ padding: "10px", flexDirection: "column" })}
-`;
-
-const ImgContainer = styled.div`
-flex:1;
-background-color: #EDEDED;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 30px 0px;
-`;
-
-const Image = styled.img`
-  object-fit: cover;
-  width: 40%;
-  ${mobile({ height: "40vh" })}
-`;
-
-const InfoContainer = styled.div`
-  flex: 1;
-  padding: 0px 50px;
-  ${mobile({ padding: "10px" })}
-`;
-
-const Title = styled.h1`
-  font-weight: 200;
-`;
-
-const Desc = styled.p`
-  margin: 20px 0px;
-`;
+import ConnectTheWorld from "../components/ConnectTheWorld";
+import AboutUs from "../components/AboutUs";
+import Blogs from "../components/Blogs";
 
 const Product = () => {
 
@@ -75,23 +39,30 @@ const Product = () => {
   }
 
   return (
-    <Container>
+    <>
       <Navbar />
-      <NavMini/>
-      {/* <Announcement /> */}
-      <Wrapper>
-        <ImgContainer>
-          <Image src={product.img} />
-        </ImgContainer>
-        <InfoContainer>
-          <Title>{product.title}</Title>
-          <Desc>
-            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }} />
-          </Desc>
-        </InfoContainer>
-      </Wrapper>
+      <NavMini />
+      <div className="product-page">
+        <div className="product-page-img">
+          <img className="product-page-img-tag" src={product.img} alt="" />
+        </div>
+        <div className="product-page-content">
+          <h1 className="product-page-title">{product.title}</h1>
+
+          <div className="product-info-div">
+            <p className="product-info-p"><span className="product-info-span">Part Number:</span>{product.partNumber}</p>
+            <p className="product-info-p"><span className="product-info-span">Categories:</span>{product.categories}</p>
+            <p className="product-info-p"><span className="product-info-span">Unit:</span>{product.unit}</p>
+          </div>
+
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }} />
+        </div>
+      </div>
+      <ConnectTheWorld/>
+      <AboutUs/>
+      <Blogs/>
       <Footer />
-    </Container>
+    </>
   );
 };
 
