@@ -4,13 +4,14 @@ import { logout } from "../redux/authSlice.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { publicRequest } from '../requestMethod';
 
 
 const Navbar = () => {
   const user = useSelector((state) => state.auth.currentUser);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleLogout = () => {
     try {
@@ -18,7 +19,7 @@ const Navbar = () => {
       navigate("/login");
       toast.success('Logout Successful')
     } catch (error) {
-     toast.error('Logout Failed') 
+      toast.error('Logout Failed')
     }
   };
 
@@ -42,6 +43,28 @@ const Navbar = () => {
     setForAdmin(prev => !prev);
     setSolutionsOpen(false);
     setProductsOpen(false)
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery) {
+      toast.error("Please enter a search term");
+      return;
+    }
+
+
+    try {
+      const response = await publicRequest.get(`/products/search?q=${searchQuery}`);
+      const products = response.data;
+      console.log(products)
+
+      if (products.length > 0) {
+        navigate("/search-results", { state: { products } });
+      } else {
+        toast.error("No products found");
+      }
+    } catch (error) {
+      toast.error("Search failed. Please try again.");
+    }
   };
 
   return (
@@ -73,7 +96,7 @@ const Navbar = () => {
                 <Link to="/products/cabinets-tray-accessories">Cabinets Tray Accessories</Link>
                 <Link to="/products/power-distribution-unit">Power Distribution Unit</Link>
               </div>
-            )}  
+            )}
           </div>
 
           <div className="navbar-single-link" onClick={toggleSolutionsDropdown}>
@@ -104,8 +127,8 @@ const Navbar = () => {
         </div>
 
         <div className='navbar-search'>
-          <input className='search-input' type="search" placeholder='Keyword, Part Number or Cross-Reference' />
-          <button className='search-img'>
+          <input className='search-input' type="search" placeholder='Keyword, Part Number or Cross-Reference' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <button className='search-img' onClick={handleSearch}>
             <img src="/img/search.png" alt="" />
           </button>
         </div>

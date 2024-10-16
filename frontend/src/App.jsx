@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard"
 import NewProduct from "./pages/NewProduct";
 import ProductDashboardList from "./pages/ProductDashboardList";
 import UpdateProduct from "./pages/UpdateProduct";
+import SearchResults from "./components/SearchResults";
 
 
 const appRouter = createBrowserRouter([
@@ -54,6 +55,11 @@ const appRouter = createBrowserRouter([
   {
     path: "/dashboard/product/:productId",
     element: <UpdateProduct />,
+  },
+
+  {
+    path: "/search-results",
+    element: <SearchResults />,
   },
 
 ]);
