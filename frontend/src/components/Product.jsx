@@ -11,7 +11,6 @@ const Product = ({ item }) => {
       </div>
 
       <div className="single-product-content">
-        {/* <p className="product-card-para"><span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.desc) }} /></p> */}
         <h1 className="product-card-title">{item.title}</h1>
         <Link className="product-card-anchor" to={`/product/${item._id}`} ><button className="product-card-button"><p>View More</p><Eye className="product-card-eye" /></button></Link>
       </div>
