@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { publicRequest } from '../requestMethod';
 
 

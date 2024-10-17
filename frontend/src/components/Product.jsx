@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Eye } from 'lucide-react';
-import DOMPurify from 'dompurify';
 
 const Product = ({ item }) => {
   return (

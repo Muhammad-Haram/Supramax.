@@ -5,20 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { X } from 'lucide-react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
+import { publicRequest } from '../requestMethod';
 
 const NavMini = () => {
     const user = useSelector((state) => state.auth.currentUser);
-    const [toggle, setToggle] = useState(false)
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [toggle, setToggle] = useState(false);
+    const [isProductsOpen, setProductsOpen] = useState(false);
+    const [isSolutionsOpen, setSolutionsOpen] = useState(false);
+    const [forAdminOpen, setForAdmin] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const toggleActive = () => {
         setToggle(!toggle)
-        console.log(toggle)
-    }
+    };
+
     const handleLogout = () => {
         try {
             dispatch(logout());
@@ -29,27 +33,43 @@ const NavMini = () => {
         }
     };
 
-    const [isProductsOpen, setProductsOpen] = useState(false);
-    const [isSolutionsOpen, setSolutionsOpen] = useState(false);
-    const [forAdminOpen, setForAdmin] = useState(false);
-
     const toggleProductsDropdown = () => {
         setProductsOpen(prev => !prev);
         setSolutionsOpen(false);
         setForAdmin(false);
-      };
-    
-      const toggleSolutionsDropdown = () => {
+    };
+
+    const toggleSolutionsDropdown = () => {
         setSolutionsOpen(prev => !prev);
         setProductsOpen(false);
         setForAdmin(false);
-      };
-    
-      const toggleForAdmin = () => {
+    };
+
+    const toggleForAdmin = () => {
         setForAdmin(prev => !prev);
         setSolutionsOpen(false);
         setProductsOpen(false)
-      };
+    };
+
+    const handleSearch = async () => {
+        if (!searchQuery) {
+            toast.error("Please enter a search term");
+            return;
+        }
+
+        try {
+            const response = await publicRequest.get(`/products/search?q=${searchQuery}`);
+            const products = response.data;
+
+            if (products.length > 0) {
+                navigate("/search-results", { state: { products } });
+            } else {
+                toast.error("No products found");
+            }
+        } catch (error) {
+            toast.error("Search failed. Please try again.");
+        }
+    };
 
     return (
         <>
@@ -65,8 +85,8 @@ const NavMini = () => {
                     <div className='navbarRight'>
 
                         <div className='navbar-search'>
-                            <input className='search-input' type="search" placeholder='Keyword, Part Number or Cross-Reference' />
-                            <button className='search-img'>
+                            <input className='search-input' type="search" placeholder='Keyword, Part Number or Cross-Reference' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                            <button className='search-img' onClick={handleSearch}>
                                 <img src="/img/search.png" alt="" />
                             </button>
                         </div>
@@ -127,7 +147,7 @@ const NavMini = () => {
                             <Link className="navbar-single-link">Contact Us</Link>
 
                             {user && <div className="navbar-single-link" onClick={toggleForAdmin}>
-                            <p className='navbar-button'>For Admin <img src="/img/Border.png" alt="" /></p>
+                                <p className='navbar-button'>For Admin <img src="/img/Border.png" alt="" /></p>
                                 {forAdminOpen && (
                                     <div className="dropdown">
                                         <Link to="/dashboard">Dashboard</Link>
@@ -137,14 +157,13 @@ const NavMini = () => {
                             </div>}
 
                         </div>
+
                     </div>
 
                 </div>
 
             </div>
         </>
-        // navbar-active
-
     );
 };
 

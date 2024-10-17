@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Product from './Product'; // Import the Product component
 import Navbar from "./Navbar";
 import NavMini from "./NavMini";
 import SearchProduct from "./SearchProduct";
