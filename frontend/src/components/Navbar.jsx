@@ -6,7 +6,6 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { publicRequest } from '../requestMethod';
 
-
 const Navbar = () => {
   const user = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -17,9 +16,9 @@ const Navbar = () => {
     try {
       dispatch(logout());
       navigate("/login");
-      toast.success('Logout Successful')
+      toast.success('Logout Successful');
     } catch (error) {
-      toast.error('Logout Failed')
+      toast.error('Logout Failed');
     }
   };
 
@@ -42,7 +41,7 @@ const Navbar = () => {
   const toggleForAdmin = () => {
     setForAdmin(prev => !prev);
     setSolutionsOpen(false);
-    setProductsOpen(false)
+    setProductsOpen(false);
   };
 
   const handleSearch = async () => {
@@ -51,11 +50,10 @@ const Navbar = () => {
       return;
     }
 
-
     try {
       const response = await publicRequest.get(`/products/search?q=${searchQuery}`);
       const products = response.data;
-      console.log(products)
+      console.log(products);
 
       if (products.length > 0) {
         navigate("/search-results", { state: { products } });
@@ -80,21 +78,33 @@ const Navbar = () => {
           <div className="navbar-single-link" onClick={toggleProductsDropdown}>
             All Products <img src="/img/Border.png" alt="" />
             {isProductsOpen && (
-              <div className="dropdown">
-                <Link to="/products/copper-data-cable">Copper Data Cable</Link>
-                <Link to="/products/copper-multipair-cables">Copper Multipair Cables</Link>
-                <Link to="/products/copper-coaxial-special-cables">Copper Coaxial Special Cables</Link>
-                <Link to="/products/copper-voice-termination-solution">Copper Voice Termination Solution</Link>
-                <Link to="/products/copper-patch-cord">Copper Patch Cord</Link>
-                <Link to="/products/copper-patch-panel">Copper Patch Panel</Link>
-                <Link to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
-                <Link to="/products/face-plate-floor-socket">Face Plate Floor Socket</Link>
-                <Link to="/products/fiber-accessories">Fiber Accessories</Link>
-                <Link to="/products/fiber-cable">Fiber Cable</Link>
-                <Link to="/products/fiber-patch-cord">Fiber Patch Cord</Link>
-                <Link to="/products/cabinets">cabinets</Link>
-                <Link to="/products/cabinets-tray-accessories">Cabinets Tray Accessories</Link>
-                <Link to="/products/power-distribution-unit">Power Distribution Unit</Link>
+              <div className="mega-dropdown">
+                <div className="dropdown-column">
+                  <h3>Data Cables</h3>
+                  <Link to="/products/copper-data-cable">Copper Data Cable</Link>
+                  <Link to="/products/copper-multipair-cables">Copper Multipair Cables</Link>
+                  <Link to="/products/copper-coaxial-special-cables">Copper Coaxial Special Cables</Link>
+                  <Link to="/products/copper-voice-termination-solution">Copper Voice Termination Solution</Link>
+                </div>
+                <div className="dropdown-column">
+                  <h3>Patch Cords & Panels</h3>
+                  <Link to="/products/copper-patch-cord">Copper Patch Cord</Link>
+                  <Link to="/products/copper-patch-panel">Copper Patch Panel</Link>
+                  <Link to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
+                  <Link to="/products/face-plate-floor-socket">Face Plate Floor Socket</Link>
+                </div>
+                <div className="dropdown-column">
+                  <h3>Fiber Products</h3>
+                  <Link to="/products/fiber-accessories">Fiber Accessories</Link>
+                  <Link to="/products/fiber-cable">Fiber Cable</Link>
+                  <Link to="/products/fiber-patch-cord">Fiber Patch Cord</Link>
+                </div>
+                <div className="dropdown-column">
+                  <h3>Miscellaneous</h3>
+                  <Link to="/products/cabinets">Cabinets</Link>
+                  <Link to="/products/cabinets-tray-accessories">Cabinets Tray Accessories</Link>
+                  <Link to="/products/power-distribution-unit">Power Distribution Unit</Link>
+                </div>
               </div>
             )}
           </div>
@@ -123,7 +133,6 @@ const Navbar = () => {
               </div>
             )}
           </div>}
-
         </div>
 
         <div className='navbar-search'>

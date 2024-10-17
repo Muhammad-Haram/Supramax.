@@ -776,6 +776,36 @@ label {
   color: #007bff;
 }
 
+.mega-dropdown {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  top: 110px;
+  left: 0;
+  width: 100%;
+}
+
+.dropdown-column {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-column h3 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.dropdown-column a {
+  color: #1e1e1e;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
 /* hero section  */
 
 .hero {

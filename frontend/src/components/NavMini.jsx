@@ -57,7 +57,7 @@ const NavMini = () => {
             return;
         }
 
-        try {
+        try {       
             const response = await publicRequest.get(`/products/search?q=${searchQuery}`);
             const products = response.data;
 
