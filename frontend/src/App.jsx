@@ -10,12 +10,17 @@ import NewProduct from "./pages/NewProduct";
 import ProductDashboardList from "./pages/ProductDashboardList";
 import UpdateProduct from "./pages/UpdateProduct";
 import SearchResults from "./components/SearchResults";
+import AboutUs from "./pages/AboutUs";
 
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/aboutus",
+    element: <AboutUs />,
   },
   {
     path: "/login",
