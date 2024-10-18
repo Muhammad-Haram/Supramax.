@@ -2,8 +2,8 @@ import React from 'react'
 
 const GetInTouch = () => {
     return (
-        <div>
-            
+        <div className='getInTouch-div'>
+                
         </div>
     )
 }

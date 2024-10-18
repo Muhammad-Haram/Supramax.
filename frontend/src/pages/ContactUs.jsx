@@ -2,6 +2,8 @@ import React from 'react'
 import TopBanner from '../components/TopBanner'
 import Navbar from '../components/Navbar'
 import NavMini from '../components/NavMini'
+import ContactForm from '../components/ContactForm'
+import GetInTouch from '../components/GetInTouch'
 
 const ContactUs = () => {
     return (
@@ -16,7 +18,8 @@ const ContactUs = () => {
             </div>
 
             <div className='contactUs-section'>
-                
+                <ContactForm/>
+                <GetInTouch/>
             </div>
 
         </>
