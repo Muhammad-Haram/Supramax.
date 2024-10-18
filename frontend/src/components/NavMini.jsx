@@ -57,7 +57,7 @@ const NavMini = () => {
             return;
         }
 
-        try {       
+        try {
             const response = await publicRequest.get(`/products/search?q=${searchQuery}`);
             const products = response.data;
 
@@ -143,8 +143,8 @@ const NavMini = () => {
                             </div>
 
                             <Link className="navbar-single-link" to="/support">Support</Link>
-                            <Link className="navbar-single-link">About Us</Link>
-                            <Link className="navbar-single-link">Contact Us</Link>
+                            <Link className="navbar-single-link" to="/aboutus">About Us</Link>
+                            <Link className="navbar-single-link" to="/contactus">Contact Us</Link>
 
                             {user && <div className="navbar-single-link" onClick={toggleForAdmin}>
                                 <p className='navbar-button'>For Admin <img src="/img/Border.png" alt="" /></p>

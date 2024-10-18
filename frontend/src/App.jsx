@@ -11,6 +11,7 @@ import ProductDashboardList from "./pages/ProductDashboardList";
 import UpdateProduct from "./pages/UpdateProduct";
 import SearchResults from "./components/SearchResults";
 import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
 
 
 const appRouter = createBrowserRouter([
@@ -19,16 +20,20 @@ const appRouter = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/aboutus",
-    element: <AboutUs />,
-  },
-  {
     path: "/login",
     element: <Login />,
   },
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/aboutus",
+    element: <AboutUs />,
+  },
+  {
+    path: "/contactus",
+    element: <ContactUs />,
   },
   {
     path: "/products",

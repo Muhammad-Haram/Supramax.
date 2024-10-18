@@ -11,10 +11,10 @@ const AboutUs = () => {
         <>
             <Navbar />
             <NavMini />
-            <TopBanner/>
+            <TopBanner heading="About Us" />
             <AboutUsComponent />
             <AboutUsComponent2 />
-            <Footer/>
+            <Footer />
         </>
     )
 }
