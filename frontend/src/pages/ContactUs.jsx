@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import NavMini from '../components/NavMini'
 import ContactForm from '../components/ContactForm'
 import GetInTouch from '../components/GetInTouch'
+import Footer from '../components/Footer'
 
 const ContactUs = () => {
     return (
@@ -21,6 +22,8 @@ const ContactUs = () => {
                 <ContactForm/>
                 <GetInTouch/>
             </div>
+
+            <Footer/>
 
         </>
     )

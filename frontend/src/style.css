@@ -1384,6 +1384,10 @@ footer {
 
 /* contact page */
 
+.contact-form-tag {
+  width: 100%;
+}
+
 .contact-para-div {
   display: flex;
   align-items: center;
@@ -1399,10 +1403,11 @@ footer {
 
 .contactUs-section {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
-  gap: 30px;
+  gap: 60px;
   padding: 60px;
+  width: 100%;
 }
 
 .contact-form-h1 {
@@ -1412,16 +1417,135 @@ footer {
   margin-bottom: 20px;
 }
 
-.contact-form-input{
+.contact-form-div {
+  width: 50%;
+}
+
+.contact-form-input {
   padding: 10px;
+  border: 1px solid #dadbdd;
+  border-radius: 10px;
+  margin-top: 10px;
+  width: 100%;
+  outline: 0;
+}
+
+.contact-form-input-b {
+  padding: 10px;
+  border: 1px solid #dadbdd;
+  border-radius: 10px;
+  width: 50%;
+  margin-top: 10px;
+  outline: 0;
+}
+
+.contact-form-input-div-child {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.contact-form-input-div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  gap: 30px;
+}
+
+.form-label {
+  /* margin-bottom: 10px;  */
+  font-weight: 500;
+}
+
+.contact-form-input-div-2 {
+  width: 100%;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-button {
+  color: #fff;
+  background-color: #000;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 5px;
+  width: 50%;
 }
 
 /* getInTouch-div */
 
-.getInTouch-div{
+.getInTouch-div {
   width: 50%;
 }
 
+.getInTouch-h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.getInTouch-para {
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.info-box {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.info-box-logo {
+  background-color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.info-box-logo img {
+  width: 20px;
+}
+
+.info-box-head {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.info-box-para {
+  font-size: 14px;
+  color: #575757;
+}
+
+.info-box-hr {
+  background-color: #000;
+  height: 1px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.follow-us {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.contactus-social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.contactus-social-icon-div {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 
 @media screen and (min-width: 480px) and (max-width: 768px) {
   body {
