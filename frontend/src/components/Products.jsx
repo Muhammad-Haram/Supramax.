@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Product from "./Product";
 import { publicRequest } from "../requestMethod";
 import Pagination from "./Pagination";  // Import the Pagination component
-
-const ProductsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 20px 0;
-`;
 
 const Products = ({ category }) => {
   const [product, setProduct] = useState([]);
@@ -46,14 +38,16 @@ const Products = ({ category }) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div>
+    <>
       {product.length ? (
         <>
-          <ProductsContainer>
+
+          <div className="all-product">
             {currentProducts.map((item, index) => (
               <Product key={index} item={item} />
             ))}
-          </ProductsContainer>
+          </div>
+
 
           <Pagination
             currentPage={currentPage}
@@ -66,7 +60,7 @@ const Products = ({ category }) => {
           <h1>Not Found</h1>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

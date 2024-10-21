@@ -99,30 +99,43 @@ body {
 
 /* product card  */
 
-.All-products {
+.bread-crumbs {
+  padding: 40px 60px;
+}
+
+.bread-crumbs-para {
+  font-size: 14px;
+  color: #919191;
+}
+
+.bread-crumbs-para a {
+  font-size: 14px;
+  color: #919191;
+  text-decoration: none;
+}
+
+.all-products {
   display: flex;
-  align-items: start;
-  gap: 50px;
-  width: 100%;
-  flex-wrap: wrap;
-  margin-top: 50px;
-  padding: 60px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 60px;
 }
 
 .single-product-card {
-  /* border: 1px solid #dedede; */
-  width: 30%;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px;
-  border-radius: 30px;
+  width: 100%;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dedede;
+  border-top: 1px solid #dedede;
+  gap: 100px;
+  padding: 10px 100px;
 }
 
 .single-product-img {
-  width: 100%;
   height: 60%;
-  /* background-color: #ccc; */
-  padding: 20px;
-  border-radius: 20px;
+  width: 400px;
 }
 
 .product-card-img {
@@ -131,29 +144,56 @@ body {
   object-fit: cover;
 }
 
-.single-product-content {
-  padding: 10px;
-  padding-bottom: 20px;
-  height: 40%;
-}
-
 .product-card-title {
-  font-size: 16px;
+  font-size: 24px;
   color: #1e1e1e;
   margin-bottom: 20px;
-  text-align: center;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.product-card-desc {
+  font-size: 14px;
+  color: #919191;
+  margin-bottom: 40px;
+}
+
+.product-card-button-div {
+  width: 100%;
+  display: flex;
+  gap: 10px;
 }
 
 .product-card-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 10px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px;
+  padding: 10px 50px;
   background-color: #000;
-  border-radius: 20px;
+  border-radius: 10px;
   cursor: pointer;
+  color: #fff;
+  border: 0;
+  height: 45px;
+  font-size: 16px;
+}
+
+.product-card-doc {
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #000;
+  padding: 10px 70px;
+  background-color: transparent;
+  width: 100%;
+  outline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 45px;
+  font-size: 16px;
 }
 
 .product-card-button p {
@@ -1300,6 +1340,17 @@ footer {
 .product-page-title {
   font-size: 30px;
   margin-bottom: 20px;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+  max-width: 430px;
+}
+
+.product-desc-div{
+  color: #575757;
+}
+
+.product-desc-div p{
+  margin-bottom: 16px;
 }
 
 .product-info-p {
@@ -1894,7 +1945,7 @@ footer {
     padding: 60px 20px;
   }
 
-  .single-product-card {
+  .single-card {
     width: 47%;
   }
 
