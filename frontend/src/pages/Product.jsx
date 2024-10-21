@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
 import DOMPurify from 'dompurify';
 import NavMini from "../components/NavMini";
-import ConnectTheWorld from "../components/ConnectTheWorld";
-import AboutUs from "../components/AboutUs";
-import Blogs from "../components/Blogs";
+// import ConnectTheWorld from "../components/ConnectTheWorld";
+// import AboutUs from "../components/AboutUs";
+// import Blogs from "../components/Blogs";
 import BreadCrumbs from "../components/BreadCrumbs";
 
 const Product = () => {
@@ -51,20 +51,14 @@ const Product = () => {
         <div className="product-page-content">
           <h1 className="product-page-title">{product.title}</h1>
 
-          <div className="product-info-div">
-            <p className="product-info-p"><span className="product-info-span">Part Number:</span>{product.partNumber}</p>
-            <p className="product-info-p"><span className="product-info-span">Categories:</span>{product.categories}</p>
-            <p className="product-info-p"><span className="product-info-span">Unit:</span>{product.unit}</p>
-          </div>
-
           <div className="product-desc-div"
             style={{ color: "#575757", marginBottom: "yourDesiredMarginValue" }}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }}
           />        </div>
       </div>
-      <ConnectTheWorld />
-      <AboutUs />
-      <Blogs />
+      {/* <ConnectTheWorld /> */}
+      {/* <AboutUs /> */}
+      {/* <Blogs /> */}
       <Footer />
     </>
   );
