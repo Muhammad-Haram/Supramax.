@@ -3,9 +3,7 @@ import Products from "../components/Products";
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 import NavMini from "../components/NavMini";
-import ConnectTheWorld from "../components/ConnectTheWorld";
-import AboutUs from "../components/AboutUs";
-import Blogs from "../components/Blogs";
+import ProductBanner from "../components/ProductBanner";
 
 const ProductList = () => {
 
@@ -15,18 +13,9 @@ const ProductList = () => {
   return (
     <div>
       <Navbar />
-      <NavMini/>
-      <div className="category-heading-div">
-        <h1 className="category-heading-h1">{
-
-          category ? category.toUpperCase() : "All-Products"
-
-        }</h1>
-      </div>
+      <NavMini />
+      <ProductBanner heading={category ? category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : "Our Products"} />
       <Products category={category} />
-      <ConnectTheWorld/>
-      <AboutUs/>
-      <Blogs/>
       <Footer />
     </div>
   );
