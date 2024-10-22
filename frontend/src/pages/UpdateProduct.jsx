@@ -12,8 +12,6 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
 import toast from 'react-hot-toast';
 
-
-
 const allCategories = [
     "Solution",
     "Copper Data Cable",
@@ -45,14 +43,6 @@ export default function UpdateProduct() {
         JSON.parse(localStorage.getItem("persist:root")).auth
     ).currentUser?.isAdmin;
 
-    console.log(admin)
-
-    useEffect(() => {
-        if (!admin) {
-            navigate("/");
-        }
-    }, [admin])
-
     const [inputs, setInputs] = useState({
         title: "",
         desc: "",
@@ -62,8 +52,17 @@ export default function UpdateProduct() {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedUnit, setSelectedUnit] = useState("");
     const [file, setFile] = useState(null);
+    const [descriptionFiles, setDescriptionFiles] = useState([]);
+    const [existingDescImages, setExistingDescImages] = useState([]);
+    const [imagePreview, setImagePreview] = useState(productData?.img || ''); // State for image preview
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!admin) {
+            navigate("/");
+        }
+    }, [admin]);
 
     useEffect(() => {
         if (productData) {
@@ -75,6 +74,8 @@ export default function UpdateProduct() {
             });
             setSelectedCategories(productData.categories || []);
             setSelectedUnit(productData.unit || "");
+            setExistingDescImages(productData.productDescImg || []); // Load existing description images
+            setImagePreview(productData.img); // Set initial image preview
         }
     }, [productData]);
 
@@ -96,6 +97,23 @@ export default function UpdateProduct() {
 
     const handleEditorChange = (content) => {
         setInputs((prev) => ({ ...prev, desc: content }));
+    };
+
+    const handleDescriptionFilesChange = (e) => {
+        setDescriptionFiles(Array.from(e.target.files));
+    };
+
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+
+        // Create a local URL for previewing the selected image
+        if (selectedFile) {
+            const url = URL.createObjectURL(selectedFile);
+            setImagePreview(url);
+        } else {
+            setImagePreview(productData?.img || ''); // Reset to existing image if no file is selected
+        }
     };
 
     const handleClick = async (e) => {
@@ -123,41 +141,84 @@ export default function UpdateProduct() {
             __v: productData.__v,
         };
 
+        const storage = getStorage(app);
+
         try {
+            // Update main product image
             if (file) {
-                const filetitle = inputs.title || "default";
-                const sanitizedTitle = filetitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+                const fileTitle = inputs.title || "default";
+                const sanitizedTitle = fileTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
                 const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
-                const storage = getStorage(app);
                 const storageRef = ref(storage, fileName);
                 const uploadTask = uploadBytesResumable(storageRef, file);
 
-                const toastId = toast.loading("Uploading image...");
+                const toastId = toast.loading("Uploading product image...");
 
-                uploadTask.on(
-                    "state_changed",
-                    (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        toast.loading(`Upload is ${progress}% done`, { id: toastId });
-                    },
-                    (error) => {
-                        toast.dismiss(toastId);
-                        toast.error("Failed to upload image.");
-                    },
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                            productUpdate.img = downloadURL;
-                            updateProducts(productId, productUpdate, dispatch);
-                            toast.success("Product updated successfully!");
-                            navigate("/dashboard");
-                        });
-                    }
-                );
+                await new Promise((resolve, reject) => {
+                    uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            toast.loading(`Product image upload is ${progress}% done`, { id: toastId });
+                        },
+                        (error) => {
+                            toast.dismiss(toastId);
+                            toast.error("Failed to upload product image.");
+                            reject(error);
+                        },
+                        () => {
+                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                                productUpdate.img = downloadURL;
+                                setImagePreview(downloadURL); // Update preview with new image URL
+                                toast.dismiss(toastId); // Dismiss after successful upload
+                                resolve();
+                            });
+                        }
+                    );
+                });
             } else {
-                await updateProducts(productId, productUpdate, dispatch);
-                toast.success("Product updated successfully!");
-                navigate("/dashboard");
+                productUpdate.img = productData.img; // Retain the existing image if no new upload
             }
+
+            // Update description images
+            if (descriptionFiles.length > 0) {
+                const descImageUploadPromises = descriptionFiles.map((descFile) => {
+                    const descFileName = `${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${new Date().getTime()}_${descFile.name}`;
+                    const descStorageRef = ref(storage, descFileName);
+                    return new Promise((resolve, reject) => {
+                        const descUploadTask = uploadBytesResumable(descStorageRef, descFile);
+                        const toastId = toast.loading("Uploading description image...");
+
+                        descUploadTask.on(
+                            "state_changed",
+                            (snapshot) => {
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                toast.loading(`Description image upload is ${progress}% done`, { id: toastId });
+                            },
+                            (error) => {
+                                toast.dismiss(toastId);
+                                toast.error("Description image upload failed");
+                                reject(error);
+                            },
+                            () => {
+                                getDownloadURL(descUploadTask.snapshot.ref).then((downloadURL) => {
+                                    toast.dismiss(toastId); // Dismiss toast after successful upload
+                                    resolve(downloadURL);
+                                });
+                            }
+                        );
+                    });
+                });
+
+                const descImageUrls = await Promise.all(descImageUploadPromises);
+                productUpdate.productDescImg = descImageUrls; // Update with new description images only
+            } else {
+                productUpdate.productDescImg = existingDescImages; // Keep existing if no new uploads
+            }
+
+            await updateProducts(productId, productUpdate, dispatch);
+            toast.success("Product updated successfully!");
+            navigate("/dashboard");
         } catch (error) {
             toast.error("Failed to update product. Please try again.");
         }
@@ -178,14 +239,8 @@ export default function UpdateProduct() {
                     <div className="productTop">
                         <div className="productTopRight">
                             <div className="productInfoTop">
-                                <img src={productData.img} alt="" className="productInfoImg" />
-                                <span className="productName">{productData.title}</span>
-                            </div>
-                            <div className="productInfoBottom">
-                                <div className="productInfoItem">
-                                    <span className="productInfoKey">ID:</span>
-                                    <span className="productInfoValue">{productData._id}</span>
-                                </div>
+                                <img src={imagePreview} alt="Product" className="productInfoImg" />
+                                <span className="productName">{inputs.title || productData.title}</span>
                             </div>
                         </div>
                     </div>
@@ -233,49 +288,47 @@ export default function UpdateProduct() {
                                     </div>
                                     <div className="selected">
                                         Selected Categories:
-                                        {selectedCategories.length > 0 ? (
-                                            selectedCategories.map((e, key) => (
-                                                <p key={key} className="category-seleted">{e.toLowerCase().replace(/ /g, '-')}</p>
-                                            ))
-                                        ) : (
-                                            <p className="category-seleted">None</p>
-                                        )}
+                                        {selectedCategories.join(", ") || " None"}
                                     </div>
                                 </div>
 
-                                <div className="addProductItem">
+                                <div className="productFormLeft-input">
                                     <label>Unit</label>
-                                    <div>
+                                    <select value={selectedUnit} onChange={handleUnitChange}>
+                                        <option value="">Select Unit</option>
                                         {allUnits.map((unit) => (
-                                            <label key={unit} className="checkbox-label">
-                                                <input
-                                                    type="radio"
-                                                    name="unit"
-                                                    value={unit}
-                                                    checked={selectedUnit.toLowerCase() === unit.toLowerCase()}
-                                                    onChange={handleUnitChange}
-                                                />
+                                            <option key={unit} value={unit}>
                                                 {unit}
-                                            </label>
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="productFormLeft-input">
+                                    <label>Upload Product Image</label>
+                                    <input type="file" onChange={handleFileChange} />
+                                    {imagePreview && (
+                                        <img src={imagePreview} alt="Product Preview" className="productImagePreview" />
+                                    )}
+                                </div>
+
+                                <label>Existing Product Description Images:</label>
+                                <div className="product-page-desc-img">
+                                    <div className="image-gallery">
+                                        {existingDescImages.map((imgUrl, index) => (
+                                            <img key={index} src={imgUrl} alt={`Description ${index + 1}`} className="product-page-desc-img-tag" />
                                         ))}
                                     </div>
                                 </div>
 
-                            </div>
-                            <div className="productFormRight">
-                                <div className="productUpload">
-                                    <img src={productData.img} alt="" className="productUploadImg" />
-                                    <label htmlFor="file">
-                                        <Publish />
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="file"
-                                        onChange={(e) => setFile(e.target.files[0])}
-                                        style={{ display: "none" }}
-                                    />
+                                <div className="productFormLeft-input">
+                                    <label>Upload New Product Description Images</label>
+                                    <input type="file" multiple onChange={handleDescriptionFilesChange} />
                                 </div>
-                                <button type="submit" className="productButton">Update</button>
+
+                                <button className="productButton" type="submit">
+                                    Update
+                                </button>
                             </div>
                         </form>
                     </div>

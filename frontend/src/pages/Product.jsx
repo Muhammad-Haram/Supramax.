@@ -13,7 +13,7 @@ import BreadCrumbs from "../components/BreadCrumbs";
 const Product = () => {
 
   const location = useLocation();
-  const id = location.pathname.split("/")[2]; // Extracting product ID from URL
+  const id = location.pathname.split("/")[2];
 
   const [product, setProduct] = useState(null);
 
@@ -36,8 +36,10 @@ const Product = () => {
   }, [id]);
 
   if (!product) {
-    return <p>Loading...</p>; // Show a loading indicator if product data is still being fetched
+    return <p className="loading">Loading...</p>
   }
+
+  console.log(product)
 
   return (
     <>
@@ -53,12 +55,17 @@ const Product = () => {
 
           <div className="product-desc-div"
             style={{ color: "#575757", marginBottom: "yourDesiredMarginValue" }}
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }}
-          />        </div>
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }} />
+
+          <div className="product-page-desc-img">
+            {product.productDescImg.map((item) => (
+              <img className="product-page-desc-img-tag" key={item} src={item} alt="" />
+            ))}
+          </div>
+
+        </div>
+
       </div>
-      {/* <ConnectTheWorld /> */}
-      {/* <AboutUs /> */}
-      {/* <Blogs /> */}
       <Footer />
     </>
   );
