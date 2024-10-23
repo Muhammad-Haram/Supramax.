@@ -1,14 +1,12 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
 import DOMPurify from 'dompurify';
 import NavMini from "../components/NavMini";
-// import ConnectTheWorld from "../components/ConnectTheWorld";
-// import AboutUs from "../components/AboutUs";
-// import Blogs from "../components/Blogs";
 import BreadCrumbs from "../components/BreadCrumbs";
+import ProductSpecifications from "../components/ProductSpecifications";
 
 const Product = () => {
 
@@ -46,6 +44,7 @@ const Product = () => {
       <Navbar />
       <NavMini />
       <BreadCrumbs productTitle={product.title} />
+
       <div className="product-page">
         <div className="product-page-img">
           <img className="product-page-img-tag" src={product.img} alt={product.title} />
@@ -66,6 +65,22 @@ const Product = () => {
         </div>
 
       </div>
+
+      <div className="product-page-bar">
+        <div className="product-page-bar-link">
+          <Link className="product-page-bar-single-link">Product Specification</Link>
+          <Link className="product-page-bar-single-link">Resource</Link>
+          <Link className="product-page-bar-single-link">Related Products</Link>
+        </div>
+        <div className="product-page-bar-arrow">
+          <Link>
+            <img className="product-page-bar-arrow-img" src="/img/arrowUp.png" alt="" />
+          </Link>
+        </div>
+      </div>
+
+      <ProductSpecifications />
+
       <Footer />
     </>
   );

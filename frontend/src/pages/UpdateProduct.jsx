@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import Publish from "@mui/icons-material/Publish";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -318,6 +317,7 @@ export default function UpdateProduct() {
                                         {existingDescImages.map((imgUrl, index) => (
                                             <img key={index} src={imgUrl} alt={`Description ${index + 1}`} className="product-page-desc-img-tag" />
                                         ))}
+
                                     </div>
                                 </div>
 
