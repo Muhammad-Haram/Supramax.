@@ -5,14 +5,14 @@ import Home from "./pages/Home";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard"
+import Dashboard from "./pages/Dashboard";
 import NewProduct from "./pages/NewProduct";
 import ProductDashboardList from "./pages/ProductDashboardList";
 import UpdateProduct from "./pages/UpdateProduct";
 import SearchResults from "./components/SearchResults";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
-
+import ScrollToTop from "./components/ScrollToTop";
 
 const appRouter = createBrowserRouter([
   {
@@ -51,34 +51,29 @@ const appRouter = createBrowserRouter([
     path: "/dashboard",
     element: <Dashboard />,
   },
-
   {
     path: "/dashboard/newproduct",
     element: <NewProduct />,
   },
-
   {
     path: "/dashboard/products",
     element: <ProductDashboardList />,
   },
-
   {
     path: "/dashboard/product/:productId",
     element: <UpdateProduct />,
   },
-
   {
     path: "/search-results",
     element: <SearchResults />,
   },
-
 ]);
 
 const App = () => {
   return (
-    <>
-      <RouterProvider router={appRouter} />
-    </>
+    <RouterProvider router={appRouter}>
+      <ScrollToTop />
+    </RouterProvider>
   );
 };
 
