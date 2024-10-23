@@ -2,7 +2,17 @@ import { Product } from "../models/product.model.js";
 
 export const createProduct = async (req, res) => {
   try {
-    const { title, desc, img, categories, partNumber, type, unit, productDescImg } = req.body;
+    const {
+      title,
+      desc,
+      img,
+      categories,
+      partNumber,
+      type,
+      unit,
+      productDescImg,
+      table,
+    } = req.body;
 
     // Validate that all required fields are present
     if (
@@ -29,15 +39,16 @@ export const createProduct = async (req, res) => {
     }
 
     // Create a new product instance
-    const newProduct = new Product({ 
-      title, 
-      desc, 
-      img, 
-      categories, 
-      partNumber, 
-      type, 
+    const newProduct = new Product({
+      title,
+      desc,
+      img,
+      categories,
+      partNumber,
+      type,
       unit,
-      productDescImg // Include product description images
+      productDescImg,
+      table, // Include product description images
     });
 
     // Save the product to the database
@@ -57,7 +68,16 @@ export const createProduct = async (req, res) => {
 // Update product
 export const updateProduct = async (req, res) => {
   try {
-    const { title, desc, img, categories, partNumber, type, unit, productDescImg } = req.body;
+    const {
+      title,
+      desc,
+      img,
+      categories,
+      partNumber,
+      type,
+      unit,
+      productDescImg,
+    } = req.body;
 
     // Validate that at least one field is present for the update
     if (
@@ -109,7 +129,9 @@ export const deleteProduct = async (req, res) => {
 
     res.status(200).json("Product has been deleted");
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete product", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete product", error: error.message });
   }
 };
 
@@ -122,7 +144,9 @@ export const getProductById = async (req, res) => {
     }
     res.status(200).json(product);
   } catch (err) {
-    res.status(500).json({ message: "Failed to retrieve product", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve product", error: err.message });
   }
 };
 
@@ -148,6 +172,8 @@ export const getProducts = async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({ message: "Failed to retrieve products", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve products", error: error.message });
   }
 };

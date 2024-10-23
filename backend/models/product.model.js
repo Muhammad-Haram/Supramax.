@@ -9,7 +9,8 @@ const productSchema = new mongoose.Schema(
     partNumber: { type: String, required: true },
     type: { type: String, required: true },
     unit: { type: String, required: true },
-    productDescImg: { type: Array, required: true },
+    productDescImg: { type: Array },
+    table: { type: String },
   },
   { timestamps: true }
 );

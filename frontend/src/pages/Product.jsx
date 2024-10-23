@@ -75,7 +75,7 @@ const Product = () => {
         </div>
       </div>
 
-      <ProductSpecifications />
+      <ProductSpecifications product={product} />
       <ProductResources />
       <RelatedProduct products={relatedProducts} />
 
