@@ -4,7 +4,7 @@ const BASE_URL = `${process.env.REACT_APP_BACKEND_BASEURL}/api/`;
 let TOKEN;
 try {
   const rootData = localStorage.getItem("persist:root");
-  
+
   if (rootData) {
     const authData = JSON.parse(rootData).auth;
     TOKEN = JSON.parse(authData)?.currentUser?.accessToken;
@@ -22,4 +22,4 @@ export const userRequest = axios.create({
   headers: { token: `Bearer ${TOKEN}` },
 });
 
-console.log(TOKEN)
+console.log(TOKEN);

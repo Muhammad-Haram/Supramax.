@@ -125,7 +125,7 @@ export default function NewProduct() {
           categories,
           unit: selectedUnit,
           productDescImg: descImageUrls,
-          table: table
+          table: table.table
         };
         await addProducts(product, dispatch);
         toast.dismiss(toastId);
@@ -137,6 +137,8 @@ export default function NewProduct() {
       }
     });
   };
+
+  console.log(table)
 
   return (
     <>

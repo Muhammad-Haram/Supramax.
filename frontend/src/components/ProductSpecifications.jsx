@@ -2,6 +2,7 @@ import DOMPurify from 'dompurify';
 import React from 'react';
 
 const ProductSpecifications = ({ product }) => {
+    console.log(product)
     return (
         <>
             <h1 className='supramax-h1'>Product Specification</h1>

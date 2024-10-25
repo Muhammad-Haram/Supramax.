@@ -14,7 +14,6 @@ export const createProduct = async (req, res) => {
       table,
     } = req.body;
 
-    // Validate that all required fields are present
     if (
       !title ||
       !desc ||
@@ -48,7 +47,7 @@ export const createProduct = async (req, res) => {
       type,
       unit,
       productDescImg,
-      table, // Include product description images
+      table,
     });
 
     // Save the product to the database
@@ -56,8 +55,8 @@ export const createProduct = async (req, res) => {
 
     // Respond with the newly created product
     res.status(201).json(savedProduct);
+    console.log(savedProduct);
   } catch (error) {
-    // Handle errors during product creation
     res.status(500).json({
       message: "Failed to create product",
       error: error.message,
@@ -94,7 +93,6 @@ export const updateProduct = async (req, res) => {
         message: "No fields provided for update",
       });
     }
-
     // Find the product by ID
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,

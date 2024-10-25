@@ -54,6 +54,7 @@ export default function UpdateProduct() {
     const [descriptionFiles, setDescriptionFiles] = useState([]);
     const [existingDescImages, setExistingDescImages] = useState([]);
     const [imagePreview, setImagePreview] = useState(productData?.img || ''); // State for image preview
+    const [table, setTable] = useState(""); // State for table content
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -75,6 +76,7 @@ export default function UpdateProduct() {
             setSelectedUnit(productData.unit || "");
             setExistingDescImages(productData.productDescImg || []); // Load existing description images
             setImagePreview(productData.img); // Set initial image preview
+            setTable(productData.table || ""); // Load existing table content
         }
     }, [productData]);
 
@@ -115,6 +117,10 @@ export default function UpdateProduct() {
         }
     };
 
+    const handleTableChange = (e) => {
+        setTable(e.target.value); // Update table state when the input changes
+    };
+
     const handleClick = async (e) => {
         e.preventDefault();
 
@@ -134,6 +140,7 @@ export default function UpdateProduct() {
             ...inputs,
             categories: selectedCategories,
             unit: selectedUnit,
+            table: table, // Include the table content in the update
             _id: productData._id,
             createdAt: productData.createdAt,
             updatedAt: new Date().toISOString(),
@@ -317,13 +324,23 @@ export default function UpdateProduct() {
                                         {existingDescImages.map((imgUrl, index) => (
                                             <img key={index} src={imgUrl} alt={`Description ${index + 1}`} className="product-page-desc-img-tag" />
                                         ))}
-
                                     </div>
                                 </div>
 
                                 <div className="productFormLeft-input">
                                     <label>Upload New Product Description Images</label>
                                     <input type="file" multiple onChange={handleDescriptionFilesChange} />
+                                </div>
+
+                                {/* New Section for Table */}
+                                <div className="productFormLeft-input">
+                                    <label>Table Content</label>
+                                    <textarea
+                                        value={table}
+                                        onChange={handleTableChange}
+                                        rows="5"
+                                        placeholder="Enter table content here..."
+                                    />
                                 </div>
 
                                 <button className="productButton" type="submit">

@@ -93,6 +93,6 @@ export const {
   updateProductFailure,
   addProductStart,
   addProductSuccess,
-  addProductFailure
+  addProductFailure,
 } = productSlice.actions;
 export default productSlice.reducer;
