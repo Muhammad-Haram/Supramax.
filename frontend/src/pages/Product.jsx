@@ -75,7 +75,6 @@ const Product = () => {
         </div>
       </div>
 
-
       {product.table && (
         <div id="product-specifications">
           <ProductSpecifications product={product} />
@@ -89,8 +88,9 @@ const Product = () => {
       <div id="related-products">
         <RelatedProduct products={relatedProducts} />
       </div>
-//////
+
       <Footer />
+      
     </>
   );
 };
