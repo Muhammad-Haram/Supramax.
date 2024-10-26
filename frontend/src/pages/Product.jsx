@@ -75,10 +75,12 @@ const Product = () => {
         </div>
       </div>
 
-      <div id="product-specifications">
-        <ProductSpecifications product={product} />
-      </div>
 
+      {product.table && (
+        <div id="product-specifications">
+          <ProductSpecifications product={product} />
+        </div>
+      )}
 
       <div id="product-resources">
         <ProductResources product={product} />
