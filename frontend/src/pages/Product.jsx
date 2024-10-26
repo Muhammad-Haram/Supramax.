@@ -89,7 +89,7 @@ const Product = () => {
       <div id="related-products">
         <RelatedProduct products={relatedProducts} />
       </div>
-
+//////
       <Footer />
     </>
   );
