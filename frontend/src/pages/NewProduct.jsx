@@ -36,6 +36,8 @@ export default function NewProduct() {
   const navigate = useNavigate();
   const [selectedUnit, setSelectedUnit] = useState("");
   const [categories, setCategories] = useState([]);
+  const [dataSheet, setDataSheet] = useState(null);
+  const [certificate, setCertificate] = useState(null);
 
   const admin = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).auth).currentUser?.isAdmin;
 
@@ -72,6 +74,14 @@ export default function NewProduct() {
     setDescriptionFiles(Array.from(e.target.files));
   };
 
+  const handleDataSheetChange = (e) => {
+    setDataSheet(e.target.files[0]);
+  };
+
+  const handleCertificateChange = (e) => {
+    setCertificate(e.target.files[0]);
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
     let validationErrors = [];
@@ -86,59 +96,70 @@ export default function NewProduct() {
       toast.error(validationErrors.join(", "));
       return;
     }
+
     const fileTitle = inputs.title || "default";
     const sanitizedTitle = fileTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-    const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    const toastId = toast.loading("Uploading...");
-    uploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      toast.loading(`Main image upload is ${progress}% done`, { id: toastId });
-    }, (error) => {
-      toast.dismiss(toastId);
-      toast.error("Main image upload failed");
-    }, async () => {
-      const mainImageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+    const toastId = toast.loading("Uploading..."); // Start single toast notification
+
+    try {
+      const storage = getStorage(app);
+      const mainImageUrl = await uploadFileToFirebase(file, `${sanitizedTitle}_${new Date().getTime()}.jpg`, toastId);
+
+      // Upload description images
       const descImageUploadPromises = descriptionFiles.map((descFile) => {
         const descFileName = `${sanitizedTitle}_${new Date().getTime()}_${descFile.name}`;
-        const descStorageRef = ref(storage, descFileName);
-        return new Promise((resolve, reject) => {
-          const descUploadTask = uploadBytesResumable(descStorageRef, descFile);
-          descUploadTask.on("state_changed", (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            toast.loading(`Description image upload is ${progress}% done`, { id: toastId });
-          }, (error) => {
-            reject(error);
-            toast.error("Description image upload failed");
-          }, () => {
-            getDownloadURL(descUploadTask.snapshot.ref).then(resolve);
-          });
-        });
+        return uploadFileToFirebase(descFile, descFileName, toastId);
       });
-      try {
-        const descImageUrls = await Promise.all(descImageUploadPromises);
-        const product = {
-          ...inputs,
-          img: mainImageUrl,
-          categories,
-          unit: selectedUnit,
-          productDescImg: descImageUrls,
-          table: table.table
-        };
-        await addProducts(product, dispatch);
-        toast.dismiss(toastId);
-        toast.success("Product added successfully");
-        navigate("/dashboard");
-      } catch (error) {
-        toast.dismiss(toastId);
-        toast.error("Failed to add product");
-      }
-    });
+
+      const descImageUrls = await Promise.all(descImageUploadPromises);
+      const dataSheetUrl = await uploadFileToFirebase(dataSheet, `dataSheet_${sanitizedTitle}_${Date.now()}`, toastId);
+      const certificateUrl = await uploadFileToFirebase(certificate, `certificate_${sanitizedTitle}_${Date.now()}`, toastId);
+
+      const product = {
+        ...inputs,
+        img: mainImageUrl,
+        categories,
+        unit: selectedUnit,
+        productDescImg: descImageUrls,
+        table: table.table,
+        dataSheet: dataSheetUrl,
+        certificate: certificateUrl,
+      };
+
+      await addProducts(product, dispatch);
+      toast.dismiss(toastId);
+      toast.success("Product added successfully");
+      navigate("/dashboard");
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error("Failed to add product");
+    }
   };
 
-  console.log(table)
+  // Updated upload function
+  const uploadFileToFirebase = async (file, fileName, toastId) => {
+    const storageRef = ref(getStorage(app), fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId }); // Update progress in the same toast
+        },
+        (error) => {
+          reject(error);
+          toast.dismiss(toastId);
+          toast.error("Upload failed");
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+  };
 
   return (
     <>
@@ -208,6 +229,17 @@ export default function NewProduct() {
               <label>Table</label>
               <textarea name="table" placeholder="Enter HTML structure for the table" onChange={handleTable} />
             </div>
+
+            <div className="addProductItem">
+              <label>Product Data Sheet</label>
+              <input type="file" onChange={handleDataSheetChange} required />
+            </div>
+            <div className="addProductItem">
+              <label>Certificates</label>
+              <input type="file" onChange={handleCertificateChange} required />
+            </div>
+
+
             <button onClick={handleClick} className="addProductButton">Create</button>
           </form>
         </div>

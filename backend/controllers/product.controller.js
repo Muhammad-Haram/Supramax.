@@ -12,6 +12,8 @@ export const createProduct = async (req, res) => {
       unit,
       productDescImg,
       table,
+      dataSheet,
+      certificate,
     } = req.body;
 
     if (
@@ -21,7 +23,9 @@ export const createProduct = async (req, res) => {
       !categories ||
       !partNumber ||
       !type ||
-      !unit
+      !unit ||
+      !dataSheet ||
+      !certificate
     ) {
       return res.status(400).json({
         message: "Missing required fields",
@@ -33,11 +37,12 @@ export const createProduct = async (req, res) => {
           partNumber: !partNumber ? "Part Number is required" : null,
           type: !type ? "Type is required" : null,
           unit: !unit ? "Unit is required" : null,
+          dataSheet: !dataSheet ? "Data Sheet is required" : null,
+          certificate: !certificate ? "Certificate is required" : null,
         },
       });
     }
 
-    // Create a new product instance
     const newProduct = new Product({
       title,
       desc,
@@ -48,19 +53,16 @@ export const createProduct = async (req, res) => {
       unit,
       productDescImg,
       table,
+      dataSheet,
+      certificate,
     });
 
-    // Save the product to the database
     const savedProduct = await newProduct.save();
-
-    // Respond with the newly created product
     res.status(201).json(savedProduct);
-    console.log(savedProduct);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to create product",
-      error: error.message,
-    });
+    res
+      .status(500)
+      .json({ message: "Failed to create product", error: error.message });
   }
 };
 

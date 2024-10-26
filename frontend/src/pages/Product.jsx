@@ -53,7 +53,7 @@ const Product = () => {
           <div className="product-desc-div"
             style={{ color: "#575757", marginBottom: "yourDesiredMarginValue" }}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.desc) }} />
-          
+
           <div className="product-page-desc-img">
             {product.productDescImg.map((item) => (
               <img className="product-page-desc-img-tag" key={item} src={item} alt="" />
@@ -76,7 +76,7 @@ const Product = () => {
       </div>
 
       <ProductSpecifications product={product} />
-      <ProductResources />
+      <ProductResources product={product} />
       <RelatedProduct products={relatedProducts} />
 
       <Footer />
