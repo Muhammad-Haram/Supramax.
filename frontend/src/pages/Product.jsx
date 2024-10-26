@@ -90,7 +90,7 @@ const Product = () => {
       </div>
 
       <Footer />
-      
+
     </>
   );
 };

@@ -29,7 +29,6 @@ const Products = ({ category }) => {
     getProducts();
   }, [category]);
 
-  // Logic for displaying current products
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = product.slice(indexOfFirstProduct, indexOfLastProduct);

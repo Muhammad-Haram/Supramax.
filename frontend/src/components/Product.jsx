@@ -22,7 +22,7 @@ const Product = ({ item }) => {
             <button className="product-card-button">View More</button>
           </Link>
 
-          <Link className="product-card-anchor">
+          <Link target="_blank" to={item.dataSheet} className="product-card-anchor">
             <button className="product-card-doc">
               <img src="/img/doc.png" alt="" />
               Product  data sheet
