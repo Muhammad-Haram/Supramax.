@@ -43,7 +43,7 @@ const Product = () => {
       <NavMini />
       <BreadCrumbs productTitle={product.title} />
 
-      <div className="product-page">
+      <div id="product-details" className="product-page">
         <div className="product-page-img">
           <img className="product-page-img-tag" src={product.img} alt={product.title} />
         </div>
@@ -64,20 +64,29 @@ const Product = () => {
 
       <div className="product-page-bar">
         <div className="product-page-bar-link">
-          <Link className="product-page-bar-single-link">Product Specification</Link>
-          <Link className="product-page-bar-single-link">Resource</Link>
-          <Link className="product-page-bar-single-link">Related Products</Link>
+          <a href="#product-specifications" className="product-page-bar-single-link">Product Specification</a>
+          <a href="#product-resources" className="product-page-bar-single-link">Resource</a>
+          <a href="#related-products" className="product-page-bar-single-link">Related Products</a>
         </div>
         <div className="product-page-bar-arrow">
-          <Link>
+          <a href="#product-details">
             <img className="product-page-bar-arrow-img" src="/img/arrowUp.png" alt="" />
-          </Link>
+          </a>
         </div>
       </div>
 
-      <ProductSpecifications product={product} />
-      <ProductResources product={product} />
-      <RelatedProduct products={relatedProducts} />
+      <div id="product-specifications">
+        <ProductSpecifications product={product} />
+      </div>
+
+
+      <div id="product-resources">
+        <ProductResources product={product} />
+      </div>
+
+      <div id="related-products">
+        <RelatedProduct products={relatedProducts} />
+      </div>
 
       <Footer />
     </>
