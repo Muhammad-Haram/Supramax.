@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ const ContactForm = () => {
         email: '',
         phone: '',
     });
+
+    const [isLoading, setIsLoading] = useState(false); // Add loading state
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,16 +23,20 @@ const ContactForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true); // Set loading state to true
         try {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/contact`, formData);
-            alert(response.data.message);
+            toast.success(response.data.message);
         } catch (error) {
-            console.error("There was an error sending the email!", error);
+            toast.error("There was an error sending the email!");
+        } finally {
+            setIsLoading(false); // Reset loading state
         }
     };
 
     return (
         <div className='contact-form-div'>
+            <Toaster /> {/* Add Toaster for toast notifications */}
             <h1 className='contact-form-h1'>Send a Message</h1>
             <form className='contact-form-tag' onSubmit={handleSubmit}>
                 <div className='contact-form-input-div'>
@@ -58,10 +65,12 @@ const ContactForm = () => {
                     <input required name="phone" type="text" className='contact-form-input-b' placeholder='Phone Number' onChange={handleChange} />
                 </div>
 
-                <button type='submit' className='submit-button'>Submit</button>
+                <button type='submit' className='submit-button' disabled={isLoading}>
+                    {isLoading ? `<p className="loading">Loading...</p>` : 'Submit'}
+                </button>
             </form>
         </div>
-    )
+    );
 }
 
 export default ContactForm;

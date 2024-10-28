@@ -42,19 +42,23 @@ router.post("/", async (req, res) => {
     </table>
     <div style="margin-top: 20px; text-align: center;">
       <a href="mailto:${email}" style="
-        background-color: #0066cc; 
+        background-color: #000; 
         color: #fff; 
         padding: 10px 20px; 
         border-radius: 5px; 
         text-decoration: none; 
         font-size: 16px;
-      ">Reply to Contact</a>
+      ">Reply to ${firstName}${lastName}</a>
     </div>
   </div>
 `;
 
   try {
-    await sendEmail("haramh643@gmail.com", "New Contact Request", message); // Yahan recipient ka email daalein
+    await sendEmail(
+      `${process.env.EMAIL_USER}`,
+      "New Contact Request",
+      message
+    ); // Yahan recipient ka email daalein
     res.status(200).json({ message: "Email sent successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to send email", error });
