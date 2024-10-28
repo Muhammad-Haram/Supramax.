@@ -1,6 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProducts, getProducts } from "../redux/apiCallsForDashBoard";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
@@ -24,14 +24,29 @@ export default function ProductDashboardList() {
   }, [admin])
 
   const handleDelete = (id) => {
-    console.log(id)
-    deleteProducts(id, dispatch);
-    getProducts(dispatch);
+    console.log(id);
+    deleteProducts(id, dispatch).then(() => {
+      getProducts(dispatch);
+    }).catch(err => {
+      console.error("Error deleting product:", err);
+      toast.error("Failed to delete product");
+    });
   };
 
   useEffect(() => {
     getProducts(dispatch)
   }, [dispatch])
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      await getProducts(dispatch);
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, [dispatch]);
 
   const columns = [
     { field: "_id", headerName: "ID", width: 200 },
@@ -82,9 +97,10 @@ export default function ProductDashboardList() {
   ];
 
   return (
-
-    <>
-      <div className="productList">
+    <div className="productList">
+      {loading ? (
+        <p className="loading">Loading...</p>
+      ) : (
         <DataGrid
           rows={products}
           disableSelectionOnClick
@@ -93,7 +109,8 @@ export default function ProductDashboardList() {
           pageSize={8}
           checkboxSelection
         />
-      </div>
-    </>
+      )}
+    </div>
   );
+
 }

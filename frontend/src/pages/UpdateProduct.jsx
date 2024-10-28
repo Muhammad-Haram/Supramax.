@@ -55,6 +55,9 @@ export default function UpdateProduct() {
     const [existingDescImages, setExistingDescImages] = useState([]);
     const [imagePreview, setImagePreview] = useState(productData?.img || ''); // State for image preview
     const [table, setTable] = useState(""); // State for table content
+    const [dataSheetFile, setDataSheetFile] = useState(null);
+    const [certificateFile, setCertificateFile] = useState(null);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -121,6 +124,16 @@ export default function UpdateProduct() {
         setTable(e.target.value); // Update table state when the input changes
     };
 
+    const handleDataSheetChange = (e) => {
+        setDataSheetFile(e.target.files[0]);
+    };
+
+    const handleCertificateChange = (e) => {
+        setCertificateFile(e.target.files[0]);
+    };
+
+
+    // Inside the handleClick function
     const handleClick = async (e) => {
         e.preventDefault();
 
@@ -140,11 +153,13 @@ export default function UpdateProduct() {
             ...inputs,
             categories: selectedCategories,
             unit: selectedUnit,
-            table: table, // Include the table content in the update
+            table: table,
             _id: productData._id,
             createdAt: productData.createdAt,
             updatedAt: new Date().toISOString(),
             __v: productData.__v,
+            dataSheet: "", // Initialize as empty string
+            certificate: "" // Initialize as empty string
         };
 
         const storage = getStorage(app);
@@ -175,15 +190,15 @@ export default function UpdateProduct() {
                         () => {
                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                 productUpdate.img = downloadURL;
-                                setImagePreview(downloadURL); // Update preview with new image URL
-                                toast.dismiss(toastId); // Dismiss after successful upload
+                                setImagePreview(downloadURL);
+                                toast.dismiss(toastId);
                                 resolve();
                             });
                         }
                     );
                 });
             } else {
-                productUpdate.img = productData.img; // Retain the existing image if no new upload
+                productUpdate.img = productData.img; // Retain existing image
             }
 
             // Update description images
@@ -208,7 +223,7 @@ export default function UpdateProduct() {
                             },
                             () => {
                                 getDownloadURL(descUploadTask.snapshot.ref).then((downloadURL) => {
-                                    toast.dismiss(toastId); // Dismiss toast after successful upload
+                                    toast.dismiss(toastId);
                                     resolve(downloadURL);
                                 });
                             }
@@ -217,9 +232,49 @@ export default function UpdateProduct() {
                 });
 
                 const descImageUrls = await Promise.all(descImageUploadPromises);
-                productUpdate.productDescImg = descImageUrls; // Update with new description images only
+                productUpdate.productDescImg = descImageUrls; // Update with new description images
             } else {
                 productUpdate.productDescImg = existingDescImages; // Keep existing if no new uploads
+            }
+
+            // Update Product Data Sheet
+            if (dataSheetFile) {
+                const dataSheetFileName = `dataSheet_${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.pdf`;
+                const dataSheetRef = ref(storage, dataSheetFileName);
+                const toastId = toast.loading("Uploading product data sheet...");
+
+                await uploadBytesResumable(dataSheetRef, dataSheetFile).then(() => {
+                    return getDownloadURL(dataSheetRef);
+                }).then((downloadURL) => {
+                    productUpdate.dataSheet = downloadURL; // Save the URL directly to dataSheet
+                    toast.dismiss(toastId); // Dismiss after successful upload
+                }).catch((error) => {
+                    toast.dismiss(toastId);
+                    toast.error("Failed to upload product data sheet.");
+                    throw error;
+                });
+            } else {
+                productUpdate.dataSheet = productData.dataSheet; // Retain existing if no new upload
+            }
+
+            // Update Certificates
+            if (certificateFile) {
+                const certificateFileName = `certificate_${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.pdf`;
+                const certificateRef = ref(storage, certificateFileName);
+                const toastId = toast.loading("Uploading certificate...");
+
+                await uploadBytesResumable(certificateRef, certificateFile).then(() => {
+                    return getDownloadURL(certificateRef);
+                }).then((downloadURL) => {
+                    productUpdate.certificate = downloadURL; // Save the URL directly to certificate
+                    toast.dismiss(toastId); // Dismiss after successful upload
+                }).catch((error) => {
+                    toast.dismiss(toastId);
+                    toast.error("Failed to upload certificate.");
+                    throw error;
+                });
+            } else {
+                productUpdate.certificate = productData.certificate; // Retain existing if no new upload
             }
 
             await updateProducts(productId, productUpdate, dispatch);
@@ -229,6 +284,8 @@ export default function UpdateProduct() {
             toast.error("Failed to update product. Please try again.");
         }
     };
+
+
 
     return (
         <>
@@ -342,6 +399,17 @@ export default function UpdateProduct() {
                                         placeholder="Enter table content here..."
                                     />
                                 </div>
+
+                                <div className="productFormLeft-input">
+                                    <label>Update Product Data Sheet</label>
+                                    <input type="file" onChange={handleDataSheetChange} />
+                                </div>
+
+                                <div className="productFormLeft-input">
+                                    <label>Update Certificates</label>
+                                    <input type="file" onChange={handleCertificateChange} />
+                                </div>
+
 
                                 <button className="productButton" type="submit">
                                     Update

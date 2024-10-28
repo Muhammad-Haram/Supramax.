@@ -78,18 +78,22 @@ export const updateProduct = async (req, res) => {
       type,
       unit,
       productDescImg,
+      dataSheet,
+      certificate,
     } = req.body;
 
     // Validate that at least one field is present for the update
     if (
-      !title &&
-      !desc &&
-      !img &&
-      !categories &&
-      !partNumber &&
-      !type &&
-      !unit &&
-      !productDescImg
+      (!title &&
+        !desc &&
+        !img &&
+        !categories &&
+        !partNumber &&
+        !type &&
+        !unit &&
+        !productDescImg,
+      !dataSheet,
+      !certificate)
     ) {
       return res.status(400).json({
         message: "No fields provided for update",

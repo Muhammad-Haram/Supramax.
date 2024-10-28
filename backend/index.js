@@ -8,25 +8,26 @@ import cartRoute from "./routes/cart.js";
 import orderRoute from "./routes/order.js";
 import stripeRoute from "./routes/stripe.js";
 import searchRoute from "./routes/search.js";
+import contactRoute from "./routes/contact.js"; // Contact route import
 import cors from "cors";
 
 dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
 };
-app.use(cors(corsOptions));
 
+app.use(cors(corsOptions));
 mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("mongoDB connected successfully");
-  })
-  .catch((err) => {
-    console.log("mongoDB connected failed", err);
-  });
+    .connect(process.env.MONGO_URL)
+    .then(() => {
+        console.log("mongoDB connected successfully");
+    })
+    .catch((err) => {
+        console.log("mongoDB connected failed", err);
+    });
 
 app.use(express.json());
 app.use("/api/auth", authRoute);
@@ -36,7 +37,8 @@ app.use("/api/carts", cartRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/checkout", stripeRoute);
 app.use("/api/products", searchRoute);
+app.use("/api/contact", contactRoute); // Contact route use
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log(`server is running on port ${process.env.PORT} `);
+    console.log(`server is running on port ${process.env.PORT} `);
 });
