@@ -66,7 +66,7 @@ const ContactForm = () => {
                 </div>
 
                 <button type='submit' className='submit-button' disabled={isLoading}>
-                    {isLoading ? `<p className="loading">Loading...</p>` : 'Submit'}
+                    {isLoading ? <p className="loading-2">Loading...</p> : 'Submit'}
                 </button>
             </form>
         </div>

@@ -15,6 +15,7 @@ router.post("/", async (req, res) => {
     border-radius: 8px; 
     max-width: 600px;
     margin: auto;
+    background-color: #fafafa;
   ">
     <div style="text-align: center;">
       <img src="https://firebasestorage.googleapis.com/v0/b/supramax-48729.appspot.com/o/logo.png?alt=media&token=2c99e0c2-e9f1-4edf-9050-b9755ba87b14" alt="Company Logo" style="width: 150px; margin-bottom: 20px;" />
@@ -48,7 +49,7 @@ router.post("/", async (req, res) => {
         border-radius: 5px; 
         text-decoration: none; 
         font-size: 16px;
-      ">Reply to ${firstName}${lastName}</a>
+      ">Reply to ${firstName} ${lastName}</a>
     </div>
   </div>
 `;
