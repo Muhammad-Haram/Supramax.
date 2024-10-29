@@ -96,22 +96,22 @@ export default function NewProduct() {
       toast.error(validationErrors.join(", "));
       return;
     }
-  
+
     const fileTitle = inputs.title || "default";
     const sanitizedTitle = fileTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
     const toastId = toast.loading("Uploading..."); // Start single toast notification
-  
+
     try {
       const storage = getStorage(app);
       let totalBytes = file.size + descriptionFiles.reduce((acc, file) => acc + file.size, 0) + (dataSheet?.size || 0) + (certificate?.size || 0);
       let bytesUploaded = 0;
-  
+
       const mainImageUrl = await uploadFileToFirebase(file, `${sanitizedTitle}_${new Date().getTime()}.jpg`, toastId, (bytes) => {
         bytesUploaded += bytes;
         const progress = Math.min((bytesUploaded / totalBytes) * 100, 100); // Cap progress at 100
         toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
       });
-  
+
       // Upload description images
       const descImageUploadPromises = descriptionFiles.map((descFile) => {
         const descFileName = `${sanitizedTitle}_${new Date().getTime()}_${descFile.name}`;
@@ -121,7 +121,7 @@ export default function NewProduct() {
           toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
         });
       });
-  
+
       const descImageUrls = await Promise.all(descImageUploadPromises);
       const dataSheetUrl = await uploadFileToFirebase(dataSheet, `dataSheet_${sanitizedTitle}_${Date.now()}`, toastId, (bytes) => {
         bytesUploaded += bytes;
@@ -133,7 +133,7 @@ export default function NewProduct() {
         const progress = Math.min((bytesUploaded / totalBytes) * 100, 100); // Cap progress at 100
         toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
       });
-  
+
       const product = {
         ...inputs,
         img: mainImageUrl,
@@ -144,7 +144,7 @@ export default function NewProduct() {
         dataSheet: dataSheetUrl,
         certificate: certificateUrl,
       };
-  
+
       await addProducts(product, dispatch);
       toast.dismiss(toastId);
       toast.success("Product added successfully");
@@ -154,12 +154,12 @@ export default function NewProduct() {
       toast.error("Failed to add product");
     }
   };
-  
+
   // Updated upload function
   const uploadFileToFirebase = async (file, fileName, toastId, onProgress) => {
     const storageRef = ref(getStorage(app), fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
-  
+
     return new Promise((resolve, reject) => {
       uploadTask.on(
         "state_changed",
@@ -178,7 +178,7 @@ export default function NewProduct() {
       );
     });
   };
-  
+
 
   return (
     <>
@@ -241,12 +241,12 @@ export default function NewProduct() {
               </div>
             </div>
             <div className="productDesImg">
-              <label>Product Description Images</label>
+              <label className="label">Product Description Images</label>
               <input type="file" onChange={handleDescriptionFilesChange} multiple required />
             </div>
             <div className="addProductItem">
               <label>Table</label>
-              <textarea name="table" placeholder="Enter HTML structure for the table" onChange={handleTable} />
+              <textarea name="table" rows="4" cols="50" placeholder="Enter HTML structure for the table" onChange={handleTable} className="table-input"/>
             </div>
 
             <div className="addProductItem">

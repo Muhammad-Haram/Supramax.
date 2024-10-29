@@ -8,7 +8,7 @@ const ProductSpecifications = ({ product }) => {
             <h1 className='supramax-h1'>Product Specification</h1>
             <div className='specifications'>
                 {product.table ? (
-                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.table) }} />
+                    <div className='table-div' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.table) }} />
                 ) : (
                     <p>No specifications available.</p>
                 )}

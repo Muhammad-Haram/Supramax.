@@ -23,10 +23,10 @@ const Footer = () => {
         <h1 className='footer-h1'>Company</h1>
 
         <div className='footer-links'>
-          <Link className="footer-anchor" to="/">About Us</Link>
+          <Link className="footer-anchor" to="/aboutus">About Us</Link>
           <Link className="footer-anchor" to="/products">Products</Link>
           <Link className="footer-anchor" to="/">Solutions</Link>
-          <Link className="footer-anchor" to="/">Contact Us</Link>
+          <Link className="footer-anchor" to="/contactus">Contact Us</Link>
           <Link className="footer-anchor" to="/">Support</Link>
         </div>
 
@@ -36,11 +36,11 @@ const Footer = () => {
         <h1 className='footer-h1'>Our Products</h1>
 
         <div className='footer-links'>
-          <Link className="footer-anchor" to="/">About Us</Link>
-          <Link className="footer-anchor" to="/products">Products</Link>
-          <Link className="footer-anchor" to="/">Solutions</Link>
-          <Link className="footer-anchor" to="/">Contact Us</Link>
-          <Link className="footer-anchor" to="/">Support</Link>
+          <Link className="footer-anchor" to="/products/copper-data-cable">Copper Data Cable</Link>
+          <Link className="footer-anchor" to="/products/copper-multipair-cables">Copper Multipair Cables</Link>
+          <Link className="footer-anchor" to="/products/copper-coaxial-special-cables">Copper Coaxial Special Cables</Link>
+          <Link className="footer-anchor" to="/products/copper-patch-cord">Copper Patch Cord</Link>
+          <Link className="footer-anchor" to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
         </div>
 
       </div>

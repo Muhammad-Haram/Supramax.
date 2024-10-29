@@ -82,7 +82,7 @@ export default function ProductDashboardList() {
       width: 150,
       renderCell: (params) => {
         return (
-          <>
+          <div className='productListAction'>
             <Link to={"/dashboard/product/" + params.row._id}>
               <button className="productListEdit">Edit</button>
             </Link>
@@ -90,7 +90,7 @@ export default function ProductDashboardList() {
               className="productListDelete"
               onClick={() => handleDelete(params.row._id)}
             />
-          </>
+          </div>
         );
       },
     },
