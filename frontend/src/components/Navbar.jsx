@@ -11,6 +11,9 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [isProductsOpen, setProductsOpen] = useState(false);
+  const [isSolutionsOpen, setSolutionsOpen] = useState(false);
+  const [forAdminOpen, setForAdmin] = useState(false);
 
   const handleLogout = () => {
     try {
@@ -20,28 +23,6 @@ const Navbar = () => {
     } catch (error) {
       toast.error('Logout Failed');
     }
-  };
-
-  const [isProductsOpen, setProductsOpen] = useState(false);
-  const [isSolutionsOpen, setSolutionsOpen] = useState(false);
-  const [forAdminOpen, setForAdmin] = useState(false);
-
-  const toggleProductsDropdown = () => {
-    setProductsOpen(prev => !prev);
-    setSolutionsOpen(false);
-    setForAdmin(false);
-  };
-
-  const toggleSolutionsDropdown = () => {
-    setSolutionsOpen(prev => !prev);
-    setProductsOpen(false);
-    setForAdmin(false);
-  };
-
-  const toggleForAdmin = () => {
-    setForAdmin(prev => !prev);
-    setSolutionsOpen(false);
-    setProductsOpen(false);
   };
 
   const handleSearch = async () => {
@@ -75,8 +56,12 @@ const Navbar = () => {
 
       <div className='navbar-details'>
         <div className='navbar-links'>
-          <div className="navbar-single-link" onClick={toggleProductsDropdown}>
-            All Products <img src="/img/Border.png" alt="" />
+          <div
+            className="navbar-single-link"
+            onMouseEnter={() => setProductsOpen(true)}
+            onMouseLeave={() => setProductsOpen(false)}
+          >
+            All Categories <img src="/img/Border.png" alt="" />
             {isProductsOpen && (
               <div className="mega-dropdown">
                 <div className="dropdown-column">
@@ -109,7 +94,11 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="navbar-single-link" onClick={toggleSolutionsDropdown}>
+          <div
+            className="navbar-single-link"
+            onMouseEnter={() => setSolutionsOpen(true)}
+            onMouseLeave={() => setSolutionsOpen(false)}
+          >
             Solutions <img src="/img/Border.png" alt="" />
             {isSolutionsOpen && (
               <div className="dropdown">
@@ -124,15 +113,21 @@ const Navbar = () => {
           <Link className="navbar-single-link" to="/aboutus">About Us</Link>
           <Link className="navbar-single-link" to="/contactus">Contact Us</Link>
 
-          {user && <div className="navbar-single-link" onClick={toggleForAdmin}>
-            For Admin <img src="/img/Border.png" alt="" />
-            {forAdminOpen && (
-              <div className="dropdown">
-                <Link to="/dashboard">Dashboard</Link>
-                <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>
-              </div>
-            )}
-          </div>}
+          {user && (
+            <div
+              className="navbar-single-link"
+              onMouseEnter={() => setForAdmin(true)}
+              onMouseLeave={() => setForAdmin(false)}
+            >
+              For Admin <img src="/img/Border.png" alt="" />
+              {forAdminOpen && (
+                <div className="dropdown">
+                  <Link to="/dashboard">Dashboard</Link>
+                  <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className='navbar-search'>
