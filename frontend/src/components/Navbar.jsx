@@ -46,6 +46,14 @@ const Navbar = () => {
     }
   };
 
+  const toggleProductsMenu = () => {
+    setProductsOpen(prev => !prev);
+  };
+
+  const closeProductsMenu = () => {
+    setProductsOpen(false);
+  };
+
   return (
     <div className='navbar'>
       <div className='navbar-logo'>
@@ -58,12 +66,16 @@ const Navbar = () => {
         <div className='navbar-links'>
           <div
             className="navbar-single-link"
-            onMouseEnter={() => setProductsOpen(true)}
-            onMouseLeave={() => setProductsOpen(false)}
+            onClick={toggleProductsMenu} // Click pe toggle ho ga
           >
             All Categories <img src="/img/Border.png" alt="" />
+
+
             {isProductsOpen && (
-              <div className="mega-dropdown">
+              <div
+                className={`mega-dropdown ${isProductsOpen ? '' : 'hide'}`}
+                onMouseLeave={closeProductsMenu}
+              >
                 <div className="dropdown-column">
                   <h3>Data Cables</h3>
                   <Link to="/products/copper-data-cable">Copper Data Cable</Link>
@@ -92,6 +104,8 @@ const Navbar = () => {
                 </div>
               </div>
             )}
+
+
           </div>
 
           <div

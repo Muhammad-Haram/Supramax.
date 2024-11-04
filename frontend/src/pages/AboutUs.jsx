@@ -10,7 +10,6 @@ const AboutUs = () => {
     return (
         <>
             <Navbar />
-            <NavMini />
             <TopBanner heading="About Us" />
             <AboutUsComponent />
             <AboutUsComponent2 />

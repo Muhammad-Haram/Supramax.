@@ -1,221 +1,66 @@
-            <div className="addProductItem">
-              <label>Categories</label>
-              <div className="checkbox-container">
+            <nav className={`mega-menu-mobile ${isMobileMenuOpen ? 'open' : ''}`}>
+                <div className="menu-header">
+                    <a href="#" className="logo">LB.</a>
+                    <div className="icons" onClick={toggleMobileMenu}>
+                        {isMobileMenuOpen ? "close" : "open"}
+                    </div>
+                </div>
 
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="solution"
-                    onChange={handleCategoryChange}
-                  />
-                  Solution
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="copper-data-cable"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Data Cable
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="copper-multipair-cables"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Multipair Cables
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="copper-coaxial-&-special-cables"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Coaxial & Special Cables
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="copper-voice-termination-solution"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Voice Termination Solution
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="copper-patch-cord"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Patch Cord
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="copper-patch-panel"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Patch Panel
-                </label>
-
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="information-outlet-&-connector"
-                    onChange={handleCategoryChange}
-                  />
-                  Copper Information Outlet (IO) & Connector (Male Plug)
-                </label>
-
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="face-plate-&-floor-socket"
-                    onChange={handleCategoryChange}
-                  />
-                  Face Plate & Floor Socket
-                </label>
-
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="fiber-accessories"
-                    onChange={handleCategoryChange}
-                  />
-                  Fiber Accessories
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="fiber-cable"
-                    onChange={handleCategoryChange}
-                  />
-                  Fiber Cable
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="fiber-patch-cord"
-                    onChange={handleCategoryChange}
-                  />
-                  Fiber Patch Cord
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="cabinets"
-                    onChange={handleCategoryChange}
-                  />
-                  Cabinets
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="cabinets-tray"
-                    onChange={handleCategoryChange}
-                  />
-                  Cabinets Tray  / Accessories
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    value="PDU"
-                    onChange={handleCategoryChange}
-                  />
-                  PDU (Power Distribution Unit)
-                </label>
-              </div>
-
-              <div className="selected">
-                Selected Categories:
-                {categories.map((e, key) => (
-                  <p key={key} className="category-seleted">{e || "None"}</p>
-                ))}
-              </div>
-            </div>
-
-            <div className="addProductItem">
-              <label>Unit</label>
-              <div>
-                <label className="checkbox-label">
-                  <input
-                    type="radio"
-                    name="unit"
-                    value="reel"
-                    onChange={handleUnitChange}
-                  />
-                  Reel
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="radio"
-                    name="unit"
-                    value="box"
-                    onChange={handleUnitChange}
-                  />
-                  Box
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="radio"
-                    name="unit"
-                    value="mtr."
-                    onChange={handleUnitChange}
-                  />
-                  Mtr.
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="radio"
-                    name="unit"
-                    value="pcs"
-                    onChange={handleUnitChange}
-                  />
-                 Pcs
-                </label>
-
-                <label className="checkbox-label">
-                  <input
-                    type="radio"
-                    name="unit"
-                    value="per-meter"
-                    onChange={handleUnitChange}
-                  />
-                 Per Meter
-                </label>
-
-              </div>
-            </div>
+                <ul>
+                    <li>
+                        <a className="menu-title" href="#">Home</a>
+                    </li>
+                    <li className="has-submenu">
+                        <a className="menu-title" href="#">Products</a>
+                        <div className="submenu-container">
+                            <div className="submenu">
+                                <div className="col-3">
+                                    {/* Laptop Submenu */}
+                                    <div className="submenu-column">
+                                        <h4>Laptop</h4>
+                                        <img src="images/laptop.jpg" alt="Laptop" />
+                                        <ul>
+                                            <li><a href="#">Dell XPS 13</a></li>
+                                            <li><a href="#">Apple MacBook Air</a></li>
+                                            <li><a href="#">ASUS ZenBook UX425</a></li>
+                                        </ul>
+                                    </div>
+                                    {/* Camera Submenu */}
+                                    <div className="submenu-column">
+                                        <h4>Camera</h4>
+                                        <img src="images/camera.jpg" alt="Camera" />
+                                        <ul>
+                                            <li><a href="#">Sony Alpha a7 III</a></li>
+                                            <li><a href="#">Canon EOS R6</a></li>
+                                            <li><a href="#">Nikon Z6 II</a></li>
+                                        </ul>
+                                    </div>
+                                    {/* Audio Equipment Submenu */}
+                                    <div className="submenu-column">
+                                        <h4>Audio Equipments</h4>
+                                        <img src="images/audio.jpg" alt="Audio Equipments" />
+                                        <ul>
+                                            <li><a href="#">Bose QuietComfort 35 II Wireless Headphones</a></li>
+                                            <li><a href="#">Audio-Technica ATH-M50x</a></li>
+                                            <li><a href="#">Rode VideoMic Pro+</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li className="has-submenu">
+                        <a className="menu-title" href="#">Services</a>
+                        <div className="submenu-container">
+                            <div className="submenu grid">
+                                <ServiceLink title="Consulting" />
+                                <ServiceLink title="App Design" />
+                                <ServiceLink title="Security" />
+                                <ServiceLink title="Data Storage" />
+                                <ServiceLink title="Web Development" />
+                                <ServiceLink title="SEO" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
