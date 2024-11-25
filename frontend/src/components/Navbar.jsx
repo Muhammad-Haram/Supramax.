@@ -69,7 +69,7 @@ const Navbar = () => {
             onClick={toggleProductsMenu} // Click pe toggle ho ga
           >
             All Categories <img src="/img/Border.png" alt="" />
-
+ 
 
             {isProductsOpen && (
               <div
@@ -108,7 +108,7 @@ const Navbar = () => {
 
           </div>
 
-          <div
+          {/* <div
             className="navbar-single-link"
             onMouseEnter={() => setSolutionsOpen(true)}
             onMouseLeave={() => setSolutionsOpen(false)}
@@ -121,7 +121,7 @@ const Navbar = () => {
                 <Link to="/products/solutions/solution3">Solution 3</Link>
               </div>
             )}
-          </div>
+          </div> */}
 
           <Link className="navbar-single-link" to="/support">Support</Link>
           <Link className="navbar-single-link" to="/aboutus">About Us</Link>

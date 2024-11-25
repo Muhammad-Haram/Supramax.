@@ -131,7 +131,7 @@ const NavMini = () => {
                                 )}
                             </div>
 
-                            <div className="navbar-single-link" onClick={toggleSolutionsDropdown}>
+                            {/* <div className="navbar-single-link" onClick={toggleSolutionsDropdown}>
                                 <p className='navbar-button'>Solutions <img src="/img/Border.png" alt="" /></p>
                                 {isSolutionsOpen && (
                                     <div className="dropdown">
@@ -140,7 +140,7 @@ const NavMini = () => {
                                         <Link to="/products/solutions/solution3">Solution 3</Link>
                                     </div>
                                 )}
-                            </div>
+                            </div> */}
 
                             <Link className="navbar-single-link" to="/support">Support</Link>
                             <Link className="navbar-single-link" to="/aboutus">About Us</Link>
