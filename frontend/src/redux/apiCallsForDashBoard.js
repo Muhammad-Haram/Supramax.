@@ -60,13 +60,16 @@ export const updateProducts = async (id, product, dispatch) => {
 
 export const addProducts = async (product, dispatch) => {
   dispatch(addProductStart());
+  console.log("Product Data Sent to API:", product); // Add this line
   try {
     const res = await userRequest.post(`/products`, product);
     dispatch(addProductSuccess(res.data));
   } catch (error) {
+    console.error("Error Response:", error.response?.data || error.message); // Add this line
     dispatch(addProductFailure());
   }
 };
+
 
 // get user
 

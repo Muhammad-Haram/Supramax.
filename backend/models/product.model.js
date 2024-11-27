@@ -11,8 +11,8 @@ const productSchema = new mongoose.Schema(
     unit: { type: String, required: true },
     productDescImg: { type: Array },
     table: { type: String },
-    dataSheet: { type: String, required: true },
-    certificate: { type: String, required: true },
+    dataSheet: { type: String },
+    certificate: { type: String },
   },
   { timestamps: true }
 );

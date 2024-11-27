@@ -23,9 +23,7 @@ export const createProduct = async (req, res) => {
       !categories ||
       !partNumber ||
       !type ||
-      !unit ||
-      !dataSheet ||
-      !certificate
+      !unit
     ) {
       return res.status(400).json({
         message: "Missing required fields",
@@ -37,8 +35,6 @@ export const createProduct = async (req, res) => {
           partNumber: !partNumber ? "Part Number is required" : null,
           type: !type ? "Type is required" : null,
           unit: !unit ? "Unit is required" : null,
-          dataSheet: !dataSheet ? "Data Sheet is required" : null,
-          certificate: !certificate ? "Certificate is required" : null,
         },
       });
     }
