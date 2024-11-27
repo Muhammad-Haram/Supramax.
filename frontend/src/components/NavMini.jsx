@@ -142,7 +142,7 @@ const NavMini = () => {
                                 )}
                             </div> */}
 
-                            <Link className="navbar-single-link" to="/support">Support</Link>
+                            {/* <Link className="navbar-single-link" to="/support">Support</Link> */}
                             <Link className="navbar-single-link" to="/aboutus">About Us</Link>
                             <Link className="navbar-single-link" to="/contactus">Contact Us</Link>
 

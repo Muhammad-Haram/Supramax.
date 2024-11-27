@@ -56,6 +56,14 @@ export const createProduct = async (req, res) => {
     const savedProduct = await newProduct.save();
     res.status(201).json(savedProduct);
   } catch (error) {
+    console.error("Error Details:", error);
+    if (error.code === 11000 && error.keyPattern?.partNumber) {
+      return res.status(400).json({
+        message: "Part Number must be unique",
+        field: "partNumber",
+        error: error.message,
+      });
+    }
     res
       .status(500)
       .json({ message: "Failed to create product", error: error.message });
