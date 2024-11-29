@@ -142,6 +142,7 @@ const Navbar = () => {
               )}
             </div>
           )}
+
         </div>
 
         <div className='navbar-search'>

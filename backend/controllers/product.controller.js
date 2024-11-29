@@ -95,30 +95,27 @@ export const updateProduct = async (req, res) => {
         !partNumber &&
         !type &&
         !unit &&
-        !productDescImg,
-      !dataSheet,
+        !productDescImg &&
+      !dataSheet &&
       !certificate)
     ) {
       return res.status(400).json({
         message: "No fields provided for update",
       });
     }
-    // Find the product by ID
+
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true }
     );
 
-    // Check if product was found
     if (!updatedProduct) {
       return res.status(404).json("Product not found");
     }
 
-    // Respond with the updated product
     res.status(200).json(updatedProduct);
   } catch (error) {
-    // Handle errors during product update
     res.status(500).json({
       message: "Failed to update product",
       error: error.message,
