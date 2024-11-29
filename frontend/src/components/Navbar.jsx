@@ -13,7 +13,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isProductsOpen, setProductsOpen] = useState(false);
   const [isSolutionsOpen, setSolutionsOpen] = useState(false);
-  const [forAdminOpen, setForAdmin] = useState(false);
+  const [isForAdminOpen, setForAdminOpen] = useState(false);
 
   const handleLogout = () => {
     try {
@@ -54,6 +54,14 @@ const Navbar = () => {
     setProductsOpen(false);
   };
 
+  const toggleAdminMenu = () => {
+    setForAdminOpen(prev => !prev);
+  };
+
+  const closeAdminMenu = () => {
+    setForAdminOpen(false);
+  };
+
   return (
     <div className='navbar'>
       <div className='navbar-logo'>
@@ -66,10 +74,9 @@ const Navbar = () => {
         <div className='navbar-links'>
           <div
             className="navbar-single-link"
-            onClick={toggleProductsMenu} // Click pe toggle ho ga
+            onClick={toggleProductsMenu}
           >
             All Categories <img src="/img/Border.png" alt="" />
-
 
             {isProductsOpen && (
               <div
@@ -104,38 +111,23 @@ const Navbar = () => {
                 </div>
               </div>
             )}
-
-
           </div>
 
-          {/* <div
-            className="navbar-single-link"
-            onMouseEnter={() => setSolutionsOpen(true)}
-            onMouseLeave={() => setSolutionsOpen(false)}
-          >
-            Solutions <img src="/img/Border.png" alt="" />
-            {isSolutionsOpen && (
-              <div className="dropdown">
-                <Link to="/products/solutions/solution1">Solution 1</Link>
-                <Link to="/products/solutions/solution2">Solution 2</Link>
-                <Link to="/products/solutions/solution3">Solution 3</Link>
-              </div>
-            )}
-          </div> */}
-
-          {/* <Link className="navbar-single-link" to="/support">Support</Link> */}
           <Link className="navbar-single-link" to="/aboutus">About Us</Link>
           <Link className="navbar-single-link" to="/contactus">Contact Us</Link>
 
           {user && (
             <div
               className="navbar-single-link"
-              onMouseEnter={() => setForAdmin(true)}
-              onMouseLeave={() => setForAdmin(false)}
+              onClick={toggleAdminMenu}
             >
               For Admin <img src="/img/Border.png" alt="" />
-              {forAdminOpen && (
-                <div className="dropdown">
+
+              {isForAdminOpen && (
+                <div
+                  className="dropdown"
+                  onMouseLeave={closeAdminMenu}
+                >
                   <Link to="/dashboard">Dashboard</Link>
                   <Link onClick={handleLogout} className="navbar-single-link">Logout</Link>
                 </div>

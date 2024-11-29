@@ -22,4 +22,3 @@ export const userRequest = axios.create({
   headers: { token: `Bearer ${TOKEN}` },
 });
 
-console.log(TOKEN);

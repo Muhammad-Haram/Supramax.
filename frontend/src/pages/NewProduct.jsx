@@ -157,7 +157,6 @@ export default function NewProduct() {
         certificate: certificateUrl, // Optional
       };
 
-      console.log(product)
 
       await addProducts(product, dispatch);
       toast.dismiss(toastId);
