@@ -9,6 +9,7 @@ import BreadCrumbs from "../components/BreadCrumbs";
 import ProductSpecifications from "../components/ProductSpecifications";
 import ProductResources from "../components/ProductResources";
 import RelatedProduct from "../components/RelatedProduct";
+import ProductGallery from "../components/ProductGallery";
 
 const Product = () => {
   const location = useLocation();
@@ -43,9 +44,11 @@ const Product = () => {
       <NavMini />
       <BreadCrumbs productTitle={product.title} />
 
+
       <div id="product-details" className="product-page">
         <div className="product-page-img">
-          <img className="product-page-img-tag" src={product.img} alt={product.title} />
+          {/* <img className="product-page-img-tag" src={product.img} alt={product.title} /> */}
+          <ProductGallery product={product} />
         </div>
         <div className="product-page-content">
           <h1 className="product-page-title">{product.title}</h1>

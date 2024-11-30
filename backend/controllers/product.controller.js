@@ -30,7 +30,7 @@ export const createProduct = async (req, res) => {
         missingFields: {
           title: !title ? "Title is required" : null,
           desc: !desc ? "Description is required" : null,
-          img: !img ? "Image is required" : null,
+          img: !img ? "Images are required" : null,
           categories: !categories ? "Categories are required" : null,
           partNumber: !partNumber ? "Part Number is required" : null,
           type: !type ? "Type is required" : null,
@@ -42,7 +42,7 @@ export const createProduct = async (req, res) => {
     const newProduct = new Product({
       title,
       desc,
-      img,
+      img, // Save multiple images
       categories,
       partNumber,
       type,
@@ -86,7 +86,6 @@ export const updateProduct = async (req, res) => {
       certificate,
     } = req.body;
 
-    // Validate that at least one field is present for the update
     if (
       !title &&
       !desc &&
@@ -106,7 +105,7 @@ export const updateProduct = async (req, res) => {
 
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: req.body }, // Update array fields
       { new: true }
     );
 

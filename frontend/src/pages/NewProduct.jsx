@@ -38,6 +38,8 @@ export default function NewProduct() {
   const [categories, setCategories] = useState([]);
   const [dataSheet, setDataSheet] = useState(null);
   const [certificate, setCertificate] = useState(null);
+  const [mainImages, setMainImages] = useState([]);
+
 
   const admin = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).auth).currentUser?.isAdmin;
 
@@ -74,12 +76,17 @@ export default function NewProduct() {
     setDescriptionFiles(Array.from(e.target.files));
   };
 
+
   const handleDataSheetChange = (e) => {
     setDataSheet(e.target.files[0]);
   };
 
   const handleCertificateChange = (e) => {
     setCertificate(e.target.files[0]);
+  };
+
+  const handleMainImagesChange = (e) => {
+    setMainImages(Array.from(e.target.files));
   };
 
   const handleClick = async (e) => {
@@ -90,10 +97,9 @@ export default function NewProduct() {
     if (!inputs.desc) validationErrors.push("Description is required");
     if (!selectedUnit) validationErrors.push("Unit is required");
     if (categories.length === 0) validationErrors.push("At least one category must be selected");
-    if (!file) validationErrors.push("Main image is required");
+    if (mainImages.length === 0) validationErrors.push("At least one main image is required");
     if (descriptionFiles.length === 0) validationErrors.push("At least one product description image is required");
 
-    // Skip validation for optional fields (dataSheet and certificate)
     if (validationErrors.length > 0) {
       toast.error(validationErrors.join(", "));
       return;
@@ -105,19 +111,27 @@ export default function NewProduct() {
 
     try {
       const storage = getStorage(app);
-      let totalBytes = file.size + descriptionFiles.reduce((acc, file) => acc + file.size, 0);
-      let bytesUploaded = 0;
+      let totalBytes = mainImages.reduce((acc, file) => acc + file.size, 0) +
+        descriptionFiles.reduce((acc, file) => acc + file.size, 0);
 
-      // Include datasheet and certificate size only if present
       if (dataSheet) totalBytes += dataSheet.size;
       if (certificate) totalBytes += certificate.size;
 
-      const mainImageUrl = await uploadFileToFirebase(file, `${sanitizedTitle}_${new Date().getTime()}.jpg`, toastId, (bytes) => {
-        bytesUploaded += bytes;
-        const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
-        toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
+      let bytesUploaded = 0;
+
+      // Upload main images
+      const mainImageUploadPromises = mainImages.map((mainImage) => {
+        const mainImageName = `${sanitizedTitle}_main_${Date.now()}_${mainImage.name}`;
+        return uploadFileToFirebase(mainImage, mainImageName, toastId, (bytes) => {
+          bytesUploaded += bytes;
+          const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
+          toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
+        });
       });
 
+      const mainImageUrls = await Promise.all(mainImageUploadPromises);
+
+      // Upload description images
       const descImageUploadPromises = descriptionFiles.map((descFile) => {
         const descFileName = `${sanitizedTitle}_${new Date().getTime()}_${descFile.name}`;
         return uploadFileToFirebase(descFile, descFileName, toastId, (bytes) => {
@@ -148,7 +162,7 @@ export default function NewProduct() {
 
       const product = {
         ...inputs,
-        img: mainImageUrl,
+        img: mainImageUrls, // Multiple main images
         categories,
         unit: selectedUnit,
         productDescImg: descImageUrls,
@@ -156,7 +170,6 @@ export default function NewProduct() {
         dataSheet: dataSheetUrl, // Optional
         certificate: certificateUrl, // Optional
       };
-
 
       await addProducts(product, dispatch);
       toast.dismiss(toastId);
@@ -202,10 +215,13 @@ export default function NewProduct() {
         <div className="newProduct">
           <h1 className="addProductTitle">New Product</h1>
           <form className="addProductForm">
+
             <div className="addProductItem">
-              <label>Image</label>
-              <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} required />
+              <label>Main Images</label>
+              <input type="file" multiple onChange={handleMainImagesChange} required />
             </div>
+
+
             <div className="addProductItem">
               <label>Title</label>
               <input name="title" type="text" placeholder="Product Title" onChange={handleChange} required />
