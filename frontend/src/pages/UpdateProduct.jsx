@@ -46,17 +46,19 @@ export default function UpdateProduct() {
         title: "",
         desc: "",
         partNumber: "",
-        type: "",
+        type: ""
     });
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedUnit, setSelectedUnit] = useState("");
     const [file, setFile] = useState(null);
     const [descriptionFiles, setDescriptionFiles] = useState([]);
     const [existingDescImages, setExistingDescImages] = useState([]);
-    const [imagePreview, setImagePreview] = useState(productData?.img || ''); // State for image preview
-    const [table, setTable] = useState(""); // State for table content
+    const [imagePreview, setImagePreview] = useState(productData?.img || '');
+    const [table, setTable] = useState("");
     const [dataSheetFile, setDataSheetFile] = useState(null);
     const [certificateFile, setCertificateFile] = useState(null);
+    const [existingImages, setExistingImages] = useState(productData?.img || []);
+    const [newImages, setNewImages] = useState([]);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -77,11 +79,45 @@ export default function UpdateProduct() {
             });
             setSelectedCategories(productData.categories || []);
             setSelectedUnit(productData.unit || "");
-            setExistingDescImages(productData.productDescImg || []); // Load existing description images
-            setImagePreview(productData.img); // Set initial image preview
-            setTable(productData.table || ""); // Load existing table content
+            setExistingDescImages(productData.productDescImg || []);
+            setImagePreview(productData.img);
+            setTable(productData.table || "");
         }
     }, [productData]);
+
+    const handleFileChange = (e) => {
+        const selectedFiles = Array.from(e.target.files);
+
+        const newImagePreviews = selectedFiles.map((file) => ({
+            file,
+            preview: URL.createObjectURL(file),
+        }));
+
+        setNewImages((prev) => [...prev, ...newImagePreviews]);
+    };
+
+    const handleDeleteExistingImage = (index) => {
+        // Deleting only from the preview array, not affecting the final data until submit
+        setExistingImages((prevImages) => {
+            const updatedImages = [
+                ...prevImages.slice(0, index),
+                ...prevImages.slice(index + 1),
+            ];
+            return updatedImages;
+        });
+    };
+
+    const handleDeleteExistingDescImage = (index) => {
+        setExistingDescImages((prevImages) => {
+            const updatedImages = [
+                ...prevImages.slice(0, index),
+                ...prevImages.slice(index + 1),
+            ];
+            return updatedImages;
+        });
+    };
+
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -107,21 +143,8 @@ export default function UpdateProduct() {
         setDescriptionFiles(Array.from(e.target.files));
     };
 
-    const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0];
-        setFile(selectedFile);
-
-        // Create a local URL for previewing the selected image
-        if (selectedFile) {
-            const url = URL.createObjectURL(selectedFile);
-            setImagePreview(url);
-        } else {
-            setImagePreview(productData?.img || ''); // Reset to existing image if no file is selected
-        }
-    };
-
     const handleTableChange = (e) => {
-        setTable(e.target.value); // Update table state when the input changes
+        setTable(e.target.value);
     };
 
     const handleDataSheetChange = (e) => {
@@ -132,12 +155,9 @@ export default function UpdateProduct() {
         setCertificateFile(e.target.files[0]);
     };
 
-
-    // Inside the handleClick function
     const handleClick = async (e) => {
         e.preventDefault();
 
-        // Client-side validation
         let validationErrors = [];
         if (!inputs.title) validationErrors.push("Title is required");
         if (!inputs.partNumber) validationErrors.push("Part Number is required");
@@ -158,132 +178,156 @@ export default function UpdateProduct() {
             createdAt: productData.createdAt,
             updatedAt: new Date().toISOString(),
             __v: productData.__v,
-            dataSheet: "", // Initialize as empty string
-            certificate: "" // Initialize as empty string
+            dataSheet: "",
+            certificate: ""
         };
 
         const storage = getStorage(app);
 
         try {
-            // Update main product image
+            if (!newImages.length && !file) {
+                productUpdate.img = [...existingImages];
+            }
+
             if (file) {
-                const fileTitle = inputs.title || "default";
-                const sanitizedTitle = fileTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-                const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
-                const storageRef = ref(storage, fileName);
-                const uploadTask = uploadBytesResumable(storageRef, file);
-
-                const toastId = toast.loading("Uploading product image...");
-
-                await new Promise((resolve, reject) => {
-                    uploadTask.on(
-                        "state_changed",
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            toast.loading(`Product image upload is ${progress}% done`, { id: toastId });
-                        },
-                        (error) => {
-                            toast.dismiss(toastId);
-                            toast.error("Failed to upload product image.");
-                            reject(error);
-                        },
-                        () => {
-                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                productUpdate.img = downloadURL;
-                                setImagePreview(downloadURL);
-                                toast.dismiss(toastId);
-                                resolve();
-                            });
-                        }
-                    );
-                });
+                await uploadImage(file, productUpdate, storage);
+            } else if (newImages.length > 0) {
+                await uploadMultipleImages(newImages, productUpdate, storage);
             } else {
-                productUpdate.img = productData.img; // Retain existing image
+                productUpdate.img = existingImages;
             }
 
-            // Update description images
             if (descriptionFiles.length > 0) {
-                const descImageUploadPromises = descriptionFiles.map((descFile) => {
-                    const descFileName = `${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${new Date().getTime()}_${descFile.name}`;
-                    const descStorageRef = ref(storage, descFileName);
-                    return new Promise((resolve, reject) => {
-                        const descUploadTask = uploadBytesResumable(descStorageRef, descFile);
-                        const toastId = toast.loading("Uploading description image...");
-
-                        descUploadTask.on(
-                            "state_changed",
-                            (snapshot) => {
-                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                toast.loading(`Description image upload is ${progress}% done`, { id: toastId });
-                            },
-                            (error) => {
-                                toast.dismiss(toastId);
-                                toast.error("Description image upload failed");
-                                reject(error);
-                            },
-                            () => {
-                                getDownloadURL(descUploadTask.snapshot.ref).then((downloadURL) => {
-                                    toast.dismiss(toastId);
-                                    resolve(downloadURL);
-                                });
-                            }
-                        );
-                    });
-                });
-
-                const descImageUrls = await Promise.all(descImageUploadPromises);
-                productUpdate.productDescImg = descImageUrls; // Update with new description images
+                await uploadDescriptionImages(descriptionFiles, productUpdate, storage);
             } else {
-                productUpdate.productDescImg = existingDescImages; // Keep existing if no new uploads
+                productUpdate.productDescImg = existingDescImages.length > 0 ? existingDescImages : []; // Use existing or empty array
             }
 
-            // Update Product Data Sheet
             if (dataSheetFile) {
-                const dataSheetFileName = `dataSheet_${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.pdf`;
-                const dataSheetRef = ref(storage, dataSheetFileName);
-                const toastId = toast.loading("Uploading product data sheet...");
-
-                await uploadBytesResumable(dataSheetRef, dataSheetFile).then(() => {
-                    return getDownloadURL(dataSheetRef);
-                }).then((downloadURL) => {
-                    productUpdate.dataSheet = downloadURL; // Save the URL directly to dataSheet
-                    toast.dismiss(toastId); // Dismiss after successful upload
-                }).catch((error) => {
-                    toast.dismiss(toastId);
-                    toast.error("Failed to upload product data sheet.");
-                    throw error;
-                });
+                await uploadFile(dataSheetFile, "dataSheet", productUpdate, storage);
             } else {
-                productUpdate.dataSheet = productData.dataSheet; // Retain existing if no new upload
+                productUpdate.dataSheet = productData.dataSheet;
             }
 
-            // Update Certificates
             if (certificateFile) {
-                const certificateFileName = `certificate_${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.pdf`;
-                const certificateRef = ref(storage, certificateFileName);
-                const toastId = toast.loading("Uploading certificate...");
-
-                await uploadBytesResumable(certificateRef, certificateFile).then(() => {
-                    return getDownloadURL(certificateRef);
-                }).then((downloadURL) => {
-                    productUpdate.certificate = downloadURL; // Save the URL directly to certificate
-                    toast.dismiss(toastId); // Dismiss after successful upload
-                }).catch((error) => {
-                    toast.dismiss(toastId);
-                    toast.error("Failed to upload certificate.");
-                    throw error;
-                });
+                await uploadFile(certificateFile, "certificate", productUpdate, storage);
             } else {
-                productUpdate.certificate = productData.certificate; // Retain existing if no new upload
+                productUpdate.certificate = productData.certificate;
             }
 
             await updateProducts(productId, productUpdate, dispatch);
             toast.success("Product updated successfully!");
             navigate("/dashboard");
+
         } catch (error) {
             toast.error("Failed to update product. Please try again.");
         }
     };
+
+    const uploadImage = async (file, productUpdate, storage) => {
+        const fileTitle = inputs.title || "default";
+        const sanitizedTitle = fileTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+        const fileName = `${sanitizedTitle}_${new Date().getTime()}.jpg`;
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        const toastId = toast.loading("Uploading product image...");
+
+        await new Promise((resolve, reject) => {
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    toast.loading(`Product image upload is ${progress}% done`, { id: toastId });
+                },
+                (error) => {
+                    toast.dismiss(toastId);
+                    toast.error("Failed to upload product image.");
+                    reject(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        productUpdate.img = downloadURL;
+                        setImagePreview(downloadURL);
+                        toast.dismiss(toastId);
+                        resolve();
+                    });
+                }
+            );
+        });
+    };
+
+    const uploadMultipleImages = async (newImages, productUpdate, storage) => {
+        const uploadPromises = newImages.map(({ file }) => {
+            const fileName = `${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}_${file.name}`;
+            const storageRef = ref(storage, fileName);
+
+            return new Promise((resolve, reject) => {
+                const uploadTask = uploadBytesResumable(storageRef, file);
+                uploadTask.on(
+                    "state_changed",
+                    null,
+                    reject,
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then(resolve);
+                    }
+                );
+            });
+        });
+
+        const newImageUrls = await Promise.all(uploadPromises);
+        productUpdate.img = [...existingImages, ...newImageUrls];
+    };
+
+    const uploadDescriptionImages = async (descriptionFiles, productUpdate, storage) => {
+        const descImageUploadPromises = descriptionFiles.map((descFile) => {
+            const descFileName = `${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${new Date().getTime()}_${descFile.name}`;
+            const descStorageRef = ref(storage, descFileName);
+            return new Promise((resolve, reject) => {
+                const descUploadTask = uploadBytesResumable(descStorageRef, descFile);
+                const toastId = toast.loading("Uploading description image...");
+
+                descUploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        toast.loading(`Description image upload is ${progress}% done`, { id: toastId });
+                    },
+                    (error) => {
+                        toast.dismiss(toastId);
+                        toast.error("Description image upload failed");
+                        reject(error);
+                    },
+                    () => {
+                        getDownloadURL(descUploadTask.snapshot.ref).then((downloadURL) => {
+                            toast.dismiss(toastId);
+                            resolve(downloadURL);
+                        });
+                    }
+                );
+            });
+        });
+
+        const descImageUrls = await Promise.all(descImageUploadPromises);
+        productUpdate.productDescImg = descImageUrls;
+    };
+
+    const uploadFile = async (file, type, productUpdate, storage) => {
+        const fileName = `${type}_${inputs.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.pdf`;
+        const fileRef = ref(storage, fileName);
+        const toastId = toast.loading(`Uploading ${type}...`);
+
+        await uploadBytesResumable(fileRef, file).then(() => {
+            return getDownloadURL(fileRef);
+        }).then((downloadURL) => {
+            productUpdate[type] = downloadURL;
+            toast.dismiss(toastId);
+        }).catch((error) => {
+            toast.dismiss(toastId);
+            toast.error(`Failed to upload ${type}.`);
+            throw error;
+        });
+    };
+
 
 
 
@@ -368,28 +412,71 @@ export default function UpdateProduct() {
                                 </div>
 
                                 <div className="productFormLeft-input">
-                                    <label>Upload Product Image</label>
-                                    <input type="file" onChange={handleFileChange} />
-                                    {imagePreview && (
-                                        <img src={imagePreview} alt="Product Preview" className="productImagePreview" />
-                                    )}
+                                    <label>Update Product Image</label>
+                                    <input type="file" multiple accept="image/*" onChange={handleFileChange} />
                                 </div>
 
-                                <label>Existing Product Description Images:</label>
-                                <div className="product-page-desc-img">
+                                <div>
                                     <div className="image-gallery">
-                                        {existingDescImages.map((imgUrl, index) => (
-                                            <img key={index} src={imgUrl} alt={`Description ${index + 1}`} className="product-page-desc-img-tag" />
+                                        {existingImages.map((url, index) => (
+                                            <div key={index} style={{ display: "inline-block", position: "relative", margin: "5px" }}>
+                                                <img src={url} alt={`Existing ${index + 1}`} style={{ width: "100px" }} />
+                                                <button
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: 0,
+                                                        right: 0,
+                                                        backgroundColor: "red",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "20%",
+                                                        width: "20px",
+                                                        height: "20px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onClick={() => handleDeleteExistingImage(index)}
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
 
                                 <div className="productFormLeft-input">
-                                    <label>Upload New Product Description Images</label>
+                                    <label>Update New Product Description Images</label>
                                     <input type="file" multiple onChange={handleDescriptionFilesChange} />
                                 </div>
 
-                                {/* New Section for Table */}
+                                <div>
+                                    <div className="product-page-desc-img">
+                                        <div className="image-gallery">
+                                            {existingDescImages.map((imgUrl, index) => (
+                                                <div key={index} style={{ display: "inline-block", position: "relative", margin: "5px" }}>
+                                                    <img src={imgUrl} alt={`Description ${index + 1}`} className="product-page-desc-img-tag" style={{ width: "100px" }} />
+                                                    <button
+                                                        style={{
+                                                            position: "absolute",
+                                                            top: 0,
+                                                            right: 0,
+                                                            backgroundColor: "red",
+                                                            color: "white",
+                                                            border: "none",
+                                                            borderRadius: "20%",
+                                                            width: "20px",
+                                                            height: "20px",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        onClick={() => handleDeleteExistingDescImage(index)}
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div className="productFormLeft-input">
                                     <label>Table Content</label>
                                     <textarea

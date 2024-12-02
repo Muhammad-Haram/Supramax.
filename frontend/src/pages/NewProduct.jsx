@@ -91,7 +91,6 @@ export default function NewProduct() {
     if (!selectedUnit) validationErrors.push("Unit is required");
     if (categories.length === 0) validationErrors.push("At least one category must be selected");
     if (!file) validationErrors.push("Main image is required");
-    if (descriptionFiles.length === 0) validationErrors.push("At least one product description image is required");
 
     // Skip validation for optional fields (dataSheet and certificate)
     if (validationErrors.length > 0) {
@@ -118,16 +117,18 @@ export default function NewProduct() {
         toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
       });
 
-      const descImageUploadPromises = descriptionFiles.map((descFile) => {
-        const descFileName = `${sanitizedTitle}_${new Date().getTime()}_${descFile.name}`;
-        return uploadFileToFirebase(descFile, descFileName, toastId, (bytes) => {
-          bytesUploaded += bytes;
-          const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
-          toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
-        });
-      });
+      const descImageUploadPromises = descriptionFiles.length
+        ? descriptionFiles.map((descFile) => {
+          const descFileName = `${sanitizedTitle}_${new Date().getTime()}_${descFile.name}`;
+          return uploadFileToFirebase(descFile, descFileName, toastId, (bytes) => {
+            bytesUploaded += bytes;
+            const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
+            toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
+          });
+        })
+        : [];
 
-      const descImageUrls = await Promise.all(descImageUploadPromises);
+      const descImageUrls = descriptionFiles.length ? await Promise.all(descImageUploadPromises) : [];
 
       // Only upload datasheet and certificate if provided
       const dataSheetUrl = dataSheet
@@ -169,7 +170,6 @@ export default function NewProduct() {
   };
 
 
-  // Updated upload function
   const uploadFileToFirebase = async (file, fileName, toastId, onProgress) => {
     const storageRef = ref(getStorage(app), fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);

@@ -1819,9 +1819,14 @@ caption {
   display: none;
 }
 
-.image-gallery-thumbnail{
+.image-gallery-thumbnail {
   border-radius: 10px;
   overflow: hidden;
+  margin-right: 5px;
+}
+
+.image-gallery-slides {
+  padding: 20px;
 }
 
 .image-gallery-thumbnail:hover {
