@@ -30,7 +30,7 @@ const categoriesList = [
 export default function NewProduct() {
   const [inputs, setInputs] = useState({});
   const [table, setTable] = useState({})
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [descriptionFiles, setDescriptionFiles] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -90,9 +90,8 @@ export default function NewProduct() {
     if (!inputs.desc) validationErrors.push("Description is required");
     if (!selectedUnit) validationErrors.push("Unit is required");
     if (categories.length === 0) validationErrors.push("At least one category must be selected");
-    if (!file) validationErrors.push("Main image is required");
+    if (files.length === 0) validationErrors.push("At least one main image is required");
 
-    // Skip validation for optional fields (dataSheet and certificate)
     if (validationErrors.length > 0) {
       toast.error(validationErrors.join(", "));
       return;
@@ -104,33 +103,36 @@ export default function NewProduct() {
 
     try {
       const storage = getStorage(app);
-      let totalBytes = file.size + descriptionFiles.reduce((acc, file) => acc + file.size, 0);
-      let bytesUploaded = 0;
+      let totalBytes = files.reduce((acc, file) => acc + file.size, 0) +
+        descriptionFiles.reduce((acc, file) => acc + file.size, 0);
 
-      // Include datasheet and certificate size only if present
       if (dataSheet) totalBytes += dataSheet.size;
       if (certificate) totalBytes += certificate.size;
 
-      const mainImageUrl = await uploadFileToFirebase(file, `${sanitizedTitle}_${new Date().getTime()}.jpg`, toastId, (bytes) => {
-        bytesUploaded += bytes;
-        const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
-        toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
+      let bytesUploaded = 0;
+
+      const mainImageUploadPromises = files.map((file, index) => {
+        const fileName = `${sanitizedTitle}_main_${index}_${Date.now()}.jpg`;
+        return uploadFileToFirebase(file, fileName, toastId, (bytes) => {
+          bytesUploaded += bytes;
+          const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
+          toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
+        });
       });
 
-      const descImageUploadPromises = descriptionFiles.length
-        ? descriptionFiles.map((descFile) => {
-          const descFileName = `${sanitizedTitle}_${new Date().getTime()}_${descFile.name}`;
-          return uploadFileToFirebase(descFile, descFileName, toastId, (bytes) => {
-            bytesUploaded += bytes;
-            const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
-            toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
-          });
-        })
-        : [];
+      const mainImageUrls = await Promise.all(mainImageUploadPromises);
 
-      const descImageUrls = descriptionFiles.length ? await Promise.all(descImageUploadPromises) : [];
+      const descImageUploadPromises = descriptionFiles.map((descFile) => {
+        const descFileName = `${sanitizedTitle}_desc_${Date.now()}_${descFile.name}`;
+        return uploadFileToFirebase(descFile, descFileName, toastId, (bytes) => {
+          bytesUploaded += bytes;
+          const progress = Math.min((bytesUploaded / totalBytes) * 100, 100);
+          toast.loading(`Upload is ${progress.toFixed(0)}% done`, { id: toastId });
+        });
+      });
 
-      // Only upload datasheet and certificate if provided
+      const descImageUrls = await Promise.all(descImageUploadPromises);
+
       const dataSheetUrl = dataSheet
         ? await uploadFileToFirebase(dataSheet, `dataSheet_${sanitizedTitle}_${Date.now()}`, toastId, (bytes) => {
           bytesUploaded += bytes;
@@ -149,15 +151,14 @@ export default function NewProduct() {
 
       const product = {
         ...inputs,
-        img: mainImageUrl,
+        img: mainImageUrls, // Pass array of image URLs
         categories,
         unit: selectedUnit,
         productDescImg: descImageUrls,
         table: table.table,
-        dataSheet: dataSheetUrl, // Optional
-        certificate: certificateUrl, // Optional
+        dataSheet: dataSheetUrl,
+        certificate: certificateUrl,
       };
-
 
       await addProducts(product, dispatch);
       toast.dismiss(toastId);
@@ -168,6 +169,8 @@ export default function NewProduct() {
       toast.error("Failed to add product");
     }
   };
+
+
 
 
   const uploadFileToFirebase = async (file, fileName, toastId, onProgress) => {
@@ -203,8 +206,8 @@ export default function NewProduct() {
           <h1 className="addProductTitle">New Product</h1>
           <form className="addProductForm">
             <div className="addProductItem">
-              <label>Image</label>
-              <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} required />
+              <label>Main Images</label>
+              <input type="file" id="files" multiple onChange={(e) => setFiles(Array.from(e.target.files))} required />
             </div>
             <div className="addProductItem">
               <label>Title</label>

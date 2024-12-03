@@ -60,6 +60,9 @@ export default function UpdateProduct() {
     const [existingImages, setExistingImages] = useState(productData?.img || []);
     const [newImages, setNewImages] = useState([]);
 
+    console.log(existingImages, "exist")
+    console.log(newImages, "new")
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -83,7 +86,7 @@ export default function UpdateProduct() {
             setImagePreview(productData.img);
             setTable(productData.table || "");
         }
-    }, [productData]);
+    }, []);
 
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -96,16 +99,23 @@ export default function UpdateProduct() {
         setNewImages((prev) => [...prev, ...newImagePreviews]);
     };
 
+    let isUpdating = false;
+
     const handleDeleteExistingImage = (index) => {
-        // Deleting only from the preview array, not affecting the final data until submit
+        if (isUpdating) return;
+
         setExistingImages((prevImages) => {
             const updatedImages = [
                 ...prevImages.slice(0, index),
                 ...prevImages.slice(index + 1),
             ];
+            console.log("After Deletion: ", updatedImages);
             return updatedImages;
         });
+
+        toast.success("Image deleted locally.");
     };
+
 
     const handleDeleteExistingDescImage = (index) => {
         setExistingDescImages((prevImages) => {
@@ -116,8 +126,6 @@ export default function UpdateProduct() {
             return updatedImages;
         });
     };
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -157,6 +165,7 @@ export default function UpdateProduct() {
 
     const handleClick = async (e) => {
         e.preventDefault();
+        console.log("Submit Clicked");
 
         let validationErrors = [];
         if (!inputs.title) validationErrors.push("Title is required");
@@ -175,6 +184,8 @@ export default function UpdateProduct() {
             unit: selectedUnit,
             table: table,
             _id: productData._id,
+            img: existingImages,
+            productDescImg: existingDescImages,
             createdAt: productData.createdAt,
             updatedAt: new Date().toISOString(),
             __v: productData.__v,
@@ -223,6 +234,8 @@ export default function UpdateProduct() {
             toast.error("Failed to update product. Please try again.");
         }
     };
+
+    console.log("Updated Images: ", existingImages);
 
     const uploadImage = async (file, productUpdate, storage) => {
         const fileTitle = inputs.title || "default";
@@ -327,9 +340,6 @@ export default function UpdateProduct() {
             throw error;
         });
     };
-
-
-
 
     return (
         <>
