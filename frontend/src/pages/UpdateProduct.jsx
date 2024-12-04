@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { deleteObject, getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import app from "../firebase";
 import { updateProducts } from "../redux/apiCallsForDashBoard";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import Topbar from "../components/topbar/Topbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import TextEditor from "../components/TextEditor";
 import toast from 'react-hot-toast';
-
+import { Trash, Trash2 } from 'lucide-react';
 const allCategories = [
     "Solution",
     "Copper Data Cable",
@@ -32,16 +32,18 @@ const allCategories = [
 const allUnits = ["Reel", "Box", "Mtr.", "Pcs", "Per Meter"];
 
 export default function UpdateProduct() {
+    // variables 
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const location = useLocation();
     const productId = location.pathname.split("/")[3];
     const productData = useSelector((store) =>
         store.product.products.find((product) => product._id === productId)
     );
-
     const admin = JSON.parse(
         JSON.parse(localStorage.getItem("persist:root")).auth
     ).currentUser?.isAdmin;
-
     const [inputs, setInputs] = useState({
         title: "",
         desc: "",
@@ -59,12 +61,10 @@ export default function UpdateProduct() {
     const [certificateFile, setCertificateFile] = useState(null);
     const [existingImages, setExistingImages] = useState(productData?.img || []);
     const [newImages, setNewImages] = useState([]);
+    const [deletedImages, setDeletedImages] = useState([]);
+    const [deletedDescImages, setDeletedDescImages] = useState([]);
 
-    console.log(existingImages, "exist")
-    console.log(newImages, "new")
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // useEffect
 
     useEffect(() => {
         if (!admin) {
@@ -88,6 +88,9 @@ export default function UpdateProduct() {
         }
     }, []);
 
+
+    // functions 
+
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
 
@@ -97,34 +100,6 @@ export default function UpdateProduct() {
         }));
 
         setNewImages((prev) => [...prev, ...newImagePreviews]);
-    };
-
-    let isUpdating = false;
-
-    const handleDeleteExistingImage = (index) => {
-        if (isUpdating) return;
-
-        setExistingImages((prevImages) => {
-            const updatedImages = [
-                ...prevImages.slice(0, index),
-                ...prevImages.slice(index + 1),
-            ];
-            console.log("After Deletion: ", updatedImages);
-            return updatedImages;
-        });
-
-        toast.success("Image deleted locally.");
-    };
-
-
-    const handleDeleteExistingDescImage = (index) => {
-        setExistingDescImages((prevImages) => {
-            const updatedImages = [
-                ...prevImages.slice(0, index),
-                ...prevImages.slice(index + 1),
-            ];
-            return updatedImages;
-        });
     };
 
     const handleChange = (e) => {
@@ -235,8 +210,6 @@ export default function UpdateProduct() {
         }
     };
 
-    console.log("Updated Images: ", existingImages);
-
     const uploadImage = async (file, productUpdate, storage) => {
         const fileTitle = inputs.title || "default";
         const sanitizedTitle = fileTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
@@ -341,6 +314,51 @@ export default function UpdateProduct() {
         });
     };
 
+    const deleteImage = (imageUrl, index) => {
+        // Remove image from existingImages
+        const updatedImages = [...existingImages];
+        updatedImages.splice(index, 1);
+        setExistingImages(updatedImages);
+
+        // Add image to deletedImages array
+        setDeletedImages((prev) => [...prev, imageUrl]);
+    };
+
+    const deleteDescImage = (imageUrl, index) => {
+        const updatedDescImages = [...existingDescImages];
+        updatedDescImages.splice(index, 1);
+        setExistingDescImages(updatedDescImages);
+        setDeletedDescImages((prev) => [...prev, imageUrl]);
+    };
+
+    // const handleUpdate = async (e) => {
+    //     e.preventDefault();
+
+    //     try {
+    //         // Delete description images from Firebase that were marked for deletion
+    //         const storage = getStorage(app);
+    //         for (const imageUrl of deletedDescImages) {
+    //             const imageRef = ref(storage, imageUrl);
+    //             await deleteObject(imageRef); // Deleting the description image from Firebase
+    //         }
+
+    //         // Now update the product data
+    //         const updatedProductData = {
+    //             ...productData,
+    //             productDescImg: existingDescImages, // Updated description images
+    //             // Add other product data here
+    //         };
+
+    //         // Make API call to update product
+    //         await updateProductAPI(updatedProductData); // Replace with your actual update function
+
+    //         toast.success("Product updated successfully!");
+    //     } catch (error) {
+    //         toast.error("Failed to update the product.");
+    //     }
+    // };
+
+
     return (
         <>
             <Topbar />
@@ -426,31 +444,19 @@ export default function UpdateProduct() {
                                     <input type="file" multiple accept="image/*" onChange={handleFileChange} />
                                 </div>
 
-                                <div>
-                                    <div className="image-gallery">
-                                        {existingImages.map((url, index) => (
-                                            <div key={index} style={{ display: "inline-block", position: "relative", margin: "5px" }}>
-                                                <img src={url} alt={`Existing ${index + 1}`} style={{ width: "100px" }} />
-                                                <button
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: 0,
-                                                        right: 0,
-                                                        backgroundColor: "red",
-                                                        color: "white",
-                                                        border: "none",
-                                                        borderRadius: "20%",
-                                                        width: "20px",
-                                                        height: "20px",
-                                                        cursor: "pointer",
-                                                    }}
-                                                    onClick={() => handleDeleteExistingImage(index)}
-                                                >
-                                                    ×
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className="image-gallery">
+                                    {existingImages.map((url, index) => (
+                                        <div className="image-gallery-child" key={index}>
+                                            <img src={url} alt={"img"} style={{ width: "100px" }} />
+                                            <button
+                                                className="delete-button"
+                                                type="button"
+                                                onClick={() => deleteImage(url, index)}
+                                            >
+                                                <Trash2 />
+                                            </button>
+                                        </div>
+                                    ))}
                                 </div>
 
                                 <div className="productFormLeft-input">
@@ -458,33 +464,19 @@ export default function UpdateProduct() {
                                     <input type="file" multiple onChange={handleDescriptionFilesChange} />
                                 </div>
 
-                                <div>
-                                    <div className="product-page-desc-img">
-                                        <div className="image-gallery">
-                                            {existingDescImages.map((imgUrl, index) => (
-                                                <div key={index} style={{ display: "inline-block", position: "relative", margin: "5px" }}>
-                                                    <img src={imgUrl} alt={`Description ${index + 1}`} className="product-page-desc-img-tag" style={{ width: "100px" }} />
-                                                    <button
-                                                        style={{
-                                                            position: "absolute",
-                                                            top: 0,
-                                                            right: 0,
-                                                            backgroundColor: "red",
-                                                            color: "white",
-                                                            border: "none",
-                                                            borderRadius: "20%",
-                                                            width: "20px",
-                                                            height: "20px",
-                                                            cursor: "pointer",
-                                                        }}
-                                                        onClick={() => handleDeleteExistingDescImage(index)}
-                                                    >
-                                                        ×
-                                                    </button>
-                                                </div>
-                                            ))}
+                                <div className="image-gallery">
+                                    {existingDescImages.map((imgUrl, index) => (
+                                        <div className="image-gallery-child" key={index}>
+                                            <img src={imgUrl} alt={"img"} className="product-page-desc-img-tag" style={{ width: "100px" }} />
+                                            <button
+                                                className="delete-button"
+                                                type="button"
+                                                onClick={() => deleteDescImage(imgUrl, index)}
+                                            >
+                                                <Trash2 className="trash-icon" />
+                                            </button>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
 
                                 <div className="productFormLeft-input">
