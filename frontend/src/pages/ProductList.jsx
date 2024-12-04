@@ -16,7 +16,7 @@ const ProductList = () => {
       <Navbar />
       <NavMini />
       <ProductBanner heading={category ? category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : "Our Products"} />
-      <BreadCrumbs/>
+      <BreadCrumbs />
       <Products category={category} />
       <Footer />
     </div>
