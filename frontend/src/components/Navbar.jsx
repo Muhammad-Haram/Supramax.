@@ -103,6 +103,8 @@ const Navbar = () => {
                   <Link to="/products/fiber-accessories">Fiber Accessories</Link>
                   <Link to="/products/fiber-cable">Fiber Cable</Link>
                   <Link to="/products/fiber-patch-cord">Fiber Patch Cord</Link>
+                  <Link to="/products/fiber-patch-panel">Fiber Patch Panel</Link>
+                  <Link to="/products/fiber-patch-joint-enclosure">Fiber Patch Joint Enclosure</Link>
                 </div>
                 <div className="dropdown-column">
                   <h3>Miscellaneous</h3>
