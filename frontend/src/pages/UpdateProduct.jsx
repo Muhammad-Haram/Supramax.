@@ -24,6 +24,8 @@ const allCategories = [
     "Fiber Accessories",
     "Fiber Cable",
     "Fiber Patch Cord",
+    "Fiber Patch Panel",
+    "Fiber Patch Joint Enclosure",
     "Cabinets",
     "Cabinets Tray Accessories",
     "Power Distribution Unit",
