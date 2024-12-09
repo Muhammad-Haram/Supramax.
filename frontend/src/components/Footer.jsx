@@ -40,7 +40,7 @@ const Footer = () => {
           <Link className="footer-anchor" to="/products/copper-multipair-cables">Copper Multipair Cables</Link>
           <Link className="footer-anchor" to="/products/copper-coaxial-special-cables">Copper Coaxial Special Cables</Link>
           <Link className="footer-anchor" to="/products/copper-patch-cord">Copper Patch Cord</Link>
-          <Link className="footer-anchor" to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
+          <Link className="footer-anchor" to="/products/copper-information-outlet">Copper Information Outlet</Link>
         </div>
 
       </div>

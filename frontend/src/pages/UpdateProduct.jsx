@@ -19,7 +19,7 @@ const allCategories = [
     "Copper Voice Termination Solution",
     "Copper Patch Cord",
     "Copper Patch Panel",
-    "Copper Information Outlet Connector",
+    "Copper Information Outlet",
     "Face Plate Floor Socket",
     "Fiber Accessories",
     "Fiber Cable",
@@ -27,6 +27,7 @@ const allCategories = [
     "Cabinets",
     "Cabinets Tray Accessories",
     "Power Distribution Unit",
+    "Cable Manager",
 ];
 
 const allUnits = ["Reel", "Box", "Mtr.", "Pcs", "Per Meter"];

@@ -17,7 +17,7 @@ const categoriesList = [
   "Copper Voice Termination Solution",
   "Copper Patch Cord",
   "Copper Patch Panel",
-  "Copper Information Outlet Connector",
+  "Copper Information Outlet",
   "Face Plate Floor Socket",
   "Fiber Accessories",
   "Fiber Cable",
@@ -25,6 +25,7 @@ const categoriesList = [
   "Cabinets",
   "Cabinets Tray Accessories",
   "Power Distribution Unit",
+  "Cable Manager",
 ];
 
 export default function NewProduct() {

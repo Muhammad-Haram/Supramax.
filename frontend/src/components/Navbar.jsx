@@ -89,12 +89,13 @@ const Navbar = () => {
                   <Link to="/products/copper-multipair-cables">Copper Multipair Cables</Link>
                   <Link to="/products/copper-coaxial-special-cables">Copper Coaxial Special Cables</Link>
                   <Link to="/products/copper-voice-termination-solution">Copper Voice Termination Solution</Link>
+                  <Link to="/products/cable-manager">Cable Manager</Link>
                 </div>
                 <div className="dropdown-column">
                   <h3>Patch Cords & Panels</h3>
                   <Link to="/products/copper-patch-cord">Copper Patch Cord</Link>
                   <Link to="/products/copper-patch-panel">Copper Patch Panel</Link>
-                  <Link to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
+                  <Link to="/products/copper-information-outlet">Copper Information Outlet</Link>
                   <Link to="/products/face-plate-floor-socket">Face Plate Floor Socket</Link>
                 </div>
                 <div className="dropdown-column">

@@ -119,7 +119,7 @@ const NavMini = () => {
                                         <Link to="/products/copper-voice-termination-solution">Copper Voice Termination Solution</Link>
                                         <Link to="/products/copper-patch-cord">Copper Patch Cord</Link>
                                         <Link to="/products/copper-patch-panel">Copper Patch Panel</Link>
-                                        <Link to="/products/copper-information-outlet-connector">Copper Information Outlet Connector</Link>
+                                        <Link to="/products/copper-information-outlet">Copper Information Outlet</Link>
                                         <Link to="/products/face-plate-floor-socket">Face Plate Floor Socket</Link>
                                         <Link to="/products/fiber-accessories">Fiber Accessories</Link>
                                         <Link to="/products/fiber-cable">Fiber Cable</Link>
@@ -127,6 +127,7 @@ const NavMini = () => {
                                         <Link to="/products/cabinets">cabinets</Link>
                                         <Link to="/products/cabinets-tray-accessories">Cabinets Tray Accessories</Link>
                                         <Link to="/products/power-distribution-unit">Power Distribution Unit</Link>
+                                        <Link to="/products/cable-manager">Cable Manager</Link>
                                     </div>
                                 )}
                             </div>
