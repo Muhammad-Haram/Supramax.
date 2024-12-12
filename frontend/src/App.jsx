@@ -13,6 +13,8 @@ import SearchResults from "./components/SearchResults";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import ScrollToTop from "./components/ScrollToTop";
+import Application from "./pages/Application";
+import Markets from "./pages/Markets";
 
 const appRouter = createBrowserRouter([
   {
@@ -66,6 +68,14 @@ const appRouter = createBrowserRouter([
   {
     path: "/search-results",
     element: <SearchResults />,
+  },
+  {
+    path: "/application",
+    element: <Application />,
+  },
+  {
+    path: "/market",
+    element: <Markets />,
   },
 ]);
 

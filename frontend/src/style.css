@@ -1141,6 +1141,15 @@ label {
   gap: 20px;
 }
 
+.page-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 0px;
+  gap: 20px;
+}
+
 .aboutus-img-div {
   width: 50%;
 }
@@ -1882,6 +1891,25 @@ caption {
   border-radius: 10px;
 }
 
+.ul-item {}
+
+.list-items {
+  padding: 10px;
+  list-style-type: none;
+}
+
+
+.list-items-2 {
+  padding: 10px;
+  list-style-type: none;
+  line-height: 30px;
+}
+
+.sprmx-span {
+  font-weight: 900;
+  margin-right: 5px;
+}
+
 @media screen and (min-width: 480px) and (max-width: 768px) {
   body {
     overflow-x: hidden;
@@ -2082,6 +2110,13 @@ caption {
   }
 
   .aboutus-section {
+    width: 100%;
+    flex-direction: column;
+    padding: 30px 0px;
+    gap: 20px;
+  }
+
+  .page-section{
     width: 100%;
     flex-direction: column;
     padding: 30px 0px;
@@ -2399,6 +2434,10 @@ caption {
     text-align: center; 
   }    */
 
+  .list-items {
+    text-align: center;
+  }
+
 }
 
 @media (max-width: 479px) {
@@ -2620,6 +2659,13 @@ caption {
   }
 
   .aboutus-section {
+    width: 100%;
+    flex-direction: column;
+    padding: 30px 0px;
+    gap: 20px;
+  }
+
+  .page-section {
     width: 100%;
     flex-direction: column;
     padding: 30px 0px;
@@ -3022,6 +3068,10 @@ caption {
 
   .single-cate {
     overflow: hidden;
+  }
+
+  .list-items {
+    text-align: center;
   }
 
 }
