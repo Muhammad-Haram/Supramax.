@@ -26,10 +26,8 @@ const allCategories = [
     "Fiber Patch Cord",
     "Fiber Patch Panel",
     "Fiber Patch Joint Enclosure",
-    "Cabinets",
-    "Cabinets Tray Accessories",
-    "Power Distribution Unit",
     "Cable Manager",
+    "Rack Solutions"
 ];
 
 const allUnits = ["Reel", "Box", "Mtr.", "Pcs", "Per Meter"];

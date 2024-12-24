@@ -162,13 +162,6 @@ const NavMini = () => {
                     <Link to="/products/fiber-patch-joint-enclosure">
                       Fiber Patch Joint Enclosure
                     </Link>
-                    <Link to="/products/cabinets">cabinets</Link>
-                    <Link to="/products/cabinets-tray-accessories">
-                      Cabinets Tray Accessories
-                    </Link>
-                    <Link to="/products/power-distribution-unit">
-                      Power Distribution Unit
-                    </Link>
                     <Link to="/products/cable-manager">Cable Manager</Link>
                   </div>
                 )}

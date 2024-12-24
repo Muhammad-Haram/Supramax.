@@ -29,10 +29,8 @@ const categoriesList = [
   "Fiber Patch Cord",
   "Fiber Patch Panel",
   "Fiber Patch Joint Enclosure",
-  "Cabinets",
-  "Cabinets Tray Accessories",
-  "Power Distribution Unit",
   "Cable Manager",
+  "Rack Solutions"
 ];
 
 export default function NewProduct() {

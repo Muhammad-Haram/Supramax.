@@ -107,10 +107,8 @@ const Navbar = () => {
                   <Link to="/products/fiber-patch-joint-enclosure">Fiber Patch Joint Enclosure</Link>
                 </div>
                 <div className="dropdown-column">
-                  <h3>Miscellaneous</h3>
-                  <Link to="/products/cabinets">Cabinets</Link>
-                  <Link to="/products/cabinets-tray-accessories">Cabinets Tray Accessories</Link>
-                  <Link to="/products/power-distribution-unit">Power Distribution Unit</Link>
+                  <h3>Rack</h3>
+                  <Link to="/products/rack-solutions">Rack Solutions</Link>
                 </div>
               </div>
             )}
